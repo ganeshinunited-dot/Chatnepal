@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Send, Sparkles, User, Settings2, Plus, MessageSquare, Leaf, Briefcase, GraduationCap } from 'lucide-react';
+import { ArrowLeft, Send, Sparkles, User, Settings2, Plus, MessageSquare, Leaf, Briefcase, GraduationCap, Cpu } from 'lucide-react';
 import { motion } from "motion/react";
 
 type Message = {
@@ -120,15 +120,25 @@ export default function ChatNPInterface() {
             </div>
           </div>
           
+          {/* Model Selection Dropdown */}
           <div className="flex items-center gap-2">
-            <select 
-              value={modelType}
-              onChange={(e) => setModelType(e.target.value)}
-              className="bg-zinc-900/80 border border-white/10 rounded-lg text-xs font-medium text-zinc-300 px-3 py-1.5 outline-none focus:ring-2 focus:ring-orange-500/50 cursor-pointer hidden sm:block transition-all hover:bg-zinc-800"
-            >
-              <option value="chatnp-fast">⚡ Fast (Search Grounded)</option>
-              <option value="chatnp-advanced">🧠 Advanced (Deep Think)</option>
-            </select>
+            <div className="relative flex items-center">
+              <Cpu className="w-3.5 h-3.5 text-orange-500 absolute left-3 pointer-events-none hidden sm:block" />
+              <select 
+                value={modelType}
+                onChange={(e) => setModelType(e.target.value)}
+                className="bg-zinc-900/90 border border-white/10 rounded-lg text-xs font-medium text-zinc-200 pl-3 sm:pl-8 pr-4 py-2 outline-none focus:ring-2 focus:ring-orange-500/50 cursor-pointer transition-all hover:bg-zinc-800 shadow-inner"
+              >
+                {/* Active Models */}
+                <option value="chatnp-fast">⚡ ChatNP Fast (Active)</option>
+                <option value="chatnp-advanced">🧠 ChatNP Advanced (Active)</option>
+                
+                {/* Coming Soon Models from PDF/Roadmap */}
+                <option value="chatnp-sovereign-7b" disabled>🚀 ChatNP Sovereign 7B (Coming Soon)</option>
+                <option value="chatnp-agri-expert" disabled>🌾 ChatNP Agri-Specialist (Coming Soon)</option>
+                <option value="chatnp-legal-nepal" disabled>⚖️ ChatNP Legal & Tax AI (Coming Soon)</option>
+              </select>
+            </div>
           </div>
         </header>
 
@@ -180,11 +190,11 @@ export default function ChatNPInterface() {
           </div>
         </div>
 
-        {/* Input Area (Bottom Fixed inside Flex) */}
+        {/* Input Area */}
         <div className="shrink-0 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent pt-4 pb-6 px-4 sm:px-6 z-10">
           <div className="max-w-3xl mx-auto">
             
-            {/* Prompt Chips (Shows only when chat is empty) */}
+            {/* Prompt Chips */}
             {messages.length === 1 && (
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
