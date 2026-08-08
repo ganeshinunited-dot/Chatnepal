@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 
 export function Hero() {
   return (
-    <section className="relative px-6 pt-16 md:pt-24 max-w-7xl mx-auto flex flex-col items-center text-center">
+    <section className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-4 pt-12 text-center sm:px-6 md:pt-24">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -22,7 +22,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="font-heading text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-balance leading-[1.1] text-white max-w-4xl"
+        className="max-w-4xl font-heading text-4xl font-medium leading-[1.08] tracking-tight text-white text-balance sm:text-5xl md:text-7xl lg:text-8xl"
       >
         Building Nepal's Future with <br className="hidden md:block" />
         <motion.span 
@@ -44,7 +44,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mt-8 text-lg md:text-xl text-zinc-400 max-w-2xl text-balance"
+        className="mt-6 max-w-2xl text-base text-zinc-400 text-balance sm:mt-8 sm:text-lg md:text-xl"
       >
         KarkTech is creating AI products designed for Nepal, starting with ChatNP. Bridging the digital divide with culturally-aware, native-language intelligence.
       </motion.p>
@@ -53,16 +53,16 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+        className="mt-8 flex w-full flex-col items-center gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:gap-4"
       >
         <Link 
           href="/chat" 
-          className="w-full sm:w-auto group relative flex items-center justify-center gap-2 h-12 px-8 rounded-xl bg-orange-600 text-white font-bold hover:bg-orange-700 transition-all overflow-hidden shadow-lg shadow-orange-900/20"
+          className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-orange-600 px-6 font-bold text-white shadow-lg shadow-orange-900/20 transition-all hover:bg-orange-700 sm:w-auto sm:px-8"
         >
           Try ChatNP
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
-        <DownloadLink className="w-full sm:w-auto flex items-center justify-center gap-2 h-12 px-8 rounded-xl bg-zinc-900 border border-white/10 text-zinc-300 font-bold hover:bg-zinc-800 transition-colors backdrop-blur-sm"><Download className="w-4 h-4 text-zinc-400" />Download Investor PDF</DownloadLink>
+        <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-6 font-bold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-zinc-800 sm:w-auto sm:px-8"><Download className="w-4 h-4 text-zinc-400" />Download Investor PDF</DownloadLink>
       </motion.div>
     </section>
   );

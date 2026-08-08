@@ -13,10 +13,10 @@ export function ChatNPPreview() {
   ];
 
   return (
-    <section id="chatnp" className="px-6 max-w-7xl mx-auto w-full scroll-mt-32">
-      <div className="text-center mb-16">
-        <h2 className="font-heading text-4xl md:text-5xl text-white mb-6">Meet ChatNP</h2>
-        <p className="text-xl text-zinc-400 max-w-3xl mx-auto">
+    <section id="chatnp" className="mx-auto w-full max-w-7xl scroll-mt-32 px-4 sm:px-6">
+      <div className="mb-12 text-center sm:mb-16">
+        <h2 className="mb-6 font-heading text-3xl text-white sm:text-4xl md:text-5xl">Meet ChatNP</h2>
+        <p className="mx-auto max-w-3xl text-base text-zinc-400 sm:text-xl">
           A generative AI platform designed for Nepal. It serves as a unified interface for conversational chat, specialized education assistants, and localized knowledge.
         </p>
       </div>
@@ -31,7 +31,7 @@ export function ChatNPPreview() {
         >
           <div className="grid sm:grid-cols-2 gap-4">
             {features.map((f, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-zinc-900/30 border border-white/5 backdrop-blur-sm">
+              <div key={i} className="rounded-2xl border border-white/5 bg-zinc-900/30 p-5 backdrop-blur-sm sm:p-6">
                 <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 mb-4">
                   {f.icon}
                 </div>
@@ -43,7 +43,7 @@ export function ChatNPPreview() {
 
           <Link 
             href="/chat" 
-            className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl bg-orange-600 text-white font-bold hover:bg-orange-700 transition-colors shadow-lg shadow-orange-900/20"
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 font-bold text-white shadow-lg shadow-orange-900/20 transition-colors hover:bg-orange-700 sm:w-auto sm:px-8"
           >
             Launch Prototype
             <ArrowRight className="w-4 h-4" />
@@ -69,12 +69,12 @@ export function ChatNPPreview() {
                 <div className="w-2 h-2 rounded-full bg-zinc-700" />
               </div>
             </div>
-            <div className="p-6 h-[400px] flex flex-col gap-6">
+            <div className="flex h-[360px] flex-col gap-6 p-4 sm:h-[400px] sm:p-6">
               <div className="flex gap-3">
                 <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
                   <span className="text-xs text-zinc-300 font-medium">U</span>
                 </div>
-                <div className="bg-zinc-800/80 p-4 rounded-2xl rounded-tl-none text-sm text-zinc-300">
+                <div className="min-w-0 rounded-2xl rounded-tl-none bg-zinc-800/80 p-3 text-sm text-zinc-300 sm:p-4">
                   What is the capital of Nepal? Can you explain in Nepali?
                 </div>
               </div>
@@ -82,14 +82,14 @@ export function ChatNPPreview() {
                 <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center shrink-0 shadow-lg shadow-orange-900/40">
                   <span className="text-[10px] font-bold text-white">NP</span>
                 </div>
-                <div className="bg-white/5 border border-white/5 p-4 rounded-2xl rounded-tl-none text-sm text-zinc-300">
+                <div className="min-w-0 rounded-2xl rounded-tl-none border border-white/5 bg-white/5 p-3 text-sm text-zinc-300 sm:p-4">
                   <p>Nepal's capital is Kathmandu.</p>
                   <p className="mt-2 text-zinc-400">नेपालको राजधानी काठमाडौं हो।</p>
                 </div>
               </div>
             </div>
             {/* Input placeholder */}
-            <div className="absolute bottom-6 left-6 right-6">
+            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
               <div className="h-12 rounded-xl bg-zinc-800 border border-white/10 flex items-center px-4 relative">
                 <span className="text-zinc-500 text-sm">Message ChatNP...</span>
                 <div className="absolute right-2 top-1.5 p-1.5 bg-orange-600 rounded-lg">

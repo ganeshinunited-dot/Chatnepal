@@ -12,10 +12,10 @@ export function Roadmap() {
   ];
 
   return (
-    <section id="roadmap" className="px-6 max-w-5xl mx-auto w-full scroll-mt-32">
+    <section id="roadmap" className="mx-auto w-full max-w-5xl scroll-mt-32 px-4 sm:px-6">
       <div className="text-center mb-16">
-        <h2 className="font-heading text-4xl text-white mb-4">Product Roadmap</h2>
-        <p className="text-zinc-400">Our strategic timeline for the next 18 months.</p>
+        <h2 className="mb-4 font-heading text-3xl text-white sm:text-4xl">Product Roadmap</h2>
+        <p className="text-base text-zinc-400 sm:text-lg">Our strategic timeline for the next 18 months.</p>
       </div>
 
       <div className="relative border-l border-white/10 ml-4 md:ml-0 md:border-l-0">
