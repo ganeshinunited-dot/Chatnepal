@@ -15,6 +15,7 @@ export function Investors() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Seed Round Open
             </div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400 mb-3 hidden lg:block">Funding Opportunity</p>
             <h2 className="mb-6 font-heading text-3xl text-white sm:text-4xl">Invest in Nepal's AI Future</h2>
             <p className="mb-8 text-base leading-relaxed text-zinc-400 sm:text-lg">
               We are raising NPR 1 Crore (approx $65,500 USD) to accelerate ChatNP's development, scale our infrastructure, and execute our go-to-market strategy. Nepal's digital economy is growing rapidly—now is the time to build sovereign AI solutions.
@@ -44,23 +45,23 @@ export function Investors() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:mt-8">
+            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6 transition-all duration-300 hover:border-white/10 hover:-translate-y-1">
               <Users className="w-6 h-6 text-brand-blue-bright mb-4" />
               <h4 className="text-white font-medium mb-1">16.6M+ Internet Users</h4>
               <p className="text-sm text-zinc-500">Massive underserved market in Nepal with growing digital adoption.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
+            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6 transition-all duration-300 hover:border-white/10 hover:-translate-y-1 lg:mt-6">
               <Zap className="w-6 h-6 text-brand-blue-bright mb-4" />
               <h4 className="text-white font-medium mb-1">Scalable Infrastructure</h4>
               <p className="text-sm text-zinc-500">Built for growth with efficient, cost-optimized architecture.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
+            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6 transition-all duration-300 hover:border-white/10 hover:-translate-y-1">
               <TrendingUp className="w-6 h-6 text-red-400 mb-4" />
               <h4 className="text-white font-medium mb-1">Growing Digital Economy</h4>
               <p className="text-sm text-zinc-500">Nepal's IT sector expanding rapidly with strong export growth.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
+            <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6 transition-all duration-300 hover:border-white/10 hover:-translate-y-1 lg:mt-6">
               <div className="w-6 h-6 text-brand-blue-bright mb-4 font-bold font-heading text-xl">B2C/B2B</div>
               <h4 className="text-white font-medium mb-1">Freemium Model</h4>
               <p className="text-sm text-zinc-500">Clear path to revenue through freemium and enterprise tiers.</p>
