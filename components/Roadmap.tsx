@@ -17,8 +17,8 @@ export function Roadmap() {
       </div>
 
       <div className="relative">
-        {/* Timeline line */}
-        <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-blue/20 via-brand-blue/50 to-brand-blue/20 transform -translate-y-1/2" />
+        {/* Timeline line: drawn at the top of the grid so it never crosses card text */}
+        <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-brand-blue/15 via-brand-blue/40 to-brand-blue/15" />
         
         <div className="grid md:grid-cols-4 gap-6 md:gap-4">
           {phases.map((item, i) => (
@@ -30,8 +30,8 @@ export function Roadmap() {
               transition={{ duration: 0.4, delay: i * 0.1 }}
               className="relative"
             >
-              {/* Timeline dot */}
-              <div className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              {/* Timeline dot: aligned with the top line */}
+              <div className="hidden md:flex absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
                 <div className={`w-4 h-4 rounded-full border-4 ${item.status === 'current' ? 'bg-brand-blue border-brand-blue-bright' : 'bg-zinc-900 border-zinc-700'}`} />
               </div>
 
