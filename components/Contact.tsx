@@ -20,7 +20,7 @@ export function Contact() {
               </div>
               <div>
                 <p className="text-sm text-zinc-500 font-medium">Email Founder</p>
-                <a href="mailto:ganesh@karktech.tech" className="text-white hover:text-orange-400 transition-colors">ganesh@karktech.tech</a>
+                <a href="mailto:ganesh@karktech.tech" className="text-white hover:text-blue-400 transition-colors">ganesh@karktech.tech</a>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -31,7 +31,7 @@ export function Contact() {
               </div>
               <div>
                 <p className="text-sm text-zinc-500 font-medium">WhatsApp</p>
-                <a href="https://wa.me/9779842902535" className="text-white hover:text-orange-400 transition-colors">+977 9842902535</a>
+                <a href="https://wa.me/9779842902535" className="text-white hover:text-blue-400 transition-colors">+977 9842902535</a>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -40,7 +40,7 @@ export function Contact() {
               </div>
               <div>
                 <p className="text-sm text-zinc-500 font-medium">LinkedIn</p>
-                <a href="#" className="text-white hover:text-orange-400 transition-colors">linkedin.com/in/ganeshkarki</a>
+                <a href="#" className="text-white hover:text-blue-400 transition-colors">linkedin.com/in/ganeshkarki</a>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -65,22 +65,22 @@ export function Contact() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-400">First Name</label>
-                <input type="text" className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all" />
+                <input type="text" className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-400">Last Name</label>
-                <input type="text" className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all" />
+                <input type="text" className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all" />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-zinc-400">Email Address</label>
-              <input type="email" className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all" />
+              <input type="email" className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all" />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-zinc-400">Message</label>
-              <textarea className="w-full h-32 bg-zinc-800 border border-white/10 rounded-xl p-4 text-white resize-none focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all"></textarea>
+              <textarea className="w-full h-32 bg-zinc-800 border border-white/10 rounded-xl p-4 text-white resize-none focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all"></textarea>
             </div>
-            <button type="button" className="w-full h-12 rounded-xl bg-orange-600 text-white font-bold hover:bg-orange-700 transition-colors shadow-lg shadow-orange-900/20">
+            <button type="button" className="w-full h-12 rounded-xl bg-brand-blue text-white font-bold hover:bg-brand-blue-bright transition-colors shadow-lg shadow-blue-900/30">
               Send Message
             </button>
           </form>

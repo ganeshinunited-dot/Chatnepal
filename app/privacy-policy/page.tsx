@@ -3,12 +3,12 @@ import { Footer } from '@/components/Footer';
 
 export default function PrivacyPolicy() {
   return (
-    <main className="min-h-screen relative bg-[#050505] text-white selection:bg-orange-900/50">
+    <main className="min-h-screen relative bg-[#050505] text-white selection:bg-blue-900/50">
       <Navbar />
       <div className="pt-32 pb-24 max-w-4xl mx-auto px-6">
         <h1 className="font-heading text-4xl md:text-5xl font-medium mb-8">Privacy Policy</h1>
         
-        <div className="prose prose-invert prose-orange max-w-none space-y-6 text-zinc-400">
+        <div className="prose prose-invert prose-blue max-w-none space-y-6 text-zinc-400">
           <p>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           
           <h2 className="text-white font-medium text-2xl mt-12 mb-4">1. Information We Collect</h2>
@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
 
           <h2 className="text-white font-medium text-2xl mt-12 mb-4">4. Contact Us</h2>
           <p>
-            If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:ganesh@karktech.tech" className="text-orange-500 hover:underline">ganesh@karktech.tech</a>
+            If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:ganesh@karktech.tech" className="text-blue-500 hover:underline">ganesh@karktech.tech</a>
           </p>
         </div>
       </div>

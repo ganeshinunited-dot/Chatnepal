@@ -34,8 +34,8 @@ export function CookieBanner() {
           <div className="max-w-4xl mx-auto pointer-events-auto">
             <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col md:flex-row gap-6 items-center justify-between">
               <div className="flex gap-4 items-start md:items-center">
-                <div className="bg-orange-500/20 p-3 rounded-full hidden md:block">
-                  <Cookie className="w-6 h-6 text-orange-400" />
+                <div className="bg-brand-blue/20 p-3 rounded-full hidden md:block">
+                  <Cookie className="w-6 h-6 text-blue-400" />
                 </div>
                 <div>
                   <h3 className="text-white font-medium mb-1">We use cookies</h3>
@@ -53,7 +53,7 @@ export function CookieBanner() {
                 </button>
                 <button
                   onClick={handleAccept}
-                  className="flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-orange-600 text-white font-medium hover:bg-orange-700 transition-colors shadow-lg shadow-orange-900/20 text-sm"
+                  className="flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-brand-blue text-white font-medium hover:bg-brand-blue-bright transition-colors shadow-lg shadow-blue-900/30 text-sm"
                 >
                   Accept All
                 </button>

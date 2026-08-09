@@ -7,14 +7,14 @@ export function TrustCredibility() {
     {
       icon: <Code2 className="w-6 h-6" />,
       title: "Live ChatNP Prototype",
-      description: "A working AI assistant available for testing right now. Try both Fast and Advanced modes.",
+      description: "A working AI assistant available for testing right now, powered by the NP1 MONI model.",
       color: "text-blue-400"
     },
     {
       icon: <Zap className="w-6 h-6" />,
       title: "Secured Infrastructure",
       description: "Backed by scalable, secure server-side integrations powered by industry-standard APIs.",
-      color: "text-orange-400"
+      color: "text-blue-400"
     },
     {
       icon: <FileText className="w-6 h-6" />,

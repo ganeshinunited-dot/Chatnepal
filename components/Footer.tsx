@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="font-heading text-xl font-semibold tracking-tight text-white flex items-center gap-2 mb-4">
-              <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-orange-500 to-red-600 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-brand-blue to-brand-red flex items-center justify-center">
                 <span className="text-xs font-bold text-white">K</span>
               </div>
               KarkTech
@@ -45,7 +45,7 @@ export function Footer() {
         </div>
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
           <p>© {new Date().getFullYear()} KarkTech. All rights reserved.</p>
-          <p className="text-orange-500 uppercase tracking-widest text-[10px] font-bold">Nepali AI Excellence</p>
+          <p className="text-blue-500 uppercase tracking-widest text-[10px] font-bold">Nepali AI Excellence</p>
         </div>
       </div>
     </footer>

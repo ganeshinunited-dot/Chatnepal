@@ -12,9 +12,9 @@ import { Footer } from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen relative selection:bg-orange-900/50 selection:text-white">
+    <main className="min-h-screen relative selection:bg-blue-900/50 selection:text-white">
       <div className="fixed inset-0 z-[-1] bg-[#050505] overflow-hidden">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[120px]"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px]"></div>
       </div>
       

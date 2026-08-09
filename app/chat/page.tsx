@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Send, User, Settings2, Plus, MessageSquare, Leaf, Briefcase, GraduationCap, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Send, User, Settings2, Plus, MessageSquare, Leaf, Briefcase, GraduationCap, Sparkles } from 'lucide-react';
 import { motion } from "motion/react";
 
 type Message = {
@@ -26,8 +26,6 @@ export default function ChatNPInterface() {
     scrollToBottom();
   }, [messages, isLoading]);
 
-  const [modelType, setModelType] = useState('chatnp-fast');
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -41,7 +39,7 @@ export default function ChatNPInterface() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage, modelType })
+        body: JSON.stringify({ message: userMessage })
       });
 
       if (!res.ok) throw new Error('API Error');
@@ -63,7 +61,7 @@ export default function ChatNPInterface() {
 
   return (
     // Fixed height for mobile browsers using 100dvh to prevent bottom cutoff
-    <div className="flex h-[100dvh] bg-[#050505] text-white font-sans overflow-hidden selection:bg-orange-900/50">
+    <div className="flex h-[100dvh] bg-[#050505] text-white font-sans overflow-hidden selection:bg-blue-900/50">
       
       {/* Sidebar - Hidden on mobile, visible on desktop */}
       <div className="hidden md:flex flex-col w-64 border-r border-white/5 bg-[#080808] p-4 shrink-0">
@@ -74,7 +72,7 @@ export default function ChatNPInterface() {
 
         <button 
           onClick={() => setMessages([{ role: 'assistant', content: 'Namaste! I am ChatNP, developed by KarkTech. How can I help you today?' }])}
-          className="flex items-center justify-center gap-2 w-full h-11 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-medium transition-colors text-sm mb-6"
+          className="flex items-center justify-center gap-2 w-full h-11 rounded-lg bg-brand-blue hover:bg-brand-blue-bright text-white font-medium transition-colors text-sm mb-6"
         >
           <Plus className="w-4 h-4" />
           New Chat
@@ -83,11 +81,11 @@ export default function ChatNPInterface() {
         <div className="flex-1 overflow-y-auto space-y-1">
           <p className="text-xs font-semibold text-zinc-600 uppercase tracking-wider mb-3 px-2">Recent Chats</p>
           <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-300 transition-colors group">
-            <MessageSquare className="w-4 h-4 text-zinc-500 group-hover:text-orange-500 shrink-0" />
+            <MessageSquare className="w-4 h-4 text-zinc-500 group-hover:text-brand-blue-bright shrink-0" />
             <span className="truncate">Explain quantum computing...</span>
           </button>
           <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-300 transition-colors group">
-            <MessageSquare className="w-4 h-4 text-zinc-500 group-hover:text-orange-500 shrink-0" />
+            <MessageSquare className="w-4 h-4 text-zinc-500 group-hover:text-brand-blue-bright shrink-0" />
             <span className="truncate">Nepali agriculture tips</span>
           </button>
         </div>
@@ -110,7 +108,7 @@ export default function ChatNPInterface() {
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="flex items-center gap-2 shrink-0">
-              <div className="w-6 h-6 bg-orange-600 rounded flex items-center justify-center text-[10px] font-bold text-white">
+              <div className="w-6 h-6 bg-gradient-to-br from-brand-blue to-brand-red rounded flex items-center justify-center text-[10px] font-bold text-white">
                 NP
               </div>
               <div className="flex items-baseline gap-1.5 hidden sm:flex">
@@ -120,24 +118,12 @@ export default function ChatNPInterface() {
             </div>
           </div>
           
-          {/* Model Selector - Fixed width issues for mobile */}
-          <div className="relative shrink-0 ml-2">
-            <select 
-              value={modelType}
-              onChange={(e) => setModelType(e.target.value)}
-              className="appearance-none bg-zinc-900 border border-white/10 rounded-md text-xs font-medium text-zinc-300 pl-3 pr-8 py-1.5 outline-none focus:border-orange-500/50 cursor-pointer w-full max-w-[150px] sm:max-w-[200px] text-ellipsis"
-            >
-              <optgroup label="Active Models">
-                <option value="chatnp-fast">ChatNP Fast</option>
-                <option value="chatnp-advanced">ChatNP Advanced</option>
-              </optgroup>
-              <optgroup label="Coming Soon">
-                <option value="chatnp-sovereign-7b" disabled>Sovereign 7B</option>
-                <option value="chatnp-agri-expert" disabled>Agri-Specialist</option>
-                <option value="chatnp-legal-nepal" disabled>Legal & Tax AI</option>
-              </optgroup>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-zinc-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          {/* Model Badge — NP1 MONI (Coming Soon) */}
+          <div className="shrink-0 ml-2 flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-white/10 bg-zinc-900/80 backdrop-blur-sm">
+            <Sparkles className="w-3.5 h-3.5 text-brand-blue-bright" />
+            <span className="text-xs font-semibold text-white">NP1 MONI</span>
+            <span className="hidden sm:inline text-[10px] font-medium text-zinc-400">·</span>
+            <span className="hidden sm:inline text-[10px] font-medium text-brand-red">Coming Soon</span>
           </div>
         </header>
 
@@ -153,7 +139,7 @@ export default function ChatNPInterface() {
                 className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'assistant' && (
-                  <div className="w-7 h-7 rounded bg-orange-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded bg-brand-blue flex items-center justify-center shrink-0 mt-0.5">
                     <span className="text-[9px] font-bold text-white">NP</span>
                   </div>
                 )}
@@ -174,9 +160,9 @@ export default function ChatNPInterface() {
                 animate={{ opacity: 1 }}
                 className="flex gap-3 justify-start"
               >
-                <div className="w-7 h-7 rounded bg-orange-600 flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-[9px] font-bold text-white">NP</span>
-                </div>
+                <div className="w-7 h-7 rounded bg-brand-blue flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-[9px] font-bold text-white">NP</span>
+                  </div>
                 <div className="flex items-center gap-1.5 px-4 py-3 bg-transparent border border-white/10 rounded-2xl rounded-tl-sm h-10">
                   <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
                   <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
@@ -208,7 +194,7 @@ export default function ChatNPInterface() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="relative flex items-end bg-zinc-900 border border-white/10 rounded-xl focus-within:border-orange-500/50 transition-colors">
+            <form onSubmit={handleSubmit} className="relative flex items-end bg-zinc-900 border border-white/10 rounded-xl focus-within:border-brand-blue/50 transition-colors">
               <textarea 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -227,7 +213,7 @@ export default function ChatNPInterface() {
                 <button 
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="p-2 rounded-lg bg-orange-600 hover:bg-orange-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white flex items-center justify-center transition-colors"
+                  className="p-2 rounded-lg bg-brand-blue hover:bg-brand-blue-bright disabled:bg-zinc-800 disabled:text-zinc-600 text-white flex items-center justify-center transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>

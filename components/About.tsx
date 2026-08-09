@@ -42,8 +42,8 @@ export function About() {
           className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
           <div className="p-6 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm">
-            <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center mb-4">
-              <span className="text-orange-400 font-bold">1</span>
+            <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mb-4">
+              <span className="text-blue-400 font-bold">1</span>
             </div>
             <h4 className="text-white font-medium mb-2">Localization First</h4>
             <p className="text-sm text-zinc-500">Technology must adapt to the user, not the other way around.</p>

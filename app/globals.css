@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+/* KarkTech / ChatNP Brand — Nepal Flag Palette (White, Red, Blue) */
+@theme {
+  --color-brand-blue: oklch(0.55 0.18 262);
+  --color-brand-blue-bright: oklch(0.62 0.21 262);
+  --color-brand-red: oklch(0.55 0.22 25);
+  --font-body: "Mukta", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", "Mukta", ui-sans-serif, system-ui, sans-serif;
+}
+
+html, body {
+  font-family: var(--font-body);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}

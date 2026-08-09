@@ -25,18 +25,18 @@ export function Investors() {
                 <h4 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">Use of Funds</h4>
                 <ul className="space-y-2 text-sm text-zinc-400 mb-6">
                   <li className="flex gap-2">
-                    <span className="text-orange-400">→</span> Engineering: Expand AI research and development team
+                    <span className="text-blue-400">→</span> Engineering: Expand AI research and development team
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-orange-400">→</span> Infrastructure: Scale secure, high-performance computing
+                    <span className="text-blue-400">→</span> Infrastructure: Scale secure, high-performance computing
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-orange-400">→</span> Go-to-Market: Execute launch strategy and user acquisition
+                    <span className="text-blue-400">→</span> Go-to-Market: Execute launch strategy and user acquisition
                   </li>
                 </ul>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-                <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 font-bold text-white shadow-lg shadow-orange-900/20 transition-colors hover:bg-orange-700 sm:w-auto sm:px-8"><Download className="w-4 h-4" />View Investor Deck</DownloadLink>
+                <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white px-5 font-bold text-black shadow-lg shadow-blue-900/30 transition-colors hover:bg-zinc-200 sm:w-auto sm:px-8"><Download className="w-4 h-4" />View Investor Deck</DownloadLink>
                 <a href="mailto:ganesh@karktech.tech" className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-5 font-bold text-zinc-300 transition-colors hover:bg-zinc-800 sm:w-auto sm:px-8">
                   Contact Founder
                 </a>
@@ -46,12 +46,12 @@ export function Investors() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
-              <Users className="w-6 h-6 text-orange-400 mb-4" />
+              <Users className="w-6 h-6 text-brand-blue-bright mb-4" />
               <h4 className="text-white font-medium mb-1">16.6M+ Internet Users</h4>
               <p className="text-sm text-zinc-500">Massive underserved market in Nepal with growing digital adoption.</p>
             </div>
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
-              <Zap className="w-6 h-6 text-orange-500 mb-4" />
+              <Zap className="w-6 h-6 text-brand-blue-bright mb-4" />
               <h4 className="text-white font-medium mb-1">Scalable Infrastructure</h4>
               <p className="text-sm text-zinc-500">Built for growth with efficient, cost-optimized architecture.</p>
             </div>
@@ -61,7 +61,7 @@ export function Investors() {
               <p className="text-sm text-zinc-500">Nepal's IT sector expanding rapidly with strong export growth.</p>
             </div>
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
-              <div className="w-6 h-6 text-orange-600 mb-4 font-bold font-heading text-xl">B2C/B2B</div>
+              <div className="w-6 h-6 text-brand-blue-bright mb-4 font-bold font-heading text-xl">B2C/B2B</div>
               <h4 className="text-white font-medium mb-1">Freemium Model</h4>
               <p className="text-sm text-zinc-500">Clear path to revenue through freemium and enterprise tiers.</p>
             </div>

@@ -20,7 +20,7 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#050505]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link href="/" onClick={closeMenu} className="flex items-center gap-2 font-heading text-xl font-semibold tracking-tight text-white sm:text-2xl">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-tr from-orange-500 to-red-600">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-tr from-brand-blue to-brand-red">
             <span className="text-xs font-bold text-white">K</span>
           </div>
           KarkTech
@@ -43,7 +43,7 @@ export function Navbar() {
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
             onClick={() => setIsOpen((open) => !open)}
-            className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 md:hidden"
+            className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue md:hidden"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -66,7 +66,7 @@ export function Navbar() {
             <Link
               href="/chat"
               onClick={closeMenu}
-              className="mt-2 flex h-11 items-center justify-center rounded-xl bg-orange-600 px-4 text-sm font-bold text-white transition-colors hover:bg-orange-700"
+              className="mt-2 flex h-11 items-center justify-center rounded-xl bg-brand-blue px-4 text-sm font-bold text-white transition-colors hover:bg-brand-blue-bright"
             >
               Try ChatNP
             </Link>

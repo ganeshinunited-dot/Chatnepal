@@ -12,9 +12,9 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-xs font-semibold text-orange-400 mb-8 backdrop-blur-sm uppercase tracking-wide"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-blue/10 border border-brand-blue/25 text-xs font-semibold text-blue-300 mb-8 backdrop-blur-sm uppercase tracking-wide"
       >
-        <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+        <span className="w-2 h-2 rounded-full bg-brand-blue-bright animate-pulse" />
         <span>Working Prototype</span>
       </motion.div>
 
@@ -44,7 +44,7 @@ export function Hero() {
       >
         <Link 
           href="/chat" 
-          className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-orange-600 px-6 font-bold text-white shadow-lg shadow-orange-900/20 transition-all hover:bg-orange-700 sm:w-auto sm:px-8"
+          className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-brand-blue px-6 font-bold text-white shadow-lg shadow-blue-900/30 transition-all hover:bg-brand-blue-bright sm:w-auto sm:px-8"
         >
           Try ChatNP
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

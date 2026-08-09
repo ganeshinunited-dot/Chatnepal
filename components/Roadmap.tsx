@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 export function Roadmap() {
   const phases = [
-    { phase: "Phase 1", title: "Prototype & MVP", desc: "Core ChatNP architecture, dual-model support, and initial testing with early users.", status: "current" },
+    { phase: "Phase 1", title: "Prototype & MVP", desc: "Core ChatNP architecture with the NP1 MONI model, and initial testing with early users.", status: "current" },
     { phase: "Phase 2", title: "Product Refinement", desc: "Scaling infrastructure, improving Nepali language capabilities, and gathering user feedback.", status: "planned" },
     { phase: "Phase 3", title: "Vertical Solutions", desc: "Launching specialized AI assistants for Education, Agriculture, and Local Businesses.", status: "planned" },
     { phase: "Phase 4", title: "Ecosystem Expansion", desc: "Building Nepal-centric AI infrastructure and enabling third-party integrations.", status: "planned" },
@@ -18,7 +18,7 @@ export function Roadmap() {
 
       <div className="relative">
         {/* Timeline line */}
-        <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500/20 via-orange-500/50 to-orange-500/20 transform -translate-y-1/2" />
+        <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-blue/20 via-brand-blue/50 to-brand-blue/20 transform -translate-y-1/2" />
         
         <div className="grid md:grid-cols-4 gap-6 md:gap-4">
           {phases.map((item, i) => (
@@ -32,20 +32,20 @@ export function Roadmap() {
             >
               {/* Timeline dot */}
               <div className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className={`w-4 h-4 rounded-full border-4 ${item.status === 'current' ? 'bg-orange-500 border-orange-600' : 'bg-zinc-900 border-zinc-700'}`} />
+                <div className={`w-4 h-4 rounded-full border-4 ${item.status === 'current' ? 'bg-brand-blue border-brand-blue-bright' : 'bg-zinc-900 border-zinc-700'}`} />
               </div>
 
               <div className={`p-6 rounded-2xl border transition-all h-full ${
                 item.status === 'current' 
-                  ? 'bg-orange-500/10 border-orange-500/30' 
+                  ? 'bg-blue-500/10 border-brand-blue/30' 
                   : 'bg-zinc-900/30 border-white/5 hover:bg-zinc-900/50'
               }`}>
                 <div className="mb-4">
-                  <span className="text-xs font-bold text-orange-400 uppercase tracking-wider">{item.phase}</span>
+                  <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">{item.phase}</span>
                   {item.status === 'current' && (
-                    <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/20 border border-orange-500/30">
-                      <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                      <span className="text-xs font-medium text-orange-400">Current</span>
+                    <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-blue/20 border border-brand-blue/30">
+                      <span className="w-2 h-2 rounded-full bg-brand-blue-bright animate-pulse" />
+                      <span className="text-xs font-medium text-blue-400">Current</span>
                     </div>
                   )}
                 </div>
