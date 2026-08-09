@@ -2,49 +2,65 @@
 import { motion } from "motion/react";
 
 export function Roadmap() {
-  const milestones = [
-    { q: "Q2 2026", title: "Prototype", desc: "Core architecture & functional prototype completed.", status: "completed" },
-    { q: "Q3 2026", title: "Website & Reg", desc: "Corporate entity registered, web portal launched.", status: "completed" },
-    { q: "Q3 2026", title: "NP1 Launch", desc: "Core chat, translation, and writing features live.", status: "planned" },
-    { q: "Q4 2026", title: "Vertical AI", desc: "Education & Agriculture Information Assistants.", status: "planned" },
-    { q: "Q1 2027", title: "Multimodal", desc: "Voice AI & Native Image Generation features.", status: "planned" },
-    { q: "Q3 2027", title: "Enterprise API", desc: "B2B API access and custom integrations.", status: "planned" },
+  const phases = [
+    { phase: "Phase 1", title: "Prototype & MVP", desc: "Core ChatNP architecture, dual-model support, and initial testing with early users.", status: "current" },
+    { phase: "Phase 2", title: "Product Refinement", desc: "Scaling infrastructure, improving Nepali language capabilities, and gathering user feedback.", status: "planned" },
+    { phase: "Phase 3", title: "Vertical Solutions", desc: "Launching specialized AI assistants for Education, Agriculture, and Local Businesses.", status: "planned" },
+    { phase: "Phase 4", title: "Ecosystem Expansion", desc: "Building Nepal-centric AI infrastructure and enabling third-party integrations.", status: "planned" },
   ];
 
   return (
     <section id="roadmap" className="mx-auto w-full max-w-5xl scroll-mt-32 px-4 sm:px-6">
       <div className="text-center mb-16">
-        <h2 className="mb-4 font-heading text-3xl text-white sm:text-4xl">Product Roadmap</h2>
-        <p className="text-base text-zinc-400 sm:text-lg">Our strategic timeline for the next 18 months.</p>
+        <h2 className="mb-4 font-heading text-3xl text-white sm:text-4xl">Our Vision</h2>
+        <p className="text-base text-zinc-400 sm:text-lg">From prototype to sovereign AI ecosystem for Nepal.</p>
       </div>
 
-      <div className="relative border-l border-white/10 ml-4 md:ml-0 md:border-l-0">
-        <div className="md:hidden absolute top-0 bottom-0 left-[-1px] w-0.5 bg-white/10" />
+      <div className="relative">
+        {/* Timeline line */}
+        <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500/20 via-orange-500/50 to-orange-500/20 transform -translate-y-1/2" />
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {milestones.map((m, i) => (
+        <div className="grid md:grid-cols-4 gap-6 md:gap-4">
+          {phases.map((item, i) => (
             <motion.div 
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="relative pl-8 md:pl-0"
+              className="relative"
             >
-              <div className={`absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full md:hidden ${m.status === 'completed' ? 'bg-orange-500' : 'bg-zinc-700'}`} />
-              <div className="p-6 rounded-2xl bg-zinc-900/30 border border-white/5 hover:bg-zinc-900/50 transition-colors h-full">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{m.q}</span>
-                  {m.status === 'completed' && (
-                    <span className="text-xs font-medium text-orange-400 bg-orange-500/10 px-2 py-1 rounded-full">Achieved</span>
+              {/* Timeline dot */}
+              <div className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                <div className={`w-4 h-4 rounded-full border-4 ${item.status === 'current' ? 'bg-orange-500 border-orange-600' : 'bg-zinc-900 border-zinc-700'}`} />
+              </div>
+
+              <div className={`p-6 rounded-2xl border transition-all h-full ${
+                item.status === 'current' 
+                  ? 'bg-orange-500/10 border-orange-500/30' 
+                  : 'bg-zinc-900/30 border-white/5 hover:bg-zinc-900/50'
+              }`}>
+                <div className="mb-4">
+                  <span className="text-xs font-bold text-orange-400 uppercase tracking-wider">{item.phase}</span>
+                  {item.status === 'current' && (
+                    <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/20 border border-orange-500/30">
+                      <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                      <span className="text-xs font-medium text-orange-400">Current</span>
+                    </div>
                   )}
                 </div>
-                <h4 className="text-lg font-medium text-white mb-2">{m.title}</h4>
-                <p className="text-sm text-zinc-400 leading-relaxed">{m.desc}</p>
+                <h4 className="text-lg font-semibold text-white mb-2">{item.title}</h4>
+                <p className="text-sm text-zinc-400 leading-relaxed">{item.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
+      </div>
+
+      <div className="mt-12 p-6 rounded-2xl border border-white/5 bg-white/5 text-center">
+        <p className="text-sm text-zinc-400">
+          Our roadmap reflects realistic milestones focused on product quality and market fit. Timelines are indicative and subject to market conditions and funding availability.
+        </p>
       </div>
     </section>
   );

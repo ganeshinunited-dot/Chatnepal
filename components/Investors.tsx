@@ -15,39 +15,55 @@ export function Investors() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Seed Round Open
             </div>
-            <h2 className="mb-6 font-heading text-3xl text-white sm:text-4xl">Invest in the Future of Nepal's Digital Economy</h2>
+            <h2 className="mb-6 font-heading text-3xl text-white sm:text-4xl">Invest in Nepal's AI Future</h2>
             <p className="mb-8 text-base leading-relaxed text-zinc-400 sm:text-lg">
-              We are raising NPR 1 Crore (approx $65,500 USD) to finalize the ChatNP NP1 launch, expand our engineering team, and execute our go-to-market strategy. Nepal's IT exports surpassed $1 billion in 2025—the time for a sovereign AI solution is now.
+              We are raising NPR 1 Crore (approx $65,500 USD) to accelerate ChatNP's development, scale our infrastructure, and execute our go-to-market strategy. Nepal's digital economy is growing rapidly—now is the time to build sovereign AI solutions.
             </p>
             
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 font-bold text-white shadow-lg shadow-orange-900/20 transition-colors hover:bg-orange-700 sm:w-auto sm:px-8"><Download className="w-4 h-4" />Download Master Document</DownloadLink>
-              <button className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-5 font-bold text-zinc-300 transition-colors hover:bg-zinc-800 sm:w-auto sm:px-8">
-                Contact Founder
-              </button>
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">Use of Funds</h4>
+                <ul className="space-y-2 text-sm text-zinc-400 mb-6">
+                  <li className="flex gap-2">
+                    <span className="text-orange-400">→</span> Engineering: Expand AI research and development team
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-orange-400">→</span> Infrastructure: Scale secure, high-performance computing
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-orange-400">→</span> Go-to-Market: Execute launch strategy and user acquisition
+                  </li>
+                </ul>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+                <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 font-bold text-white shadow-lg shadow-orange-900/20 transition-colors hover:bg-orange-700 sm:w-auto sm:px-8"><Download className="w-4 h-4" />View Investor Deck</DownloadLink>
+                <a href="mailto:ganesh@karktech.tech" className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-5 font-bold text-zinc-300 transition-colors hover:bg-zinc-800 sm:w-auto sm:px-8">
+                  Contact Founder
+                </a>
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
               <Users className="w-6 h-6 text-orange-400 mb-4" />
-              <h4 className="text-white font-medium mb-1">16.6M Users</h4>
-              <p className="text-sm text-zinc-500">Unlocking the massive underserved internet user base in Nepal.</p>
+              <h4 className="text-white font-medium mb-1">16.6M+ Internet Users</h4>
+              <p className="text-sm text-zinc-500">Massive underserved market in Nepal with growing digital adoption.</p>
             </div>
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
               <Zap className="w-6 h-6 text-orange-500 mb-4" />
-              <h4 className="text-white font-medium mb-1">Cost-Optimized</h4>
-              <p className="text-sm text-zinc-500">Multi-agent routing system ensures high margins.</p>
+              <h4 className="text-white font-medium mb-1">Scalable Infrastructure</h4>
+              <p className="text-sm text-zinc-500">Built for growth with efficient, cost-optimized architecture.</p>
             </div>
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
               <TrendingUp className="w-6 h-6 text-red-400 mb-4" />
-              <h4 className="text-white font-medium mb-1">$25M SAM</h4>
-              <p className="text-sm text-zinc-500">Serviceable Available Market in Nepal alone, expanding to South Asia.</p>
+              <h4 className="text-white font-medium mb-1">Growing Digital Economy</h4>
+              <p className="text-sm text-zinc-500">Nepal's IT sector expanding rapidly with strong export growth.</p>
             </div>
             <div className="rounded-2xl border border-white/5 bg-white/5 p-5 sm:p-6">
-              <div className="w-6 h-6 text-orange-600 mb-4 font-bold font-heading text-xl">B2B</div>
-              <h4 className="text-white font-medium mb-1">Freemium SaaS</h4>
-              <p className="text-sm text-zinc-500">Clear path to revenue via hybrid B2C/B2B freemium model.</p>
+              <div className="w-6 h-6 text-orange-600 mb-4 font-bold font-heading text-xl">B2C/B2B</div>
+              <h4 className="text-white font-medium mb-1">Freemium Model</h4>
+              <p className="text-sm text-zinc-500">Clear path to revenue through freemium and enterprise tiers.</p>
             </div>
           </div>
         </div>

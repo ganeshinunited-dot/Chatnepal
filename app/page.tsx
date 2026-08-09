@@ -1,10 +1,12 @@
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
+import { ProblemSolution } from '@/components/ProblemSolution';
 import { About } from '@/components/About';
+import { ChatNPProduct } from '@/components/ChatNPProduct';
 import { Founder } from '@/components/Founder';
-import { ChatNPPreview } from '@/components/ChatNPPreview';
-import { Investors } from '@/components/Investors';
+import { TrustCredibility } from '@/components/TrustCredibility';
 import { Roadmap } from '@/components/Roadmap';
+import { Investors } from '@/components/Investors';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
 
@@ -20,11 +22,13 @@ export default function Home() {
       
       <div className="pt-24 pb-16 flex flex-col gap-32 sm:gap-40">
         <Hero />
+        <ProblemSolution />
         <About />
+        <ChatNPProduct />
         <Founder />
-        <ChatNPPreview />
-        <Investors />
+        <TrustCredibility />
         <Roadmap />
+        <Investors />
         <Contact />
       </div>
 

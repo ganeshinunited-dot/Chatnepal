@@ -12,41 +12,28 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-400 mb-8 backdrop-blur-sm"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-xs font-semibold text-orange-400 mb-8 backdrop-blur-sm uppercase tracking-wide"
       >
-        <Sparkles className="w-4 h-4 text-orange-500" />
-        <span>ChatNP Prototype Completed</span>
+        <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+        <span>Working Prototype</span>
       </motion.div>
 
       <motion.h1 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="max-w-4xl font-heading text-4xl font-medium leading-[1.08] tracking-tight text-white text-balance sm:text-5xl md:text-7xl lg:text-8xl"
+        className="max-w-4xl font-heading text-4xl font-medium leading-[1.08] tracking-tight text-white text-balance sm:text-5xl md:text-6xl lg:text-7xl"
       >
-        Building Nepal's Future with <br className="hidden md:block" />
-        <motion.span 
-          animate={{
-            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="bg-[linear-gradient(to_right,#fb923c,#ef4444,#fb923c)] text-transparent bg-clip-text bg-[length:200%_auto] inline-block mt-2"
-        >
-          Artificial Intelligence
-        </motion.span>
+        Building Nepal's Sovereign AI Future
       </motion.h1>
 
       <motion.p 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="mt-6 max-w-2xl text-base text-zinc-400 text-balance sm:mt-8 sm:text-lg md:text-xl"
+        className="mt-6 max-w-2xl text-base text-zinc-400 text-balance sm:mt-8 sm:text-lg md:text-lg"
       >
-        KarkTech is creating AI products designed for Nepal, starting with ChatNP. Bridging the digital divide with culturally-aware, native-language intelligence.
+        KarkTech is an AI research and product startup dedicated to building native intelligence for Nepal. We're bridging the cultural and linguistic gap left by global AI platforms, starting with ChatNP—our native-language AI assistant.
       </motion.p>
 
       <motion.div 
@@ -62,7 +49,7 @@ export function Hero() {
           Try ChatNP
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
-        <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-6 font-bold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-zinc-800 sm:w-auto sm:px-8"><Download className="w-4 h-4 text-zinc-400" />Download Investor PDF</DownloadLink>
+        <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-6 font-bold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-zinc-800 sm:w-auto sm:px-8"><Download className="w-4 h-4 text-zinc-400" />View Investor Deck</DownloadLink>
       </motion.div>
     </section>
   );
