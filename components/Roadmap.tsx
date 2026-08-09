@@ -3,10 +3,10 @@ import { motion } from "motion/react";
 
 export function Roadmap() {
   const phases = [
-    { phase: "Phase 1", title: "Prototype & MVP", desc: "Core ChatNP architecture with the NP1 MONI model, and initial testing with early users.", status: "current" },
-    { phase: "Phase 2", title: "Product Refinement", desc: "Scaling infrastructure, improving Nepali language capabilities, and gathering user feedback.", status: "planned" },
-    { phase: "Phase 3", title: "Vertical Solutions", desc: "Launching specialized AI assistants for Education, Agriculture, and Local Businesses.", status: "planned" },
-    { phase: "Phase 4", title: "Ecosystem Expansion", desc: "Building Nepal-centric AI infrastructure and enabling third-party integrations.", status: "planned" },
+    { phase: "Q2 2026", title: "Prototype Complete", desc: "Architecture (Q1) and website launched. Fully functional prototype completed — ready for deployment.", status: "current" },
+    { phase: "Q3 2026", title: "NP1 Launch", desc: "Releasing the NP1 MONI model featuring core chat, translation, and Nepali writing capabilities.", status: "planned" },
+    { phase: "Q4 2026", title: "Vertical Assistants", desc: "Launching Education & Agriculture AI assistants — built for Nepal's classrooms and farms.", status: "planned" },
+    { phase: "2027", title: "Multimedia & Agents", desc: "Voice AI and Image Generation (Q1 2027), followed by business automation AI Agents (Q2 2027).", status: "planned" },
   ];
 
   return (
@@ -18,7 +18,7 @@ export function Roadmap() {
 
       <div className="relative">
         {/* Timeline line: drawn at the top of the grid so it never crosses card text */}
-        <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-brand-blue/15 via-brand-blue/40 to-brand-blue/15" />
+        <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-brand-blue/15 via-brand-blue-bright/50 to-brand-blue/15" />
         
         <div className="grid md:grid-cols-4 gap-6 md:gap-4">
           {phases.map((item, i) => (

@@ -16,8 +16,11 @@ export function About() {
           <h2 className="font-heading text-4xl md:text-5xl tracking-tight text-white mb-6">
             About <span className="bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent">KarkTech</span>
           </h2>
-          <p className="text-zinc-400 text-lg leading-relaxed mb-8">
-            Global AI platforms are trained predominantly on English data, leaving morphologically complex languages like Nepali with significant capability gaps. KarkTech exists to bridge this divide. We are a Nepal-based AI research and product company dedicated to building contextual, native-language intelligence.
+          <p className="text-zinc-400 text-lg leading-relaxed mb-4">
+            KarkTech is a Nepal-based AI research and product company building contextual, native-language intelligence — bridging the gap left by global AI platforms trained predominantly on English data.
+          </p>
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            Based in <span className="text-zinc-400 font-medium">Birtabazar, Jhapa, Nepal</span>. Empowering Nepal through Artificial Intelligence.
           </p>
           <div className="space-y-6">
             <div>
@@ -29,7 +32,7 @@ export function About() {
             <div>
               <h3 className="text-white font-medium text-lg mb-2">Our Vision</h3>
               <p className="text-zinc-500 leading-relaxed">
-                To become Nepal's leading AI company, envisioning a future where language and digital literacy are no longer barriers to accessing world-class technology.
+                To integrate ChatNP into every smartphone, school, and business in Nepal — making Nepal a regional leader in AI innovation across South Asia.
               </p>
             </div>
           </div>

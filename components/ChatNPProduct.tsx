@@ -5,7 +5,7 @@ import { Sparkles, MessageSquare, ArrowRight, Clock } from "lucide-react";
 
 export function ChatNPProduct() {
   return (
-    <section className="mx-auto w-full max-w-7xl scroll-mt-32 px-4 sm:px-6">
+    <section id="chatnp" className="mx-auto w-full max-w-7xl scroll-mt-32 px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -77,6 +77,28 @@ export function ChatNPProduct() {
             </li>
           </ul>
         </motion.div>
+      </div>
+
+      {/* Three High-Impact Verticals (deck) */}
+      <div className="grid md:grid-cols-3 gap-5 mb-12">
+        {[
+          { title: "Agriculture", stat: "60% of workforce", desc: "Crop disease diagnosis and live market prices for Nepali farmers." },
+          { title: "Education", stat: "7M students", desc: "AI tutors addressing Nepal's 46:1 student-teacher ratio." },
+          { title: "SME & Business", stat: "Local enterprises", desc: "Accounting, document drafting, and daily business workflows." },
+        ].map((v, i) => (
+          <motion.div
+            key={v.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.05 * i }}
+            className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-brand-blue/25 hover:bg-brand-blue/5 hover:-translate-y-1"
+          >
+            <p className="text-lg font-semibold text-white mb-1">{v.title}</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-blue-bright mb-3">{v.stat}</p>
+            <p className="text-sm text-zinc-400 leading-relaxed">{v.desc}</p>
+          </motion.div>
+        ))}
       </div>
 
       {/* Current Status & CTA */}

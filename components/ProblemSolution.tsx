@@ -18,9 +18,14 @@ export function ProblemSolution() {
             <Globe className="w-6 h-6 text-red-400" />
             <h3 className="text-xl font-semibold text-white">The Problem</h3>
           </div>
-          <p className="text-zinc-300 leading-relaxed mb-6">
-            Global AI platforms are not built for Nepal. Most models are trained predominantly on English-centric data, leaving morphologically complex languages like Nepali with significant capability gaps.
+          <p className="text-zinc-300 leading-relaxed mb-4">
+            Nepal has <span className="text-white font-medium">16.6M internet users</span> and <span className="text-white font-medium">85.1% smartphone ownership</span>—yet global AI platforms are not built for Nepal. They are trained predominantly on English-centric data, leaving morphologically complex languages like Nepali with significant capability gaps.
           </p>
+          <div className="rounded-xl border border-red-500/15 bg-black/20 px-4 py-3 mb-6">
+            <p className="text-sm text-zinc-300 leading-relaxed">
+              <span className="text-red-400 font-semibold">The Token Tax:</span> English-optimized tokenizers destroy Nepali semantic context and require significantly more compute power to process the language.
+            </p>
+          </div>
           <ul className="space-y-3">
             <li className="flex gap-3">
               <span className="text-red-400 font-bold">•</span>
@@ -49,13 +54,13 @@ export function ProblemSolution() {
             <Target className="w-6 h-6 text-emerald-400" />
             <h3 className="text-xl font-semibold text-white">Our Solution</h3>
           </div>
-          <p className="text-zinc-300 leading-relaxed mb-6">
-            KarkTech is building AI products from the ground up for Nepal. We combine advanced AI research with deep understanding of Nepal's language, culture, and local needs.
+          <p className="text-zinc-300 leading-relaxed mb-4">
+            ChatNP is a Nepal-first AI platform built with <span className="text-white font-medium">Contextual Intelligence</span>—purpose-built, not a wrapper. Deep Nepali NLP handles grammar, honorifics, and morphology natively, while proprietary RAG pipelines inject localized knowledge.
           </p>
           <ul className="space-y-3">
             <li className="flex gap-3">
               <span className="text-emerald-400 font-bold">✓</span>
-              <span className="text-zinc-400">Native Nepali language AI</span>
+              <span className="text-zinc-400">Deep Nepali NLP — grammar, honorifics &amp; morphology</span>
             </li>
             <li className="flex gap-3">
               <span className="text-emerald-400 font-bold">✓</span>

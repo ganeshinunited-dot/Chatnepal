@@ -44,7 +44,7 @@ export function Hero() {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="max-w-4xl font-heading text-4xl font-medium leading-[1.08] tracking-tight text-white text-balance sm:text-5xl md:text-6xl lg:text-7xl"
       >
-        Building Nepal's <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500 bg-clip-text text-transparent">Sovereign AI</span> Future
+        ChatNP: Nepal's <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500 bg-clip-text text-transparent">Contextual AI</span> Platform
       </motion.h1>
 
       <motion.p 
@@ -53,7 +53,7 @@ export function Hero() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="mt-6 max-w-2xl text-base text-zinc-400 text-balance sm:mt-8 sm:text-lg md:text-lg"
       >
-        KarkTech is an AI research and product startup dedicated to building native intelligence for Nepal. We're bridging the cultural and linguistic gap left by global AI platforms, starting with ChatNP—our native-language AI assistant.
+        ChatNP is the Nepal-first AI platform — purpose-built contextual intelligence for Nepal's language, culture, and local context. Empowering Nepal through Artificial Intelligence.
       </motion.p>
 
       <motion.div 

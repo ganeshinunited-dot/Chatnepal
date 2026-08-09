@@ -97,9 +97,12 @@ export function Founder() {
             
             <div className="pt-6 border-t border-white/5">
               <p className="text-zinc-400 leading-relaxed">
-                Ganesh is leading KarkTech's mission to create AI products specifically designed for Nepal's unique language, culture, and local needs. With a focus on bridging the digital divide, he's building the infrastructure for Nepal's sovereign AI future.
+                Ganesh is leading KarkTech's mission to create AI products specifically designed for Nepal's unique language, culture, and local needs. He single-handedly built the complete ChatNP prototype and is now assembling a five-member core team — product, backend, AI/ML, frontend, and marketing.
               </p>
             </div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-blue-400">
+              1 year of independent execution — product strategy, development, design
+            </p>
           </div>
         </div>
       </motion.div>
