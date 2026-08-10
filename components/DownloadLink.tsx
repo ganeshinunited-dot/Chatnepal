@@ -12,12 +12,12 @@ export function DownloadLink({ className, children }: DownloadLinkProps) {
   const handleDownload = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('/KarkTech_Master_Document.pdf');
+      const response = await fetch('/ChatNpdeck.pdf');
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'KarkTech_Master_Document.pdf';
+      link.download = 'ChatNpdeck.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
