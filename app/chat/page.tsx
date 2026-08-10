@@ -39,7 +39,13 @@ export default function ChatNPInterface() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage })
+        body: JSON.stringify({
+          message: userMessage,
+          history: messages
+            .filter((m) => m.content.trim())
+            .slice(-12)
+            .map((m) => ({ role: m.role, content: m.content })),
+        })
       });
 
       if (!res.ok) throw new Error('API Error');
@@ -118,12 +124,12 @@ export default function ChatNPInterface() {
             </div>
           </div>
           
-          {/* Model Badge — NP1 MONI (Coming Soon) */}
+          {/* Model Badge — NP1 MONI (Live) */}
           <div className="shrink-0 ml-2 flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-white/10 bg-zinc-900/80 backdrop-blur-sm">
             <Sparkles className="w-3.5 h-3.5 text-brand-blue-bright" />
             <span className="text-xs font-semibold text-white">NP1 MONI</span>
             <span className="hidden sm:inline text-[10px] font-medium text-zinc-400">·</span>
-            <span className="hidden sm:inline text-[10px] font-medium text-brand-red">Coming Soon</span>
+            <span className="hidden sm:inline text-[10px] font-medium text-emerald-400">Live</span>
           </div>
         </header>
 
