@@ -1,5 +1,12 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Cookie Policy',
+  description: 'KarkTech cookie policy — how and why we use cookies on karktech.tech and our AI products.',
+  alternates: { canonical: 'https://karktech.tech/cookie-policy' },
+};
 
 export default function CookiePolicy() {
   return (

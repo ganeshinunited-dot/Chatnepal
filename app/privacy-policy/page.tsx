@@ -1,5 +1,12 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'KarkTech privacy policy — how we collect, use, and protect your information when using ChatNP and other KarkTech AI services.',
+  alternates: { canonical: 'https://karktech.tech/privacy-policy' },
+};
 
 export default function PrivacyPolicy() {
   return (

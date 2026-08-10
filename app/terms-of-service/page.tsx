@@ -1,5 +1,12 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+  description: 'Terms of service for KarkTech AI products, including ChatNP — usage terms, user responsibilities, and service guidelines.',
+  alternates: { canonical: 'https://karktech.tech/terms-of-service' },
+};
 
 export default function TermsOfService() {
   return (

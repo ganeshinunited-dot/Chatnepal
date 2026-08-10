@@ -9,6 +9,14 @@ import { Roadmap } from '@/components/Roadmap';
 import { Investors } from '@/components/Investors';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'KarkTech — Building AI for Nepal and South Asia',
+  description:
+    "KarkTech is a Nepal-based AI company building contextual AI products for Nepal and South Asia, starting with ChatNP, an AI platform designed around Nepal's language, culture, businesses, and local needs.",
+  alternates: { canonical: 'https://karktech.tech/' },
+};
 
 export default function Home() {
   return (
