@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.meta.ai/v1';
+const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.llama-api.com';
 const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY;
 const META_MODEL = process.env.META_MODEL || 'llama-3.3-70b-instruct';
 
