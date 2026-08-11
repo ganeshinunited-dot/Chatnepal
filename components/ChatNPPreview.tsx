@@ -43,7 +43,7 @@ export function ChatNPPreview() {
 
           <Link 
             href="/chat" 
-            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 font-bold text-white shadow-lg shadow-orange-900/20 transition-colors hover:bg-orange-700 sm:w-auto sm:px-8"
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand-blue px-6 font-bold text-white shadow-lg shadow-brand-blue/20 transition-colors hover:bg-blue-600 sm:w-auto sm:px-8"
           >
             Launch Prototype
             <ArrowRight className="w-4 h-4" />
@@ -61,7 +61,7 @@ export function ChatNPPreview() {
           <div className="relative rounded-3xl border border-white/10 bg-zinc-900/50 backdrop-blur-xl overflow-hidden shadow-2xl">
             <div className="h-12 border-b border-white/5 flex items-center px-4 justify-between bg-zinc-900/30">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-orange-600 rounded-md flex items-center justify-center text-[10px] font-black text-white">NP</div>
+                <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center text-[10px] font-bold text-white">NP</div>
                 <span className="text-sm font-semibold text-white">ChatNP <span className="text-xs text-zinc-500 font-normal">Web Prototype</span></span>
               </div>
               <div className="flex gap-1">
@@ -79,7 +79,7 @@ export function ChatNPPreview() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center shrink-0 shadow-lg shadow-orange-900/40">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-900/40">
                   <span className="text-[10px] font-bold text-white">NP</span>
                 </div>
                 <div className="min-w-0 rounded-2xl rounded-tl-none border border-white/5 bg-white/5 p-3 text-sm text-zinc-300 sm:p-4">
@@ -92,7 +92,7 @@ export function ChatNPPreview() {
             <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
               <div className="h-12 rounded-xl bg-zinc-800 border border-white/10 flex items-center px-4 relative">
                 <span className="text-zinc-500 text-sm">Message ChatNP...</span>
-                <div className="absolute right-2 top-1.5 p-1.5 bg-orange-600 rounded-lg">
+                <div className="absolute right-2 top-1.5 p-1.5 bg-blue-600 rounded-lg">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -100,7 +100,7 @@ export function ChatNPPreview() {
           </div>
           
           {/* Glow effect */}
-          <div className="absolute -inset-4 bg-gradient-to-tr from-orange-500/10 to-red-500/10 blur-2xl -z-10 rounded-[3rem]" />
+          <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/10 to-red-500/10 blur-2xl -z-10 rounded-[3rem]" />
         </motion.div>
       </div>
     </section>

@@ -77,6 +77,7 @@ export default function ChatNPInterface() {
         </Link>
 
         <button 
+          aria-label="Start a new chat"
           onClick={() => setMessages([{ role: 'assistant', content: 'Namaste! I am ChatNP, developed by KarkTech. How can I help you today?' }])}
           className="flex items-center justify-center gap-2 w-full h-11 rounded-lg bg-brand-blue hover:bg-brand-blue-bright text-white font-medium transition-colors text-sm mb-6"
         >
@@ -86,18 +87,18 @@ export default function ChatNPInterface() {
 
         <div className="flex-1 overflow-y-auto space-y-1">
           <p className="text-xs font-semibold text-zinc-600 uppercase tracking-wider mb-3 px-2">Recent Chats</p>
-          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-300 transition-colors group">
+          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-300 transition-colors group" aria-label="Open recent chat: Explain quantum computing...">
             <MessageSquare className="w-4 h-4 text-zinc-500 group-hover:text-brand-blue-bright shrink-0" />
             <span className="truncate">Explain quantum computing...</span>
           </button>
-          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-300 transition-colors group">
+          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-300 transition-colors group" aria-label="Open recent chat: Nepali agriculture tips">
             <MessageSquare className="w-4 h-4 text-zinc-500 group-hover:text-brand-blue-bright shrink-0" />
             <span className="truncate">Nepali agriculture tips</span>
           </button>
         </div>
 
         <div className="pt-4 border-t border-white/5 mt-auto">
-          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-400 transition-colors">
+          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white/5 text-left text-sm text-zinc-400 transition-colors" aria-label="Open settings">
             <Settings2 className="w-4 h-4 shrink-0" />
             <span>Settings</span>
           </button>
@@ -190,6 +191,7 @@ export default function ChatNPInterface() {
                 {suggestions.map((item, idx) => (
                   <button 
                     key={idx}
+                    aria-label={`Use suggestion: ${item.text}`}
                     onClick={() => setInput(item.text)}
                     className="flex items-center gap-3 p-3 rounded-xl border border-white/10 hover:bg-zinc-900 transition-colors text-left"
                   >
@@ -201,7 +203,10 @@ export default function ChatNPInterface() {
             )}
 
             <form onSubmit={handleSubmit} className="relative flex items-end bg-zinc-900 border border-white/10 rounded-xl focus-within:border-brand-blue/50 transition-colors">
+              <label htmlFor="chat-input" className="sr-only">Message ChatNP</label>
               <textarea 
+                id="chat-input"
+                aria-label="Message ChatNP"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -218,6 +223,7 @@ export default function ChatNPInterface() {
               <div className="absolute right-1.5 bottom-1.5">
                 <button 
                   type="submit"
+                  aria-label="Send message"
                   disabled={!input.trim() || isLoading}
                   className="p-2 rounded-lg bg-brand-blue hover:bg-brand-blue-bright disabled:bg-zinc-800 disabled:text-zinc-600 text-white flex items-center justify-center transition-colors"
                 >

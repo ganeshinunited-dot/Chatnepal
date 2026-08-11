@@ -64,6 +64,9 @@ export function Founder() {
                 className="w-full h-full object-cover"
                 width={144}
                 height={144}
+                sizes="(max-width: 640px) 144px, 144px"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <p className="text-2xl md:text-3xl font-heading font-semibold text-white mb-2">Ganesh Karki</p>

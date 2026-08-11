@@ -5,10 +5,12 @@ import { CookieBanner } from '../components/CookieBanner';
 
 // Mukta: Nepali Devanagari-optimized modern sans (supports नेपाली script natively)
 const mukta = Mukta({
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin', 'devanagari'],
   variable: '--font-body',
   display: 'swap',
+  fallback: ['system-ui', 'Arial', 'sans-serif'],
+  preload: true,
 });
 
 // Plus Jakarta Sans: modern geometric heading font
@@ -17,6 +19,8 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-heading',
   display: 'swap',
+  fallback: ['system-ui', 'Arial', 'sans-serif'],
+  preload: true,
 });
 
 const SITE_URL = 'https://karktech.tech';
