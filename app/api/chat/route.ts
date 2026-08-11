@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.meta.ai/v1';
-// Server-side only: the key never leaves this route and is never sent to the browser.
 const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY;
-// The real model identity is never exposed to the client.
-// The frontend and API responses always refer to it only as "NP1 MONI".
 const META_MODEL = process.env.META_MODEL || 'llama-3.3-70b-instruct';
 
 const SYSTEM_PROMPT = `You are ChatNP, developed by KarkTech.
@@ -30,7 +27,7 @@ ANSWER STYLE RULES (strict):
 export async function POST(req: NextRequest) {
   if (!META_API_KEY) {
     return NextResponse.json(
-      { text: "ChatNP server configuration is incomplete. Please configure META_API_KEY in DigitalOcean variables." },
+      { text: "Server Error: META_API_KEY environment variable is missing in DigitalOcean." },
       { status: 503 }
     );
   }
@@ -71,21 +68,11 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('Meta AI API error:', response.status, errText.slice(0, 300));
-
-      if (response.status === 429) {
-        return NextResponse.json(
-          { text: "NP1 MONI ko servers ahile busy cha. Kripya ali ber pachi feri try garnus." },
-          { status: 200 }
-        );
-      }
-      if (response.status === 401 || response.status === 403) {
-        return NextResponse.json(
-          { text: "ChatNP server ko API access ma samasya chha. KarkTech team lai notify garisakiyeko chha." },
-          { status: 503 }
-        );
-      }
-      throw new Error(`Meta AI API returned ${response.status}`);
+      console.error('API error details:', response.status, errText);
+      return NextResponse.json(
+        { text: `API Error (${response.status}): ${errText.slice(0, 150) || 'Check API endpoint and key'}` },
+        { status: 200 }
+      );
     }
 
     const data = await response.json();
@@ -95,15 +82,18 @@ export async function POST(req: NextRequest) {
       '';
 
     if (!text) {
-      throw new Error('Empty response from Meta AI API');
+      return NextResponse.json(
+        { text: "API Error: Received empty response from provider." },
+        { status: 200 }
+      );
     }
 
     return NextResponse.json({ text: text.trim() });
   } catch (error: any) {
-    console.error('Error in ChatNP API:', error);
+    console.error('Exception in ChatNP API:', error);
     return NextResponse.json(
-      { text: "I'm having trouble connecting to my servers right now." },
-      { status: 500 }
+      { text: `Server Exception: ${error?.message || 'Unknown connection error'}` },
+      { status: 200 }
     );
   }
 }
