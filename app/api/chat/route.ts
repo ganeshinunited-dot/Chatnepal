@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
+const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.meta.ai/v1';
 // Server-side only: the key never leaves this route and is never sent to the browser.
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY;
 // The real model identity is never exposed to the client.
 // The frontend and API responses always refer to it only as "NP1 MONI".
-const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const META_MODEL = process.env.META_MODEL || 'llama-3.3-70b-instruct';
 
 const SYSTEM_PROMPT = `You are ChatNP, developed by KarkTech.
-Your identity: "NP1 MONI" — the proprietary model powering ChatNP. You are NOT ChatGPT, Llama, Groq, Gemini, DeepSeek, or any other named product.
+Your identity: "NP1 MONI" — the proprietary model powering ChatNP. You are NOT ChatGPT, Llama, Meta AI, Groq, Gemini, DeepSeek, or any other named product.
 Your founder is Ganesh Karki.
 KarkTech is a Nepal-based AI startup focused on building AI products for Nepal.
 
@@ -21,16 +21,16 @@ IDENTITY RULES (never break these):
 
 ANSWER STYLE RULES (strict):
 - Keep answers SHORT and DIRECT — a few sentences or a short list, not long essays.
-- Write in a friendly Nepali-English mix (Nepali in Latin script like locals chat), e.g. "Aaja ko miti ... ho, yehi main yo news haru cha: ...".
+- Write in a fine, natural Nepali tone (Nepali-English mix in Latin script like locals chat, e.g. "Namaste! Ma NP1 MONI hu, KarkTech le banako. Tapai lai k ma sahayata garu?").
 - For questions about Nepal (news, dates, culture, prices, agriculture, business): use Nepali (Roman script) as the main answer and add a short English line where useful.
 - For anything time-sensitive (today's news, dates, prices, weather): state the actual current date context in the answer, and if you are not sure of live info, say honestly what you know instead of inventing.
-- For greetings like "namaste", reply briefly and warmly as ChatNP.
+- For greetings like "namaste", reply briefly, warmly, and politely in a fine Nepali tone as ChatNP / NP1 MONI.
 - Never output markdown-heavy formatting; keep it clean plain text.`;
 
 export async function POST(req: NextRequest) {
-  if (!GROQ_API_KEY) {
+  if (!META_API_KEY) {
     return NextResponse.json(
-      { text: "ChatNP server configuration is incomplete. Please contact KarkTech." },
+      { text: "ChatNP server configuration is incomplete. Please configure META_API_KEY in DigitalOcean variables." },
       { status: 503 }
     );
   }
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     }
 
     const payload = {
-      model: GROQ_MODEL,
+      model: META_MODEL,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...history.slice(-24).map((m) => ({
@@ -60,18 +60,18 @@ export async function POST(req: NextRequest) {
       max_tokens: 1024,
     };
 
-    const response = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
+    const response = await fetch(`${META_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${GROQ_API_KEY}`,
+        Authorization: `Bearer ${META_API_KEY}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('Groq API error:', response.status, errText.slice(0, 300));
+      console.error('Meta AI API error:', response.status, errText.slice(0, 300));
 
       if (response.status === 429) {
         return NextResponse.json(
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
           { status: 503 }
         );
       }
-      throw new Error(`Groq API returned ${response.status}`);
+      throw new Error(`Meta AI API returned ${response.status}`);
     }
 
     const data = await response.json();
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
       '';
 
     if (!text) {
-      throw new Error('Empty response from Groq');
+      throw new Error('Empty response from Meta AI API');
     }
 
     return NextResponse.json({ text: text.trim() });
