@@ -16,3 +16,10 @@ html, body {
 .font-heading {
   font-family: var(--font-heading);
 }
+
+/* NP1 MONI thinking sun — slow gold→amber→coral color shift */
+@keyframes sunColorShift {
+  0%, 100% { background: rgba(250, 204, 21, 0.35); }
+  33% { background: rgba(251, 146, 60, 0.35); }
+  66% { background: rgba(249, 115, 22, 0.35); }
+}

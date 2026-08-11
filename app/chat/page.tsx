@@ -5,6 +5,27 @@ import Link from 'next/link';
 import { ArrowLeft, Send, User, Settings2, Plus, MessageSquare, Leaf, Briefcase, GraduationCap, Sparkles } from 'lucide-react';
 import { motion } from "motion/react";
 
+const THINKING_DELAY_MS = 1400; // NP1 MONI "thinks" before answering
+
+function SunThinkingIcon() {
+  return (
+    <span className="relative inline-flex items-center justify-center w-7 h-7 shrink-0 mt-0.5" aria-hidden="true">
+      {/* Slow color-shifting halo behind the sun */}
+      <span
+        className="absolute inset-0 rounded-full blur-md"
+        style={{
+          animation: 'sunColorShift 6s ease-in-out infinite',
+        }}
+      />
+      <img
+        src="/sun-thinking.gif"
+        alt=""
+        className="w-6 h-6 relative"
+      />
+    </span>
+  );
+}
+
 type Message = {
   role: 'user' | 'assistant';
   content: string;
@@ -51,6 +72,8 @@ export default function ChatNPInterface() {
       if (!res.ok) throw new Error('API Error');
       
       const data = await res.json();
+      // NP1 MONI thinks before answering — show the thinking animation first
+      await new Promise((resolve) => setTimeout(resolve, THINKING_DELAY_MS));
       setMessages(prev => [...prev, { role: 'assistant', content: data.text }]);
     } catch (error) {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I am having trouble connecting to my servers right now.' }]);
@@ -105,25 +128,8 @@ export default function ChatNPInterface() {
         </div>
       </div>
 
-      {/* Main Chat Area - Pure flex column structure with blended background photo */}
+      {/* Main Chat Area - Clean pure flex column */}
       <div className="relative flex-1 flex flex-col min-w-0 bg-[#050505]">
-        {/* Background photo — darkened, blurred-edge blend with the black theme */}
-        <div
-          className="pointer-events-none absolute inset-0 z-0"
-          style={{
-            backgroundImage: 'url(/chat-bg.webp)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-          aria-hidden="true"
-        >
-          <div className="absolute inset-0 bg-[#050505]/82" />
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#050505] to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#050505] to-transparent" />
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#050505]/60 to-transparent" />
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#050505]/60 to-transparent" />
-        </div>
-        
         {/* Header - Fixed height, shrink-0 prevents it from squishing */}
         <header className="shrink-0 h-14 border-b border-white/5 flex items-center justify-between px-4 bg-[#050505]">
           <div className="flex items-center gap-3 min-w-0">
@@ -186,10 +192,9 @@ export default function ChatNPInterface() {
                 <div className="w-7 h-7 rounded bg-brand-blue flex items-center justify-center shrink-0 mt-0.5">
                     <span className="text-[9px] font-bold text-white">NP</span>
                   </div>
-                <div className="flex items-center gap-1.5 px-4 py-3 bg-transparent border border-white/10 rounded-2xl rounded-tl-sm h-10">
-                  <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
-                  <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
-                  <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="w-1.5 h-1.5 rounded-full bg-zinc-500" />
+                <div className="flex items-center gap-3 px-4 py-3 bg-transparent border border-white/10 rounded-2xl rounded-tl-sm">
+                  <SunThinkingIcon />
+                  <span className="text-xs font-medium text-zinc-400">NP1 MONI is thinking&hellip;</span>
                 </div>
               </motion.div>
             )}
