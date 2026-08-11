@@ -69,14 +69,18 @@ export default function ChatNPInterface() {
         })
       });
 
-      if (!res.ok) throw new Error('API Error');
-      
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.text || `API error: ${res.status}`);
+      }
+
       // NP1 MONI thinks before answering — show the thinking animation first
       await new Promise((resolve) => setTimeout(resolve, THINKING_DELAY_MS));
       setMessages(prev => [...prev, { role: 'assistant', content: data.text }]);
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I am having trouble connecting to my servers right now.' }]);
+    } catch (error: any) {
+      const errorMessage = error?.message || 'Sorry, I am having trouble connecting to my servers right now.';
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
     } finally {
       setIsLoading(false);
     }
