@@ -105,8 +105,24 @@ export default function ChatNPInterface() {
         </div>
       </div>
 
-      {/* Main Chat Area - Pure flex column structure */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#050505]">
+      {/* Main Chat Area - Pure flex column structure with blended background photo */}
+      <div className="relative flex-1 flex flex-col min-w-0 bg-[#050505]">
+        {/* Background photo — darkened, blurred-edge blend with the black theme */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            backgroundImage: 'url(/chat-bg.webp)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          aria-hidden="true"
+        >
+          <div className="absolute inset-0 bg-[#050505]/82" />
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#050505] to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#050505] to-transparent" />
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#050505]/60 to-transparent" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#050505]/60 to-transparent" />
+        </div>
         
         {/* Header - Fixed height, shrink-0 prevents it from squishing */}
         <header className="shrink-0 h-14 border-b border-white/5 flex items-center justify-between px-4 bg-[#050505]">
@@ -135,7 +151,7 @@ export default function ChatNPInterface() {
         </header>
 
         {/* Scrollable Messages Area */}
-        <div className="flex-1 overflow-y-auto px-4 py-6 scroll-smooth">
+        <div className="relative z-10 flex-1 overflow-y-auto px-4 py-6 scroll-smooth">
           <div className="max-w-3xl mx-auto space-y-6">
             {messages.map((msg, i) => (
               <motion.div 
@@ -182,7 +198,7 @@ export default function ChatNPInterface() {
         </div>
 
         {/* Input Area - Fixed at bottom within the flex column (no absolute positioning) */}
-        <div className="shrink-0 bg-[#050505] p-4 border-t border-white/5">
+        <div className="relative z-10 shrink-0 bg-[#050505] p-4 border-t border-white/5">
           <div className="max-w-3xl mx-auto">
             
             {/* Suggestions - Visible only when chat has 1 message */}
