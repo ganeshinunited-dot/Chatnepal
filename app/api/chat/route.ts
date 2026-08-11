@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.llama-api.com';
-const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY;
-const META_MODEL = process.env.META_MODEL || 'llama-3.3-70b-instruct';
+const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.meta.ai/v1';
+const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY || process.env.LLM_API_KEY;
+const META_MODEL = process.env.META_MODEL || 'muse-spark-1.2';
 
 const SYSTEM_PROMPT = `You are ChatNP, developed by KarkTech.
 Your identity: "NP1 MONI" — the proprietary model powering ChatNP. You are NOT ChatGPT, Llama, Meta AI, Groq, Gemini, DeepSeek, or any other named product.
