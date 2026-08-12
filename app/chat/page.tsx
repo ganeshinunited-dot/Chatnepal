@@ -1,47 +1,55 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Sidebar from '@/components/Sidebar';
 import ChatArea from '@/components/ChatArea';
 import SettingsModal from '@/components/SettingsModal';
 import ProfileModal from '@/components/ProfileModal';
 import LoginModal from '@/components/LoginModal';
-import { Message, ChatSession, UserProfile, AIModel } from '@/types';
+import { UserProfile, AIModel } from '@/types';
+import { useChat } from '@/hooks/use-chat';
 
 export default function ChatNPInterface() {
+  // --- UI & Preferences State ---
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  
-  const [userProfile, setUserProfile] = useState<UserProfile>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('userProfile');
-      return saved ? JSON.parse(saved) : { name: 'Ganesh Karki', email: 'ganesh@karktech.com' };
-    }
-    return { name: 'Ganesh Karki', email: 'ganesh@karktech.com' };
-  });
-  
-  const [sessions, setSessions] = useState<ChatSession[]>([]);
-  const [activeChatId, setActiveChatId] = useState<string | undefined>(undefined);
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?' }
-  ]);
-  const [isThinking, setIsThinking] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [selectedModel, setSelectedModel] = useState<AIModel>('ChatNP');
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined') {
-      return (localStorage.getItem('theme') as 'light' | 'dark') || 'dark';
-    }
-    return 'dark';
+  
+  const [userProfile, setUserProfile] = useState<UserProfile>({ 
+    name: 'Ganesh Karki', 
+    email: 'ganesh@karktech.com' 
   });
 
+  // --- Business Logic (Custom Hook) ---
+  const {
+    sessions,
+    activeChatId,
+    messages,
+    isThinking,
+    fetchHistory,
+    selectChat,
+    startNewChat,
+    sendMessage,
+  } = useChat();
+
+  // --- Initial Hydration ---
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    if (typeof window !== 'undefined') {
+      setTheme((localStorage.getItem('theme') as 'light' | 'dark') || 'dark');
+      const savedProfile = localStorage.getItem('userProfile');
+      if (savedProfile) {
+        try { setUserProfile(JSON.parse(savedProfile)); } catch (e) {}
+      }
+      fetchHistory();
     }
+  }, [fetchHistory]);
+
+  // --- Side Effects ---
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
   }, [theme]);
 
@@ -49,207 +57,66 @@ export default function ChatNPInterface() {
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
   }, [userProfile]);
 
-  // Fetch chat history from DB on load
-  useEffect(() => {
-    async function fetchHistory() {
-      try {
-        const res = await fetch('/api/chats');
-        const data = await res.json();
-        if (data.chats && Array.isArray(data.chats)) {
-          setSessions(data.chats);
-          if (data.chats.length > 0 && !activeChatId) {
-            // Load the most recent chat by default
-            const latest = data.chats[0];
-            setActiveChatId(latest.id);
-            if (latest.messages && latest.messages.length > 0) {
-              setMessages(latest.messages.map((m: any) => ({
-                id: m.id,
-                role: m.role,
-                content: m.content
-              })));
-            }
-          }
-        }
-      } catch (err) {
-        console.error('Failed to fetch chat history', err);
-      }
-    }
-    fetchHistory();
-  }, []);
-
-  const handleSelectChat = (chatId: string) => {
-    setActiveChatId(chatId);
-    const selected = sessions.find(s => s.id === chatId);
-    if (selected && selected.messages) {
-      setMessages(selected.messages.map((m: any) => ({
-        id: m.id,
-        role: m.role,
-        content: m.content
-      })));
-    }
-  };
-
-  const handleNewChat = () => {
-    setActiveChatId(undefined);
-    setMessages([
-      { id: Date.now().toString(), role: 'assistant', content: 'नमस्ते! नयाँ च्याट सुरु भएको छ। म तपाईंलाई कसरी मद्दत गर्न सक्छु?' }
-    ]);
-  };
-
-  const handleSend = async (content: string, fileData?: { name: string; content: string }) => {
-    if ((!content.trim() && !fileData) || isThinking) return;
-
-    let displayMessage = content;
-    let fullMessageForAPI = content;
-
-    if (fileData) {
-      displayMessage = `📎 [फाइल संलग्न: ${fileData.name}]\n${content}`;
-      fullMessageForAPI = `प्रयोगकर्ताले तलको फाइल अपलोड गरेका छन् र यसको विश्लेषण गर्न अनुरोध गरेका छन्।\nफाइलको नाम: ${fileData.name}\nफाइलको सामग्री:\n\`\`\`\n${fileData.content.slice(0, 10000)}\n\`\`\`\n\nप्रयोगकर्ताको प्रश्न/सन्देश: ${content || 'यस फाइलको सारांश र विश्लेषण गर्नुहोस्।'}`;
-    }
-
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: displayMessage };
-    const updatedMessages = [...messages, userMsg];
-    setMessages(updatedMessages);
-    setIsThinking(true);
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: fullMessageForAPI,
-          chatId: activeChatId,
-          history: messages
-            .filter((m) => m.content.trim())
-            .slice(-12)
-            .map((m) => ({ role: m.role, content: m.content })),
-        })
-      });
-
-      const data = await res.json();
-      
-      if (!res.ok) {
-        throw new Error(data.text || `API error: ${res.status}`);
-      }
-
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: data.text
-      };
-      setMessages([...updatedMessages, aiMsg]);
-
-      if (data.chatId && !activeChatId) {
-        setActiveChatId(data.chatId);
-      }
-
-      // Refresh sessions
-      const chatsRes = await fetch('/api/chats');
-      const chatsData = await chatsRes.json();
-      if (chatsData.chats) {
-        setSessions(chatsData.chats);
-      }
-    } catch (error: any) {
-      const errorMessage = error?.message || 'माफ गर्नुहोला, अहिले सर्भरमा जडान गर्न समस्या भइरहेको छ। कृपया फेरि प्रयास गर्नुहोला।';
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: errorMessage
-      };
-      setMessages([...updatedMessages, aiMsg]);
-    } finally {
-      setIsThinking(false);
-    }
-  };
+  // --- Memoized Components ---
+  const sidebarContent = useMemo(() => (
+    <Sidebar
+      isOpen={true}
+      onClose={() => setIsSidebarOpen(false)}
+      onOpenSettings={() => setIsSettingsOpen(true)}
+      onOpenProfile={() => setIsProfileOpen(true)}
+      sessions={sessions}
+      activeChatId={activeChatId}
+      onSelectChat={(id) => { selectChat(id); setIsSidebarOpen(false); }}
+      onNewChat={() => { startNewChat(); setIsSidebarOpen(false); }}
+      user={userProfile}
+    />
+  ), [sessions, activeChatId, selectChat, startNewChat, userProfile]);
 
   return (
     <div className="flex h-[100dvh] w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans overflow-hidden selection:bg-blue-500/30">
       
-      {/* Desktop Sidebar (hidden on mobile) */}
-      <div className="hidden md:block w-72 h-full flex-shrink-0">
-        <Sidebar
-          isOpen={true}
-          onClose={() => {}}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          onOpenProfile={() => setIsProfileOpen(true)}
-          sessions={sessions}
-          activeChatId={activeChatId}
-          onSelectChat={handleSelectChat}
-          onNewChat={handleNewChat}
-          user={userProfile}
-        />
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-72 h-full flex-shrink-0 border-r border-slate-200 dark:border-slate-800">
+        {sidebarContent}
       </div>
 
-      {/* Mobile Sidebar Modal Overlay */}
+      {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-          <div className="relative w-full max-w-sm h-[75vh] bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <Sidebar
-              isOpen={isSidebarOpen}
-              onClose={() => setIsSidebarOpen(false)}
-              onOpenSettings={() => {
-                setIsSidebarOpen(false);
-                setIsSettingsOpen(true);
-              }}
-              onOpenProfile={() => {
-                setIsSidebarOpen(false);
-                setIsProfileOpen(true);
-              }}
-              sessions={sessions}
-              activeChatId={activeChatId}
-              onSelectChat={(id) => { handleSelectChat(id); setIsSidebarOpen(false); }}
-              onNewChat={() => { handleNewChat(); setIsSidebarOpen(false); }}
-              user={userProfile}
-            />
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
+          <div className="relative w-full max-w-sm h-[80vh] bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {sidebarContent}
           </div>
         </div>
       )}
 
       {/* Main Chat Interface */}
-      <div className="flex-1 flex flex-col h-full min-w-0 bg-slate-50 dark:bg-slate-900 transition-colors">
+      <main className="flex-1 flex flex-col h-full min-w-0 relative">
+        {/* Top Header Actions */}
         <div className="absolute top-4 right-4 z-30">
           <button
             onClick={() => setIsLoginOpen(true)}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-xl shadow-md transition-colors flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            aria-label="Sign in with Google"
           >
-            <span>Google Login</span>
+            Google Login
           </button>
         </div>
+
         <ChatArea
           messages={messages}
-          onSend={(content, fileData) => handleSend(content, fileData)}
+          onSend={sendMessage}
           onOpenSidebar={() => setIsSidebarOpen(true)}
           isThinking={isThinking}
           selectedModel={selectedModel}
           onModelChange={setSelectedModel}
         />
-      </div>
+      </main>
 
-      {/* Global Settings Modal */}
-      <SettingsModal 
-        isOpen={isSettingsOpen} 
-        onClose={() => setIsSettingsOpen(false)} 
-        theme={theme}
-        setTheme={setTheme}
-      />
-      
-      {/* Profile Modal */}
-      <ProfileModal 
-        isOpen={isProfileOpen} 
-        onClose={() => setIsProfileOpen(false)} 
-        user={userProfile}
-        setUser={setUserProfile}
-      />
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-      />
+      {/* Modals */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} theme={theme} setTheme={setTheme} />
+      <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={userProfile} setUser={setUserProfile} />
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </div>
   );
 }

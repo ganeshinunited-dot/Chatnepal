@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { aiRouter } from '@/lib/ai/router';
@@ -23,12 +23,10 @@ ANSWER STYLE RULES:
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Authentication Check
     const session = await auth();
     const userId = session?.user?.id;
     const userEmail = session?.user?.email;
 
-    // 2. Input Validation
     const body = await req.json();
     const { message, chatId, history = [] } = body;
 
@@ -40,7 +38,6 @@ export async function POST(req: NextRequest) {
       return APIResponse.badRequest("Message is too long (max 4000 characters).");
     }
 
-    // 3. Prepare AI Request
     const messages = [
       { role: 'system' as const, content: SYSTEM_PROMPT },
       ...history.slice(-12).map((m: any) => ({
@@ -50,17 +47,14 @@ export async function POST(req: NextRequest) {
       { role: 'user' as const, content: message },
     ];
 
-    // 4. Generate AI Response via Router (Modular & Fallback support)
     const aiResponse = await aiRouter.generateResponse(messages);
     const reply = aiResponse.text;
 
-    // 5. Database Persistence (Atomic Transaction)
     let activeChatId = chatId;
     
     if (userEmail && userId) {
       try {
         await prisma.$transaction(async (tx) => {
-          // Find or create chat session
           if (!activeChatId) {
             const newChat = await tx.chat.create({
               data: {
@@ -70,7 +64,6 @@ export async function POST(req: NextRequest) {
             });
             activeChatId = newChat.id;
           } else {
-            // Verify ownership
             const chat = await tx.chat.findUnique({
               where: { id: activeChatId },
               select: { userId: true },
@@ -80,7 +73,6 @@ export async function POST(req: NextRequest) {
             }
           }
 
-          // Save messages
           await tx.message.createMany({
             data: [
               { chatId: activeChatId, role: 'user', content: message },
@@ -88,7 +80,6 @@ export async function POST(req: NextRequest) {
             ],
           });
 
-          // Track usage
           await tx.usageRecord.create({
             data: {
               userId: userId,
@@ -98,7 +89,6 @@ export async function POST(req: NextRequest) {
             },
           });
 
-          // Update chat timestamp
           await tx.chat.update({
             where: { id: activeChatId },
             data: { updatedAt: new Date() },
@@ -106,14 +96,10 @@ export async function POST(req: NextRequest) {
         });
       } catch (dbError: any) {
         console.error('Database transaction failed:', dbError.message);
-        // We still return the AI response to the user even if DB fails, 
-        // but we log the error. In a "superstrong" system, we might 
-        // queue this for retry or notify monitoring.
       }
     }
 
-    // 6. Return Success Response
-    return NextResponse.json({ 
+    return APIResponse.success({ 
       text: reply, 
       chatId: activeChatId 
     });
