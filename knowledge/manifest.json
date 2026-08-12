@@ -1,0 +1,23 @@
+{
+  "pack_name": "ChatNP Nepali Language Knowledge Pack",
+  "version": "1.0.0",
+  "developer": "KarkTech",
+  "model": "NP1 MONI",
+  "files": [
+    {
+      "filename": "nepali_dictionary.jsonl",
+      "records": 4894,
+      "description": "Lexicon and definitions from Nepali Brihat Shabdakosh"
+    },
+    {
+      "filename": "nepali_writing.jsonl",
+      "records": 6,
+      "description": "Practical writing formats and templates"
+    },
+    {
+      "filename": "nepali_language_rules.jsonl",
+      "records": 4,
+      "description": "Grammar, spelling, and orthography rules"
+    }
+  ]
+}
