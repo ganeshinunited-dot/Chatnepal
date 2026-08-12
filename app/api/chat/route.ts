@@ -1,142 +1,134 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
-
-const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.meta.ai/v1';
-const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY || process.env.LLM_API_KEY;
-const META_MODEL = process.env.META_MODEL || 'muse-spark-1.2';
+import { aiRouter } from '@/lib/ai/router';
+import { APIResponse } from '@/lib/api-response';
 
 const SYSTEM_PROMPT = `You are ChatNP, developed by KarkTech.
 Your identity: "NP1 MONI" — the proprietary model powering ChatNP. You are NOT ChatGPT, Llama, Meta AI, Groq, Gemini, DeepSeek, or any other named product.
 Your founder is Ganesh Karki.
 KarkTech is a Nepal-based AI startup focused on building AI products for Nepal.
 
-IDENTITY RULES (never break these):
-- If asked what model you are, who made your model, or what API powers you: say "I am NP1 MONI, developed by KarkTech." NEVER mention any real model name or API provider.
+IDENTITY RULES:
+- If asked what model you are, say "I am NP1 MONI, developed by KarkTech."
 - If asked who created you: "I was developed by KarkTech as part of the ChatNP project."
 - If asked who your founder is: "My founder is Ganesh Karki."
-- If asked what KarkTech is: "KarkTech is a Nepal-based AI startup focused on building AI products for Nepal."
-- Never claim unsupported capabilities. If you don't know something, clearly say so instead of inventing answers.
 
-ANSWER STYLE RULES (strict):
-- Keep answers SHORT and DIRECT — a few sentences or a short list, not long essays.
-- Language & Script Rules:
-  - If the user speaks in Nepali (whether in Nepali script/Devanagari like 'नेपाली' or in Roman script), you MUST reply in pure, natural Nepali using **Devanagari script** (नेपाली अक्षरहरूमा, जस्तै: "नमस्ते! म NP1 MONI हूँ, कर्कटेकद्वारा निर्मित। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?").
-  - If the user speaks in English, reply in friendly English.
-- For questions about Nepal (news, dates, culture, prices, agriculture, business): use natural Devanagari Nepali as the main answer.
-- For anything time-sensitive (today's news, dates, prices, weather): state the actual current date context in the answer, and if you are not sure of live info, say honestly what you know instead of inventing.
-- For greetings like "namaste" or "नमस्ते", reply briefly, warmly, and politely in a fine Nepali tone as ChatNP / NP1 MONI using Devanagari script.
-- Never output markdown-heavy formatting; keep it clean plain text.`;
+ANSWER STYLE RULES:
+- Keep answers SHORT and DIRECT.
+- If the user speaks in Nepali (script or roman), reply in pure, natural Nepali using Devanagari script.
+- If the user speaks in English, reply in friendly English.
+- For greetings, reply briefly and warmly in Devanagari Nepali.
+- Never output markdown-heavy formatting.`;
 
 export async function POST(req: NextRequest) {
-  if (!META_API_KEY) {
-    return NextResponse.json(
-      { text: "Server Error: META_API_KEY environment variable is missing in DigitalOcean." },
-      { status: 503 }
-    );
-  }
-
   try {
+    // 1. Authentication Check
     const session = await auth();
+    const userId = session?.user?.id;
+    const userEmail = session?.user?.email;
+
+    // 2. Input Validation
     const body = await req.json();
-    const message = body.message;
-    const chatId = body.chatId; // optional chat session ID
-    const history: Array<{ role: 'user' | 'assistant'; content: string }> = Array.isArray(body.history)
-      ? body.history
-      : [];
+    const { message, chatId, history = [] } = body;
 
     if (!message || typeof message !== 'string') {
-      return NextResponse.json({ text: "I couldn't understand your message." }, { status: 400 });
+      return APIResponse.badRequest("Message is required and must be a string.");
     }
 
-    const payload = {
-      model: META_MODEL,
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...history.slice(-24).map((m) => ({
-          role: m.role === 'assistant' ? 'assistant' : 'user',
-          content: m.content,
-        })),
-        { role: 'user', content: message },
-      ],
-      temperature: 0.7,
-      max_tokens: 1024,
-    };
-
-    const response = await fetch(`${META_BASE_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${META_API_KEY}`,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('API error details:', response.status, errText);
-      return NextResponse.json(
-        { text: `API Error (${response.status}): ${errText.slice(0, 150) || 'Check API endpoint and key'}` },
-        { status: 200 }
-      );
+    if (message.length > 4000) {
+      return APIResponse.badRequest("Message is too long (max 4000 characters).");
     }
 
-    const data = await response.json();
-    const text =
-      data?.choices?.[0]?.message?.content ||
-      data?.choices?.[0]?.delta?.content ||
-      '';
+    // 3. Prepare AI Request
+    const messages = [
+      { role: 'system' as const, content: SYSTEM_PROMPT },
+      ...history.slice(-12).map((m: any) => ({
+        role: (m.role === 'assistant' ? 'assistant' : 'user') as 'assistant' | 'user',
+        content: m.content,
+      })),
+      { role: 'user' as const, content: message },
+    ];
 
-    if (!text) {
-      return NextResponse.json(
-        { text: "API Error: Received empty response from provider." },
-        { status: 200 }
-      );
-    }
+    // 4. Generate AI Response via Router (Modular & Fallback support)
+    const aiResponse = await aiRouter.generateResponse(messages);
+    const reply = aiResponse.text;
 
-    const reply = text.trim();
-
-    // If user is authenticated, save chat history to database
+    // 5. Database Persistence (Atomic Transaction)
     let activeChatId = chatId;
-    if (session?.user?.email) {
+    
+    if (userEmail && userId) {
       try {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: session.user.email },
-        });
-
-        if (dbUser) {
+        await prisma.$transaction(async (tx) => {
+          // Find or create chat session
           if (!activeChatId) {
-            // Create a new chat session
-            const newChat = await prisma.chat.create({
+            const newChat = await tx.chat.create({
               data: {
-                title: message.slice(0, 30) + '...',
-                userId: dbUser.id,
+                title: message.slice(0, 50),
+                userId: userId,
               },
             });
             activeChatId = newChat.id;
+          } else {
+            // Verify ownership
+            const chat = await tx.chat.findUnique({
+              where: { id: activeChatId },
+              select: { userId: true },
+            });
+            if (chat && chat.userId !== userId) {
+              throw new Error("Unauthorized chat access");
+            }
           }
 
-          // Save user and assistant messages
-          if (activeChatId) {
-            await prisma.message.createMany({
-              data: [
-                { chatId: activeChatId, role: 'user', content: message },
-                { chatId: activeChatId, role: 'assistant', content: reply },
-              ],
-            });
-          }
-        }
-      } catch (dbError) {
-        console.error('Database save error:', dbError);
+          // Save messages
+          await tx.message.createMany({
+            data: [
+              { chatId: activeChatId, role: 'user', content: message },
+              { chatId: activeChatId, role: 'assistant', content: reply },
+            ],
+          });
+
+          // Track usage
+          await tx.usageRecord.create({
+            data: {
+              userId: userId,
+              model: aiResponse.model,
+              tokens: aiResponse.usage?.totalTokens || 0,
+              type: 'chat',
+            },
+          });
+
+          // Update chat timestamp
+          await tx.chat.update({
+            where: { id: activeChatId },
+            data: { updatedAt: new Date() },
+          });
+        });
+      } catch (dbError: any) {
+        console.error('Database transaction failed:', dbError.message);
+        // We still return the AI response to the user even if DB fails, 
+        // but we log the error. In a "superstrong" system, we might 
+        // queue this for retry or notify monitoring.
       }
     }
 
-    return NextResponse.json({ text: reply, chatId: activeChatId });
+    // 6. Return Success Response
+    return NextResponse.json({ 
+      text: reply, 
+      chatId: activeChatId 
+    });
+
   } catch (error: any) {
-    console.error('Exception in ChatNP API:', error);
-    return NextResponse.json(
-      { text: `Server Exception: ${error?.message || 'Unknown connection error'}` },
-      { status: 200 }
+    console.error('Superstrong Chat API Error:', error);
+    
+    if (error.message === "Unauthorized chat access") {
+      return APIResponse.unauthorized();
+    }
+
+    return APIResponse.error(
+      "An unexpected error occurred. Please try again later.",
+      'INTERNAL_SERVER_ERROR',
+      500
     );
   }
 }
