@@ -7,7 +7,7 @@ import ModelLogo from './ModelLogo';
 
 interface ChatAreaProps {
   messages: Message[];
-  onSend: (content: string) => void;
+  onSend: (content: string, fileData?: { name: string; content: string }) => void;
   onOpenSidebar: () => void;
   isThinking: boolean;
   selectedModel: AIModel;
@@ -70,7 +70,7 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
               नमस्ते! म ChatNP
             </h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-lg text-sm md:text-base leading-relaxed">
-              म तपाईलाई नेपाली भाषा, संस्कृति, लेखन, र अन्य विभिन्न विषयहरूमा सहयोग गर्न तयार छु। म तपाईलाई कसरी मद्दत गर्न सक्छु?
+              म तपाईलाई नेपाली भाषा, संस्कृति, लेखन, र अन्य विभिन्न विषयहरूमा सहयोग गर्न तयार छु। तपाईं फाइल पनि अपलोड गरेर विश्लेषण गराउन सक्नुहुन्छ।
             </p>
           </>
         );

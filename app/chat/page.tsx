@@ -22,7 +22,7 @@ export default function ChatNPInterface() {
   });
   
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?' }
+    { id: '1', role: 'assistant', content: 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु? तपाई फाइल पनि अपलोड गरेर विश्लेषण गराउन सक्नुहुन्छ।' }
   ]);
   const [isThinking, setIsThinking] = useState(false);
   const [selectedModel, setSelectedModel] = useState<AIModel>('ChatNP');
@@ -46,10 +46,18 @@ export default function ChatNPInterface() {
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
   }, [userProfile]);
 
-  const handleSend = async (content: string) => {
-    if (!content.trim() || isThinking) return;
+  const handleSend = async (content: string, fileData?: { name: string; content: string }) => {
+    if ((!content.trim() && !fileData) || isThinking) return;
 
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content };
+    let displayMessage = content;
+    let fullMessageForAPI = content;
+
+    if (fileData) {
+      displayMessage = `📎 [फाइल संलग्न: ${fileData.name}]\n${content}`;
+      fullMessageForAPI = `प्रयोगकर्ताले तलको फाइल अपलोड गरेका छन् र यसको विश्लेषण गर्न अनुरोध गरेका छन्।\nफाइलको नाम: ${fileData.name}\nफाइलको सामग्री:\n\`\`\`\n${fileData.content.slice(0, 10000)}\n\`\`\`\n\nप्रयोगकर्ताको प्रश्न/सन्देश: ${content || 'यस फाइलको सारांश र विश्लेषण गर्नुहोस्।'}`;
+    }
+
+    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: displayMessage };
     setMessages((prev) => [...prev, userMsg]);
     setIsThinking(true);
 
@@ -58,7 +66,7 @@ export default function ChatNPInterface() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: content,
+          message: fullMessageForAPI,
           history: messages
             .filter((m) => m.content.trim())
             .slice(-12)
@@ -136,7 +144,7 @@ export default function ChatNPInterface() {
       <div className="flex-1 flex flex-col h-full min-w-0 bg-slate-50 dark:bg-slate-900 transition-colors">
         <ChatArea
           messages={messages}
-          onSend={handleSend}
+          onSend={(content) => handleSend(content)}
           onOpenSidebar={() => setIsSidebarOpen(true)}
           isThinking={isThinking}
           selectedModel={selectedModel}
