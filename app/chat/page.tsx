@@ -5,6 +5,7 @@ import Sidebar from '@/components/Sidebar';
 import ChatArea from '@/components/ChatArea';
 import SettingsModal from '@/components/SettingsModal';
 import ProfileModal from '@/components/ProfileModal';
+import LoginModal from '@/components/LoginModal';
 import { Message, ChatSession, UserProfile, AIModel } from '@/types';
 
 const INITIAL_SESSIONS: ChatSession[] = [];
@@ -13,6 +14,7 @@ export default function ChatNPInterface() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('userProfile');
@@ -22,7 +24,7 @@ export default function ChatNPInterface() {
   });
   
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु? तपाई फाइल पनि अपलोड गरेर विश्लेषण गराउन सक्नुहुन्छ।' }
+    { id: '1', role: 'assistant', content: 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?' }
   ]);
   const [isThinking, setIsThinking] = useState(false);
   const [selectedModel, setSelectedModel] = useState<AIModel>('ChatNP');
@@ -142,9 +144,17 @@ export default function ChatNPInterface() {
 
       {/* Main Chat Interface */}
       <div className="flex-1 flex flex-col h-full min-w-0 bg-slate-50 dark:bg-slate-900 transition-colors">
+        <div className="absolute top-4 right-4 z-30">
+          <button
+            onClick={() => setIsLoginOpen(true)}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-xl shadow-md transition-colors flex items-center gap-2 cursor-pointer"
+          >
+            <span>Google Login</span>
+          </button>
+        </div>
         <ChatArea
           messages={messages}
-          onSend={(content) => handleSend(content)}
+          onSend={(content, fileData) => handleSend(content, fileData)}
           onOpenSidebar={() => setIsSidebarOpen(true)}
           isThinking={isThinking}
           selectedModel={selectedModel}
@@ -166,6 +176,12 @@ export default function ChatNPInterface() {
         onClose={() => setIsProfileOpen(false)} 
         user={userProfile}
         setUser={setUserProfile}
+      />
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
       />
     </div>
   );
