@@ -8,13 +8,12 @@ import ProfileModal from '@/components/ProfileModal';
 import LoginModal from '@/components/LoginModal';
 import { Message, ChatSession, UserProfile, AIModel } from '@/types';
 
-const INITIAL_SESSIONS: ChatSession[] = [];
-
 export default function ChatNPInterface() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('userProfile');
@@ -23,6 +22,8 @@ export default function ChatNPInterface() {
     return { name: 'Ganesh Karki', email: 'ganesh@karktech.com' };
   });
   
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [activeChatId, setActiveChatId] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', role: 'assistant', content: 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?' }
   ]);
@@ -48,6 +49,53 @@ export default function ChatNPInterface() {
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
   }, [userProfile]);
 
+  // Fetch chat history from DB on load
+  useEffect(() => {
+    async function fetchHistory() {
+      try {
+        const res = await fetch('/api/chats');
+        const data = await res.json();
+        if (data.chats && Array.isArray(data.chats)) {
+          setSessions(data.chats);
+          if (data.chats.length > 0 && !activeChatId) {
+            // Load the most recent chat by default
+            const latest = data.chats[0];
+            setActiveChatId(latest.id);
+            if (latest.messages && latest.messages.length > 0) {
+              setMessages(latest.messages.map((m: any) => ({
+                id: m.id,
+                role: m.role,
+                content: m.content
+              })));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch chat history', err);
+      }
+    }
+    fetchHistory();
+  }, []);
+
+  const handleSelectChat = (chatId: string) => {
+    setActiveChatId(chatId);
+    const selected = sessions.find(s => s.id === chatId);
+    if (selected && selected.messages) {
+      setMessages(selected.messages.map((m: any) => ({
+        id: m.id,
+        role: m.role,
+        content: m.content
+      })));
+    }
+  };
+
+  const handleNewChat = () => {
+    setActiveChatId(undefined);
+    setMessages([
+      { id: Date.now().toString(), role: 'assistant', content: 'नमस्ते! नयाँ च्याट सुरु भएको छ। म तपाईंलाई कसरी मद्दत गर्न सक्छु?' }
+    ]);
+  };
+
   const handleSend = async (content: string, fileData?: { name: string; content: string }) => {
     if ((!content.trim() && !fileData) || isThinking) return;
 
@@ -60,7 +108,8 @@ export default function ChatNPInterface() {
     }
 
     const userMsg: Message = { id: Date.now().toString(), role: 'user', content: displayMessage };
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setIsThinking(true);
 
     try {
@@ -69,6 +118,7 @@ export default function ChatNPInterface() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: fullMessageForAPI,
+          chatId: activeChatId,
           history: messages
             .filter((m) => m.content.trim())
             .slice(-12)
@@ -87,7 +137,18 @@ export default function ChatNPInterface() {
         role: 'assistant',
         content: data.text
       };
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages([...updatedMessages, aiMsg]);
+
+      if (data.chatId && !activeChatId) {
+        setActiveChatId(data.chatId);
+      }
+
+      // Refresh sessions
+      const chatsRes = await fetch('/api/chats');
+      const chatsData = await chatsRes.json();
+      if (chatsData.chats) {
+        setSessions(chatsData.chats);
+      }
     } catch (error: any) {
       const errorMessage = error?.message || 'माफ गर्नुहोला, अहिले सर्भरमा जडान गर्न समस्या भइरहेको छ। कृपया फेरि प्रयास गर्नुहोला।';
       const aiMsg: Message = {
@@ -95,7 +156,7 @@ export default function ChatNPInterface() {
         role: 'assistant',
         content: errorMessage
       };
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages([...updatedMessages, aiMsg]);
     } finally {
       setIsThinking(false);
     }
@@ -111,7 +172,10 @@ export default function ChatNPInterface() {
           onClose={() => {}}
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenProfile={() => setIsProfileOpen(true)}
-          sessions={INITIAL_SESSIONS}
+          sessions={sessions}
+          activeChatId={activeChatId}
+          onSelectChat={handleSelectChat}
+          onNewChat={handleNewChat}
           user={userProfile}
         />
       </div>
@@ -135,7 +199,10 @@ export default function ChatNPInterface() {
                 setIsSidebarOpen(false);
                 setIsProfileOpen(true);
               }}
-              sessions={INITIAL_SESSIONS}
+              sessions={sessions}
+              activeChatId={activeChatId}
+              onSelectChat={(id) => { handleSelectChat(id); setIsSidebarOpen(false); }}
+              onNewChat={() => { handleNewChat(); setIsSidebarOpen(false); }}
               user={userProfile}
             />
           </div>

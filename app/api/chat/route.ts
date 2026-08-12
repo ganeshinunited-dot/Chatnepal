@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/auth';
+import { prisma } from '@/lib/prisma';
 
 const META_BASE_URL = process.env.META_API_BASE_URL || 'https://api.meta.ai/v1';
 const META_API_KEY = process.env.META_API_KEY || process.env.META_AI_API_KEY || process.env.LLM_API_KEY;
@@ -35,8 +37,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const session = await auth();
     const body = await req.json();
     const message = body.message;
+    const chatId = body.chatId; // optional chat session ID
     const history: Array<{ role: 'user' | 'assistant'; content: string }> = Array.isArray(body.history)
       ? body.history
       : [];
@@ -90,7 +94,44 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ text: text.trim() });
+    const reply = text.trim();
+
+    // If user is authenticated, save chat history to database
+    let activeChatId = chatId;
+    if (session?.user?.email) {
+      try {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: session.user.email },
+        });
+
+        if (dbUser) {
+          if (!activeChatId) {
+            // Create a new chat session
+            const newChat = await prisma.chat.create({
+              data: {
+                title: message.slice(0, 30) + '...',
+                userId: dbUser.id,
+              },
+            });
+            activeChatId = newChat.id;
+          }
+
+          // Save user and assistant messages
+          if (activeChatId) {
+            await prisma.message.createMany({
+              data: [
+                { chatId: activeChatId, role: 'user', content: message },
+                { chatId: activeChatId, role: 'assistant', content: reply },
+              ],
+            });
+          }
+        }
+      } catch (dbError) {
+        console.error('Database save error:', dbError);
+      }
+    }
+
+    return NextResponse.json({ text: reply, chatId: activeChatId });
   } catch (error: any) {
     console.error('Exception in ChatNP API:', error);
     return NextResponse.json(

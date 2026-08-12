@@ -1,7 +1,7 @@
-import { PanelLeftClose, Plus, Settings, Search } from 'lucide-react';
 import { useState } from 'react';
 import { ChatSession, UserProfile } from '../types';
 import ModelLogo from './ModelLogo';
+import { Plus, Search, Settings, PanelLeftClose } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -9,10 +9,13 @@ interface SidebarProps {
   onOpenSettings: () => void;
   onOpenProfile: () => void;
   sessions: ChatSession[];
+  activeChatId?: string;
+  onSelectChat: (chatId: string) => void;
+  onNewChat: () => void;
   user: UserProfile;
 }
 
-export default function Sidebar({ isOpen, onClose, onOpenSettings, onOpenProfile, sessions, user }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, onOpenSettings, onOpenProfile, sessions, activeChatId, onSelectChat, onNewChat, user }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'U';
 
@@ -33,7 +36,10 @@ export default function Sidebar({ isOpen, onClose, onOpenSettings, onOpenProfile
       </div>
 
       <div className="p-4 flex-1 flex flex-col min-h-0 overflow-hidden">
-        <button className="w-full py-3 px-4 flex-shrink-0 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 justify-center mb-4 transition-colors">
+        <button 
+          onClick={onNewChat}
+          className="w-full py-3 px-4 flex-shrink-0 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 justify-center mb-4 transition-colors cursor-pointer"
+        >
           <Plus className="w-4 h-4" />
           <span>New Chat</span>
         </button>
@@ -57,21 +63,25 @@ export default function Sidebar({ isOpen, onClose, onOpenSettings, onOpenProfile
             Recent History
           </div>
           {filteredSessions.length > 0 ? (
-            filteredSessions.map((session, idx) => (
-              <div
-                key={session.id}
-                className={`p-3 rounded-xl flex items-center gap-3 cursor-pointer group transition-colors ${
-                  idx === 0 && searchQuery === ''
-                    ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/30'
-                    : 'hover:bg-slate-50 dark:hover:bg-slate-800/50 border border-transparent'
-                }`}
-              >
-                <div className={`w-2 h-2 rounded-full ${idx === 0 && searchQuery === '' ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-600 group-hover:bg-slate-400 dark:group-hover:bg-slate-500'}`}></div>
-                <span className={`text-sm truncate ${idx === 0 && searchQuery === '' ? 'font-medium text-blue-700 dark:text-blue-400' : 'text-slate-600 dark:text-slate-400'}`}>
-                  {session.title}
-                </span>
-              </div>
-            ))
+            filteredSessions.map((session) => {
+              const isActive = session.id === activeChatId;
+              return (
+                <div
+                  key={session.id}
+                  onClick={() => onSelectChat(session.id)}
+                  className={`p-3 rounded-xl flex items-center gap-3 cursor-pointer group transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/30'
+                      : 'hover:bg-slate-50 dark:hover:bg-slate-800/50 border border-transparent'
+                  }`}
+                >
+                  <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-600 group-hover:bg-slate-400 dark:group-hover:bg-slate-500'}`}></div>
+                  <span className={`text-sm truncate ${isActive ? 'font-medium text-blue-700 dark:text-blue-400' : 'text-slate-600 dark:text-slate-400'}`}>
+                    {session.title}
+                  </span>
+                </div>
+              );
+            })
           ) : (
             <div className="px-2 py-4 text-center text-sm text-slate-500 dark:text-slate-400">
               No chats found.

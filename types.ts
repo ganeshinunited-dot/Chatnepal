@@ -11,7 +11,8 @@ export interface Message {
 export interface ChatSession {
   id: string;
   title: string;
-  date: string;
+  date?: string;
+  messages?: Message[];
 }
 
 export interface UserProfile {
