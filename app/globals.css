@@ -1,25 +1,35 @@
 @import "tailwindcss";
 
-/* KarkTech / ChatNP Brand — Nepal Flag Palette (White, Red, Blue) */
 @theme {
-  --color-brand-blue: oklch(0.55 0.18 262);
-  --color-brand-blue-bright: oklch(0.62 0.21 262);
-  --color-brand-red: oklch(0.55 0.22 25);
-  --font-body: "Mukta", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Plus Jakarta Sans", "Mukta", ui-sans-serif, system-ui, sans-serif;
+  --color-chatnp-primary: oklch(0.55 0.18 262);
+  --color-chatnp-primary-hover: oklch(0.50 0.20 262);
+  --color-chatnp-red: oklch(0.55 0.22 25);
+  --font-sans: "Plus Jakarta Sans", "Mukta", ui-sans-serif, system-ui, sans-serif;
+  --font-nepali: "Mukta", ui-sans-serif, system-ui, sans-serif;
 }
 
 html, body {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.font-heading {
-  font-family: var(--font-heading);
+.font-nepali {
+  font-family: var(--font-nepali);
 }
 
-/* NP1 MONI thinking sun — slow gold→amber→coral color shift */
-@keyframes sunColorShift {
-  0%, 100% { background: rgba(250, 204, 21, 0.35); }
-  33% { background: rgba(251, 146, 60, 0.35); }
-  66% { background: rgba(249, 115, 22, 0.35); }
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.4);
 }
