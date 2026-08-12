@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { ProblemSolution } from '@/components/ProblemSolution';
 import { About } from '@/components/About';
@@ -9,6 +8,8 @@ import { Roadmap } from '@/components/Roadmap';
 import { Investors } from '@/components/Investors';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
+import { Navbar } from '@/components/Navbar';
+import { FloatingSummary } from '@/components/FloatingSummary';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default function Home() {
       </div>
 
       <Footer />
+      <FloatingSummary />
     </main>
   );
 }
