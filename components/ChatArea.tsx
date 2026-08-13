@@ -111,7 +111,7 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 relative transition-colors">
+    <div className="relative flex h-full flex-col bg-slate-50/75 transition-colors dark:bg-slate-900/80">
       {/* Top Header */}
       <div className="absolute top-0 left-0 w-full p-4 flex items-center justify-between z-20 pointer-events-none">
         <button 
@@ -197,7 +197,7 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
       </div>
 
       {/* Input Area */}
-      <div className="p-4 md:pb-6 bg-slate-50 dark:bg-slate-900 transition-colors">
+      <div className="bg-slate-50/75 p-4 transition-colors dark:bg-slate-900/80 md:pb-6">
         <div className="w-full max-w-3xl mx-auto">
           <ChatInput onSend={onSend} disabled={isThinking} />
         </div>

@@ -11,6 +11,7 @@ import ProfileNameModal from '@/components/ProfileNameModal';
 import LoginModal from '@/components/LoginModal';
 import { UserProfile, AIModel } from '@/types';
 import { useChat } from '@/hooks/use-chat';
+import DayNightBackground from '@/components/DayNightBackground';
 
 type AccountProfile = {
   id: string;
@@ -238,7 +239,8 @@ export default function ChatNPInterface() {
   ), [sessions, activeChatId, selectChat, startNewChat, handleDeleteChat, handleClearHistory, isManagingHistory, isAuthenticated, handleLogout, userProfile]);
 
   return (
-    <div className="flex h-[100dvh] w-full overflow-hidden bg-slate-50 font-sans text-slate-900 selection:bg-blue-500/30 dark:bg-slate-900 dark:text-slate-100">
+    <DayNightBackground>
+      <div className="relative z-10 flex h-[100dvh] w-full overflow-hidden bg-transparent font-sans text-slate-900 selection:bg-blue-500/30 dark:bg-transparent dark:text-slate-100">
       {/* Desktop Sidebar */}
       <div className="hidden h-full w-72 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 md:block">
         {sidebarContent}
@@ -304,6 +306,7 @@ export default function ChatNPInterface() {
         initialName=""
         onComplete={saveProfileName}
       />
-    </div>
+      </div>
+    </DayNightBackground>
   );
 }
