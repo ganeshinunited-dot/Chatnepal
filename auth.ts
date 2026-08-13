@@ -4,6 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
 import { verifyEmailLoginCode } from '@/lib/services/email-otp-service';
+import { authenticateEmailPassword } from '@/lib/services/password-auth-service';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // DigitalOcean terminates TLS at its proxy and probes the service through
@@ -32,6 +33,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: profile.email.trim().toLowerCase(),
           image: profile.picture,
         };
+      },
+    }),
+    Credentials({
+      id: 'email-password',
+      name: 'Email and password',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        const email = typeof credentials?.email === 'string' ? credentials.email : '';
+        const password = typeof credentials?.password === 'string' ? credentials.password : '';
+
+        try {
+          const user = await authenticateEmailPassword({ email, password });
+          if (!user) return null;
+
+          return user;
+        } catch (error) {
+          console.error('Email password authorization failed', error);
+          return null;
+        }
       },
     }),
     Credentials({
