@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && NODE_ENV=production next build",
-    "start": "prisma migrate deploy && next start",
+    "start": "next start",
     "lint": "eslint .",
     "clean": "next clean"
   },
