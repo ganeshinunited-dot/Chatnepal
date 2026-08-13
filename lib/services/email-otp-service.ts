@@ -269,7 +269,7 @@ export async function verifyEmailLoginCode({
 
     if (consumed.count !== 1) return null;
 
-    return transaction.user.upsert({
+    const user = await transaction.user.upsert({
       where: { email },
       update: { emailVerified: consumedAt },
       create: {
@@ -284,6 +284,24 @@ export async function verifyEmailLoginCode({
         image: true,
       },
     });
+
+    await transaction.account.upsert({
+      where: {
+        provider_providerAccountId: {
+          provider: 'email-otp',
+          providerAccountId: email,
+        },
+      },
+      update: { userId: user.id, type: 'credentials' },
+      create: {
+        userId: user.id,
+        type: 'credentials',
+        provider: 'email-otp',
+        providerAccountId: email,
+      },
+    });
+
+    return user;
   });
 
   return user;

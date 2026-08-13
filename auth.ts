@@ -18,6 +18,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google({
       clientId: process.env.AUTH_GOOGLE_ID || process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET || process.env.GOOGLE_CLIENT_SECRET,
+      // Google reports whether it verified ownership of the Gmail address. Linking
+      // only this verified provider prevents a duplicate ChatNP user for the same email.
+      allowDangerousEmailAccountLinking: true,
+      profile(profile) {
+        if (!profile.email || !profile.email_verified) {
+          throw new Error('Google must provide a verified email address.');
+        }
+
+        return {
+          id: profile.sub,
+          name: profile.name || profile.email.split('@')[0],
+          email: profile.email.trim().toLowerCase(),
+          image: profile.picture,
+        };
+      },
     }),
     Credentials({
       id: 'email-otp',

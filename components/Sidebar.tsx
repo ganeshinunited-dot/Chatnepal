@@ -137,8 +137,8 @@ export default function Sidebar({
       <div className="mt-auto border-t border-slate-100 p-4 dark:border-slate-800">
         <div className="grid grid-cols-1 gap-2">
           <div
-            onClick={onOpenProfile}
-            className="flex cursor-pointer items-center gap-3 rounded-xl p-2 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
+            onClick={isAuthenticated ? onOpenProfile : undefined}
+            className={`flex items-center gap-3 rounded-xl p-2 transition-colors ${isAuthenticated ? 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800' : ''}`}
           >
             <div
               className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-100 bg-cover bg-center text-sm font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"

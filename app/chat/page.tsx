@@ -118,22 +118,26 @@ export default function ChatNPInterface() {
     void syncAccountProfile().catch(() => undefined);
   }, [fetchHistory, syncAccountProfile]);
 
-  const saveProfileName = useCallback(async (name: string) => {
+  const saveAccountProfile = useCallback(async ({ name, image }: { name: string; image?: string | null }) => {
     const response = await fetch('/api/v1/auth/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, ...(image !== undefined ? { image } : {}) }),
     });
     const payload = await response.json().catch(() => null);
 
     if (!response.ok || !payload?.success || !payload?.data?.profile) {
-      throw new Error(payload?.error?.message || 'Unable to save your name.');
+      throw new Error(payload?.error?.message || 'Unable to save your profile.');
     }
 
     const profile = payload.data.profile as AccountProfile;
     setUserProfile(toUserProfile(profile));
-    setNeedsProfileName(false);
+    setNeedsProfileName(profile.requiresName);
   }, []);
+
+  const saveProfileName = useCallback(async (name: string) => {
+    await saveAccountProfile({ name });
+  }, [saveAccountProfile]);
 
   const handleDeleteChat = useCallback(async (chatId: string) => {
     const chat = sessions.find((session) => session.id === chatId);
@@ -277,7 +281,14 @@ export default function ChatNPInterface() {
 
       {/* Modals */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} theme={theme} setTheme={setTheme} />
-      <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={userProfile} setUser={setUserProfile} />
+      {isAuthenticated && isProfileOpen && (
+        <ProfileModal
+          isOpen={isProfileOpen}
+          onClose={() => setIsProfileOpen(false)}
+          user={userProfile}
+          onSave={saveAccountProfile}
+        />
+      )}
       <LoginModal
         isOpen={isLoginOpen}
         onClose={() => {
