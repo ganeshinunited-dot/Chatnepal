@@ -6,6 +6,10 @@ import { prisma } from '@/lib/prisma';
 import { verifyEmailLoginCode } from '@/lib/services/email-otp-service';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  // DigitalOcean terminates TLS at its proxy and probes the service through
+  // an internal localhost host. Auth.js must trust that reverse-proxy host
+  // for the platform health check to reach the app successfully.
+  trustHost: true,
   adapter: PrismaAdapter(prisma),
   // Credentials-based OTP sign-in requires a JWT-backed session. Google accounts
   // continue to be stored through the Prisma adapter, while all sessions are signed.
