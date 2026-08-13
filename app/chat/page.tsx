@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import type { Message } from '@/types';
 import Sidebar from '@/components/Sidebar';
 import ChatArea from '@/components/ChatArea';
 import SettingsModal from '@/components/SettingsModal';
@@ -15,6 +16,9 @@ export default function ChatNPInterface() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLimitPopup, setIsLimitPopup] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [selectedModel, setSelectedModel] = useState<AIModel>('ChatNP');
   
@@ -34,6 +38,47 @@ export default function ChatNPInterface() {
     startNewChat,
     sendMessage,
   } = useChat();
+
+  const guestMessageCount = messages.filter((message: Message) => message.role === 'user').length;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch('/api/auth/session')
+      .then((response) => response.json())
+      .then((session) => {
+        if (!cancelled) {
+          setIsAuthenticated(Boolean(session?.user));
+          setAuthChecked(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setAuthChecked(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleSend = useCallback(async (content: string, fileData?: { name: string; content: string }) => {
+    const nextGuestMessageCount = guestMessageCount + 1;
+
+    // The fourth message is allowed to complete. The popup appears afterwards;
+    // the fifth message is blocked until the guest signs in with Google.
+    if (authChecked && !isAuthenticated && guestMessageCount >= 4) {
+      setIsLimitPopup(true);
+      setIsLoginOpen(true);
+      return;
+    }
+
+    await sendMessage(content, fileData);
+
+    if (authChecked && !isAuthenticated && nextGuestMessageCount >= 4) {
+      setIsLimitPopup(true);
+      setIsLoginOpen(true);
+    }
+  }, [authChecked, guestMessageCount, isAuthenticated, sendMessage]);
 
   // --- Initial Hydration ---
   useEffect(() => {
@@ -97,15 +142,15 @@ export default function ChatNPInterface() {
           <button
             onClick={() => setIsLoginOpen(true)}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-            aria-label="Sign in with Google"
+            aria-label="Login"
           >
-            Google Login
+            Login
           </button>
         </div>
 
         <ChatArea
           messages={messages}
-          onSend={sendMessage}
+          onSend={handleSend}
           onOpenSidebar={() => setIsSidebarOpen(true)}
           isThinking={isThinking}
           selectedModel={selectedModel}
@@ -116,7 +161,14 @@ export default function ChatNPInterface() {
       {/* Modals */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} theme={theme} setTheme={setTheme} />
       <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={userProfile} setUser={setUserProfile} />
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => {
+          setIsLoginOpen(false);
+          setIsLimitPopup(false);
+        }}
+        isLimitReached={isLimitPopup}
+      />
     </div>
   );
 }

@@ -1,12 +1,15 @@
-import { LogIn, X } from 'lucide-react';
+'use client';
+
+import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isLimitReached?: boolean;
 }
 
-export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, isLimitReached = false }: LoginModalProps) {
   if (!isOpen) return null;
 
   const handleGoogleLogin = () => {
@@ -37,8 +40,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 NP
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Welcome to ChatNP</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Sign in with your Google account</p>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                  {isLimitReached ? 'View more with ChatNP' : 'Welcome to ChatNP'}
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {isLimitReached
+                    ? 'तपाईंले ४ वटा सन्देश पूरा गर्नुभयो। कुराकानी जारी राख्न Login गर्नुहोस्।'
+                    : 'Continue securely with your Google account.'}
+                </p>
               </div>
             </div>
             <button
@@ -72,7 +81,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>Continue with Google</span>
+              <span>{isLimitReached ? 'Login and View More with Google' : 'Continue with Google'}</span>
             </button>
           </div>
 
