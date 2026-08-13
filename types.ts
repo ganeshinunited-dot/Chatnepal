@@ -23,7 +23,7 @@ export interface UserProfile {
   name: string;
   email: string;
   avatarUrl?: string | null;
-  emailVerified?: Date | null;
+  emailVerified?: Date | string | null;
 }
 
 export interface APIError {

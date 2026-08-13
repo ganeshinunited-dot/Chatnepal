@@ -83,15 +83,74 @@ async function sendCodeEmail(email: string, code: string) {
   await transport.sendMail({
     from: smtp.from,
     to: email,
-    subject: `${code} is your ChatNP login code`,
-    text: `Your ChatNP login code is ${code}. It expires in 10 minutes. Do not share this code with anyone.`,
+    subject: `${code} — ChatNP sign-in code`,
+    text: [
+      'ChatNP | KarkTech',
+      '',
+      `Your secure sign-in code is: ${code}`,
+      '',
+      'This code expires in 10 minutes and can be used only once.',
+      'Do not share this code with anyone — including anyone claiming to represent ChatNP or KarkTech.',
+      '',
+      'If you did not request this code, you can safely ignore this email.',
+    ].join('\n'),
     html: `
-      <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:32px;color:#111827">
-        <div style="font-size:20px;font-weight:700;margin-bottom:20px">ChatNP</div>
-        <p style="font-size:16px;line-height:1.6">Use this one-time code to sign in to ChatNP:</p>
-        <div style="margin:24px 0;padding:18px;background:#f3f4f6;border-radius:12px;font-size:28px;font-weight:700;letter-spacing:8px;text-align:center">${code}</div>
-        <p style="font-size:14px;line-height:1.6;color:#4b5563">This code expires in 10 minutes. Do not share it with anyone, including ChatNP support.</p>
-      </div>
+      <!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </head>
+        <body style="margin:0;padding:0;background:#f5f7fb;color:#172033;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+          <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Your secure ChatNP sign-in code is ${code}.</div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#f5f7fb;padding:32px 16px;">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:560px;background:#ffffff;border:1px solid #e6eaf2;border-radius:24px;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,0.08);">
+                  <tr>
+                    <td style="padding:28px 32px 20px;background:linear-gradient(135deg,#0f2e63 0%,#165dcc 58%,#1d77e8 100%);">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td style="width:38px;height:38px;border-radius:12px;background:#ffffff;color:#1559c7;text-align:center;font-size:14px;font-weight:800;letter-spacing:-0.04em;">NP</td>
+                          <td style="padding-left:12px;color:#ffffff;">
+                            <div style="font-size:20px;line-height:24px;font-weight:800;letter-spacing:-0.03em;">ChatNP</div>
+                            <div style="margin-top:3px;font-size:11px;line-height:16px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#cfe2ff;">A KarkTech product</div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:32px 32px 12px;">
+                      <p style="margin:0;color:#2563eb;font-size:12px;line-height:18px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;">Secure sign in</p>
+                      <h1 style="margin:10px 0 0;color:#172033;font-size:26px;line-height:34px;font-weight:800;letter-spacing:-0.03em;">तपाईंको ChatNP code</h1>
+                      <p style="margin:14px 0 0;color:#536176;font-size:15px;line-height:24px;">ChatNP मा सुरक्षित रूपमा sign in गर्न तलको one-time code प्रयोग गर्नुहोस्।</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:16px 32px 24px;">
+                      <div style="border:1px solid #cfe0ff;border-radius:18px;background:#f6f9ff;padding:22px 16px;text-align:center;">
+                        <div style="color:#64748b;font-size:11px;line-height:16px;font-weight:800;letter-spacing:0.13em;text-transform:uppercase;">Your verification code</div>
+                        <div style="margin-top:10px;color:#103c87;font-size:32px;line-height:38px;font-weight:800;letter-spacing:0.34em;text-indent:0.34em;font-variant-numeric:tabular-nums;">${code}</div>
+                      </div>
+                      <p style="margin:18px 0 0;color:#536176;font-size:14px;line-height:22px;">यो code <strong style="color:#172033;">१० मिनेटभित्र</strong> प्रयोग गर्नुहोस्। यो एकपटक मात्र valid हुन्छ।</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 32px 32px;">
+                      <div style="border-left:3px solid #f59e0b;border-radius:2px;background:#fffbeb;padding:12px 14px;color:#854d0e;font-size:13px;line-height:20px;">यो code कसैलाई नदिनुहोस्। ChatNP वा KarkTech का प्रतिनिधिले पनि तपाईंको verification code माग्दैनन्।</div>
+                      <p style="margin:18px 0 0;color:#7a879a;font-size:12px;line-height:19px;">तपाईंले यो code माग्नुभएको होइन भने, यो email बेवास्ता गर्न सक्नुहुन्छ। तपाईंको account सुरक्षित रहन्छ।</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="border-top:1px solid #e8edf5;padding:20px 32px;background:#fbfcfe;color:#8995a8;font-size:11px;line-height:18px;text-align:center;">This is an automated security message from ChatNP by KarkTech.</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
     `,
   });
 }
