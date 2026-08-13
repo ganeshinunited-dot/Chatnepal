@@ -197,7 +197,7 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
       </div>
 
       {/* Input Area */}
-      <div className="bg-slate-50/75 p-4 transition-colors dark:bg-slate-900/80 md:pb-6">
+      <div className="bg-transparent p-4 transition-colors md:pb-6">
         <div className="w-full max-w-3xl mx-auto">
           <ChatInput onSend={onSend} disabled={isThinking} />
         </div>

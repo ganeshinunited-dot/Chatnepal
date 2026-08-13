@@ -34,18 +34,18 @@ export default function DayNightBackground({ children }: DayNightBackgroundProps
   }, []);
 
   return (
-    <div className={`flex h-screen w-full transition-colors duration-[4000ms] overflow-hidden relative ${isNight ? 'bg-gradient-to-b from-[#020111] via-[#0a0a2a] to-[#13132b]' : 'bg-gradient-to-b from-sky-400 via-sky-300 to-sky-100'}`}>
+    <div className={`relative flex h-[100dvh] w-full overflow-hidden transition-colors duration-[4000ms] ${isNight ? 'bg-gradient-to-b from-[#020111] via-[#0a0a2a] to-[#13132b]' : 'bg-sky-300'}`}>
 
       {/* Theme Toggle Button */}
       <button
         onClick={() => setIsNight(!isNight)}
-        className={`absolute top-4 right-4 sm:top-6 sm:right-6 z-50 p-3 rounded-full transition-all duration-[4000ms] shadow-lg backdrop-blur-md border ${
+        className={`absolute right-20 top-4 z-40 rounded-full border p-2 shadow-lg backdrop-blur-md transition-all duration-[4000ms] sm:right-24 sm:top-6 ${
           isNight
             ? 'bg-black/20 hover:bg-black/40 border-white/10 text-white'
             : 'bg-white/20 hover:bg-white/40 border-black/10 text-slate-800'
         }`}
       >
-        {isNight ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        {isNight ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
       </button>
 
       {/* Night Elements Container (Fades in and out over 4s) */}
