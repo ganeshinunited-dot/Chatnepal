@@ -61,6 +61,12 @@ export default function ChatNPInterface() {
     };
   }, []);
 
+  const handleAuthenticated = useCallback(() => {
+    setIsAuthenticated(true);
+    setIsLimitPopup(false);
+    void fetchHistory();
+  }, [fetchHistory]);
+
   const handleSend = useCallback(async (content: string, fileData?: { name: string; content: string }) => {
     const nextGuestMessageCount = guestMessageCount + 1;
 
@@ -168,6 +174,7 @@ export default function ChatNPInterface() {
           setIsLimitPopup(false);
         }}
         isLimitReached={isLimitPopup}
+        onAuthenticated={handleAuthenticated}
       />
     </div>
   );

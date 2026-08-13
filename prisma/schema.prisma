@@ -61,6 +61,21 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model EmailLoginCode {
+  id          String   @id @default(cuid())
+  email       String
+  codeHash    String
+  expiresAt   DateTime
+  attempts    Int      @default(0)
+  consumedAt  DateTime?
+  ipAddress   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email, createdAt])
+  @@index([expiresAt])
+}
+
 model Chat {
   id        String    @id @default(cuid())
   title     String

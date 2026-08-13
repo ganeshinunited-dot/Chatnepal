@@ -1,23 +1,59 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
+import NextAuth from 'next-auth';
+import Google from 'next-auth/providers/google';
+import Credentials from 'next-auth/providers/credentials';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from '@/lib/prisma';
+import { verifyEmailLoginCode } from '@/lib/services/email-otp-service';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  // Credentials-based OTP sign-in requires a JWT-backed session. Google accounts
+  // continue to be stored through the Prisma adapter, while all sessions are signed.
+  session: { strategy: 'jwt' },
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID || process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET || process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    Credentials({
+      id: 'email-otp',
+      name: 'Email code',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        code: { label: 'Code', type: 'text' },
+      },
+      async authorize(credentials) {
+        const email = typeof credentials?.email === 'string' ? credentials.email : '';
+        const code = typeof credentials?.code === 'string' ? credentials.code : '';
+
+        try {
+          const user = await verifyEmailLoginCode({ email, code });
+          if (!user) return null;
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          };
+        } catch (error) {
+          console.error('Email OTP authorization failed', error);
+          return null;
+        }
+      },
     }),
   ],
   pages: {
     signIn: '/chat',
   },
   callbacks: {
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
+    async jwt({ token, user }) {
+      if (user?.id) token.sub = user.id;
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.sub) {
+        (session.user as typeof session.user & { id: string }).id = token.sub;
       }
       return session;
     },
