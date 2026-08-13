@@ -21,7 +21,7 @@ export default function ProfileNameModal({ isOpen, email, initialName = '', onCo
     const normalizedName = name.trim().replace(/\s+/g, ' ');
 
     if (normalizedName.length < 2 || normalizedName.length > 80) {
-      setError('कृपया २ देखि ८० अक्षरभित्र आफ्नो नाम राख्नुहोस्।');
+      setError('Please enter a name between 2 and 80 characters.');
       return;
     }
 
@@ -31,7 +31,7 @@ export default function ProfileNameModal({ isOpen, email, initialName = '', onCo
     try {
       await onComplete(normalizedName);
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'नाम save गर्न सकिएन। फेरि प्रयास गर्नुहोस्।');
+      setError(saveError instanceof Error ? saveError.message : 'We could not save your name. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -57,13 +57,13 @@ export default function ProfileNameModal({ isOpen, email, initialName = '', onCo
           </div>
           <div className="mt-5">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">Welcome to ChatNP</p>
-            <h2 id="profile-name-title" className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">तपाईंलाई के भनेर बोलाऊँ?</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">यो नाम तपाईंको ChatNP profile र chat history मा मात्र देखिन्छ।</p>
+            <h2 id="profile-name-title" className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">What should we call you?</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">This name appears only in your ChatNP profile and chat history.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
-              <label htmlFor="profile-name" className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">तपाईंको नाम</label>
+              <label htmlFor="profile-name" className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">Your name</label>
               <input
                 id="profile-name"
                 type="text"
@@ -71,7 +71,7 @@ export default function ProfileNameModal({ isOpen, email, initialName = '', onCo
                 autoFocus
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="जस्तै, गणेश कार्की"
+                placeholder="For example, Ganesh Karki"
                 className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 maxLength={80}
                 required

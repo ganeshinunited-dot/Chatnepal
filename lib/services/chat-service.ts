@@ -41,6 +41,28 @@ export class ChatService {
     }
   }
 
+  static async deleteChat(chatId: string): Promise<void> {
+    const response = await fetch(`${this.BASE_URL}/chats?chatId=${encodeURIComponent(chatId)}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok || !data?.success) {
+      throw new Error(data?.error?.message || 'Unable to delete this chat.');
+    }
+  }
+
+  static async clearHistory(): Promise<number> {
+    const response = await fetch(`${this.BASE_URL}/chats`, { method: 'DELETE' });
+    const data = await response.json().catch(() => null);
+
+    if (!response.ok || !data?.success) {
+      throw new Error(data?.error?.message || 'Unable to clear chat history.');
+    }
+
+    return Number(data.data?.deleted || 0);
+  }
+
   static async fetchHistory(limit = 20, cursor?: string): Promise<{ chats: ChatSession[], nextCursor: string | null }> {
     try {
       const url = new URL(`${window.location.origin}${this.BASE_URL}/chats`);

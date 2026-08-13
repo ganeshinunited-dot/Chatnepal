@@ -28,7 +28,7 @@ function normalizeEmail(value: string) {
 function assertValidEmail(value: string) {
   const email = normalizeEmail(value);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
-    throw new EmailOtpError('कृपया मान्य email address राख्नुहोस्।', 400, 'INVALID_EMAIL');
+      throw new EmailOtpError('Please enter a valid email address.', 400, 'INVALID_EMAIL');
   }
   return email;
 }
@@ -123,8 +123,8 @@ async function sendCodeEmail(email: string, code: string) {
                   <tr>
                     <td style="padding:32px 32px 12px;">
                       <p style="margin:0;color:#2563eb;font-size:12px;line-height:18px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;">Secure sign in</p>
-                      <h1 style="margin:10px 0 0;color:#172033;font-size:26px;line-height:34px;font-weight:800;letter-spacing:-0.03em;">तपाईंको ChatNP code</h1>
-                      <p style="margin:14px 0 0;color:#536176;font-size:15px;line-height:24px;">ChatNP मा सुरक्षित रूपमा sign in गर्न तलको one-time code प्रयोग गर्नुहोस्।</p>
+                      <h1 style="margin:10px 0 0;color:#172033;font-size:26px;line-height:34px;font-weight:800;letter-spacing:-0.03em;">Your ChatNP code</h1>
+                      <p style="margin:14px 0 0;color:#536176;font-size:15px;line-height:24px;">Use the one-time code below to sign in to ChatNP securely.</p>
                     </td>
                   </tr>
                   <tr>
@@ -133,13 +133,13 @@ async function sendCodeEmail(email: string, code: string) {
                         <div style="color:#64748b;font-size:11px;line-height:16px;font-weight:800;letter-spacing:0.13em;text-transform:uppercase;">Your verification code</div>
                         <div style="margin-top:10px;color:#103c87;font-size:32px;line-height:38px;font-weight:800;letter-spacing:0.34em;text-indent:0.34em;font-variant-numeric:tabular-nums;">${code}</div>
                       </div>
-                      <p style="margin:18px 0 0;color:#536176;font-size:14px;line-height:22px;">यो code <strong style="color:#172033;">१० मिनेटभित्र</strong> प्रयोग गर्नुहोस्। यो एकपटक मात्र valid हुन्छ।</p>
+                      <p style="margin:18px 0 0;color:#536176;font-size:14px;line-height:22px;">Use this code within <strong style="color:#172033;">10 minutes</strong>. It can be used only once.</p>
                     </td>
                   </tr>
                   <tr>
                     <td style="padding:0 32px 32px;">
-                      <div style="border-left:3px solid #f59e0b;border-radius:2px;background:#fffbeb;padding:12px 14px;color:#854d0e;font-size:13px;line-height:20px;">यो code कसैलाई नदिनुहोस्। ChatNP वा KarkTech का प्रतिनिधिले पनि तपाईंको verification code माग्दैनन्।</div>
-                      <p style="margin:18px 0 0;color:#7a879a;font-size:12px;line-height:19px;">तपाईंले यो code माग्नुभएको होइन भने, यो email बेवास्ता गर्न सक्नुहुन्छ। तपाईंको account सुरक्षित रहन्छ।</p>
+                      <div style="border-left:3px solid #f59e0b;border-radius:2px;background:#fffbeb;padding:12px 14px;color:#854d0e;font-size:13px;line-height:20px;">Do not share this code with anyone. ChatNP and KarkTech representatives will never ask for your verification code.</div>
+                      <p style="margin:18px 0 0;color:#7a879a;font-size:12px;line-height:19px;">If you did not request this code, you can safely ignore this email. Your account remains secure.</p>
                     </td>
                   </tr>
                   <tr>

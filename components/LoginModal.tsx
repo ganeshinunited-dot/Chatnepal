@@ -34,20 +34,23 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
   const [resendIn, setResendIn] = useState(0);
 
   useEffect(() => {
-    if (!isOpen) {
-      setStep('options');
-      setCode('');
-      setError('');
-      setIsSubmitting(false);
-      setResendIn(0);
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
     if (resendIn <= 0) return;
     const timer = window.setInterval(() => setResendIn((seconds) => Math.max(0, seconds - 1)), 1000);
     return () => window.clearInterval(timer);
   }, [resendIn]);
+
+  const resetForm = () => {
+    setStep('options');
+    setCode('');
+    setError('');
+    setIsSubmitting(false);
+    setResendIn(0);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
 
   const handleGoogleLogin = () => {
     window.location.assign('/api/auth/signin/google?callbackUrl=%2Fchat');
@@ -57,7 +60,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
     event?.preventDefault();
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail) {
-      setError('पहिले आफ्नो email address राख्नुहोस्।');
+      setError('Please enter your email address.');
       return;
     }
 
@@ -73,7 +76,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
       const payload = await response.json();
 
       if (!response.ok || !payload?.success) {
-        throw new Error(payload?.error?.message || 'Code पठाउन सकिएन। फेरि प्रयास गर्नुहोस्।');
+        throw new Error(payload?.error?.message || 'We could not send a code. Please try again.');
       }
 
       setEmail(payload.data.email);
@@ -81,7 +84,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
       setStep('code');
       setResendIn(60);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : 'Code पठाउन सकिएन। फेरि प्रयास गर्नुहोस्।');
+      setError(requestError instanceof Error ? requestError.message : 'We could not send a code. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -90,7 +93,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
   const verifyCode = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!/^\d{6}$/.test(code.trim())) {
-      setError('Email मा आएको ६-अङ्कको code राख्नुहोस्।');
+      setError('Enter the 6-digit code from your email.');
       return;
     }
 
@@ -105,13 +108,13 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
       });
 
       if (!result || result.error) {
-        throw new Error('Code मिलेन वा समय सकियो। नयाँ code लिएर फेरि प्रयास गर्नुहोस्।');
+        throw new Error('That code is incorrect or has expired. Request a new one and try again.');
       }
 
       onAuthenticated?.();
-      onClose();
+      handleClose();
     } catch (verificationError) {
-      setError(verificationError instanceof Error ? verificationError.message : 'Login पूरा हुन सकेन।');
+      setError(verificationError instanceof Error ? verificationError.message : 'We could not complete sign in. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -119,10 +122,10 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
 
   if (!isOpen) return null;
 
-  const title = isLimitReached ? 'View more with ChatNP' : 'Login to ChatNP';
+  const title = isLimitReached ? 'Continue with ChatNP' : 'Sign in to ChatNP';
   const description = isLimitReached
-    ? 'तपाईंले ४ वटा सन्देश पूरा गर्नुभयो। कुराकानी जारी राख्न Login गर्नुहोस्।'
-    : 'आफ्नो कुराकानी सुरक्षित राख्न Login गर्नुहोस्।';
+    ? 'You have reached the 4-message limit. Sign in to continue chatting.'
+    : 'Sign in to save your conversations and continue using ChatNP.';
 
   return (
     <AnimatePresence>
@@ -134,7 +137,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="absolute inset-0 cursor-default bg-slate-950/60 backdrop-blur-sm"
-          onClick={onClose}
+          onClick={handleClose}
         />
 
         <motion.div
@@ -154,7 +157,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
                 <p className="mt-0.5 text-xs leading-5 text-slate-500 dark:text-slate-400">{description}</p>
               </div>
             </div>
-            <button onClick={onClose} aria-label="Close" className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200">
+            <button onClick={handleClose} aria-label="Close" className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200">
               <X className="h-5 w-5" />
             </button>
           </div>

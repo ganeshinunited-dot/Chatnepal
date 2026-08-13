@@ -16,7 +16,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
 
   const handleSend = () => {
     if ((input.trim() || attachedFile) && !disabled) {
-      onSend(input.trim() || `फाइल विश्लेषण गर्नुहोस्: ${attachedFile?.name}`, attachedFile || undefined);
+      onSend(input.trim() || `Analyze this file: ${attachedFile?.name}`, attachedFile || undefined);
       setInput('');
       setAttachedFile(null);
       setIsMenuOpen(false);
@@ -31,7 +31,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
     if (!file) return;
     
     if (file.size > 2 * 1024 * 1024) {
-      alert("फाइलको साइज २MB भन्दा कम हुनुपर्छ।");
+      alert('Files must be smaller than 2 MB.');
       e.target.value = '';
       return;
     }
@@ -43,7 +43,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
       setIsMenuOpen(false);
     };
     reader.onerror = () => {
-      alert("फाइल पढ्न सकिएन।");
+      alert('We could not read this file.');
     };
 
     if (file.type.includes('text') || file.name.endsWith('.txt') || file.name.endsWith('.md') || file.name.endsWith('.json') || file.name.endsWith('.js') || file.name.endsWith('.ts')) {
@@ -140,7 +140,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
               window.dispatchEvent(new Event('resize'));
             }, 300);
           }}
-          placeholder={attachedFile ? "फाइलको बारेमा केही सोध्नुहोस्..." : "Ask anything or upload a file..."}
+          placeholder={attachedFile ? 'Ask about this file...' : 'Ask anything or upload a file...'}
           className="w-full bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none resize-none min-h-[44px] px-2 py-2 text-sm scrollbar-hide"
           rows={1}
           disabled={disabled}

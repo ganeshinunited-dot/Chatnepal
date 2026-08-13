@@ -39,6 +39,21 @@ export function useChat() {
     setError(null);
   }, []);
 
+  const deleteChat = useCallback(async (chatId: string) => {
+    await ChatService.deleteChat(chatId);
+    setSessions((currentSessions) => currentSessions.filter((session) => session.id !== chatId));
+
+    if (activeChatId === chatId) {
+      startNewChat();
+    }
+  }, [activeChatId, startNewChat]);
+
+  const clearHistory = useCallback(async () => {
+    await ChatService.clearHistory();
+    setSessions([]);
+    startNewChat();
+  }, [startNewChat]);
+
   const sendMessage = async (content: string, fileData?: { name: string; content: string }) => {
     if ((!content.trim() && !fileData) || isThinking) return;
 
@@ -46,8 +61,8 @@ export function useChat() {
     let fullMessageForAPI = content;
 
     if (fileData) {
-      displayMessage = `📎 [फाइल संलग्न: ${fileData.name}]\n${content}`;
-      fullMessageForAPI = `प्रयोगकर्ताले तलको फाइल अपलोड गरेका छन् र यसको विश्लेषण गर्न अनुरोध गरेका छन्।\nफाइलको नाम: ${fileData.name}\nफाइलको सामग्री:\n\`\`\`\n${fileData.content.slice(0, 10000)}\n\`\`\`\n\nप्रयोगकर्ताको प्रश्न/सन्देश: ${content || 'यस फाइलको सारांश र विश्लेषण गर्नुहोस्।'}`;
+      displayMessage = `📎 [File attached: ${fileData.name}]\n${content}`;
+      fullMessageForAPI = `The user uploaded the following file and requested analysis.\nFile name: ${fileData.name}\nFile content:\n\`\`\`\n${fileData.content.slice(0, 10000)}\n\`\`\`\n\nUser question/message: ${content || 'Please summarize and analyze this file.'}`;
     }
 
     const userMsg: Message = { id: Date.now().toString(), role: 'user', content: displayMessage };
@@ -82,7 +97,7 @@ export function useChat() {
       await fetchHistory();
       
     } catch (err: any) {
-      const msg = err?.message || 'माफ गर्नुहोला, अहिले सर्भरमा जडान गर्न समस्या भइरहेको छ।';
+      const msg = err?.message || 'We could not connect to the server right now. Please try again.';
       setError(msg);
       setMessages([...updatedMessages, { id: 'error', role: 'assistant', content: msg }]);
     } finally {
@@ -99,6 +114,8 @@ export function useChat() {
     fetchHistory,
     selectChat,
     startNewChat,
+    deleteChat,
+    clearHistory,
     sendMessage,
   };
 }

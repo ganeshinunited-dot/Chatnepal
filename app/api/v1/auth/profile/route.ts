@@ -45,7 +45,7 @@ export async function GET() {
     return APIResponse.success({ profile: serializeProfile(user) });
   } catch (error) {
     console.error('Profile API GET error:', error);
-    return APIResponse.error('Profile लोड गर्न सकिएन।', 'PROFILE_FETCH_ERROR', 500);
+    return APIResponse.error('Unable to load your profile.', 'PROFILE_FETCH_ERROR', 500);
   }
 }
 
@@ -60,7 +60,7 @@ export async function PATCH(request: NextRequest) {
     const name = normalizeDisplayName(body?.name);
 
     if (name.length < 2 || name.length > MAX_DISPLAY_NAME_LENGTH) {
-      return APIResponse.badRequest(`कृपया २ देखि ${MAX_DISPLAY_NAME_LENGTH} अक्षरभित्र आफ्नो नाम राख्नुहोस्।`);
+      return APIResponse.badRequest(`Please enter a name between 2 and ${MAX_DISPLAY_NAME_LENGTH} characters.`);
     }
 
     const user = await prisma.user.update({
@@ -82,6 +82,6 @@ export async function PATCH(request: NextRequest) {
     return APIResponse.success({ profile: serializeProfile(user) });
   } catch (error) {
     console.error('Profile API PATCH error:', error);
-    return APIResponse.error('नाम save गर्न सकिएन।', 'PROFILE_UPDATE_ERROR', 500);
+    return APIResponse.error('Unable to save your name.', 'PROFILE_UPDATE_ERROR', 500);
   }
 }

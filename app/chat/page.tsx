@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { signOut } from 'next-auth/react';
 import type { Message } from '@/types';
 import Sidebar from '@/components/Sidebar';
 import ChatArea from '@/components/ChatArea';
@@ -45,6 +46,7 @@ export default function ChatNPInterface() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [needsProfileName, setNeedsProfileName] = useState(false);
+  const [isManagingHistory, setIsManagingHistory] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [selectedModel, setSelectedModel] = useState<AIModel>('ChatNP');
   const [userProfile, setUserProfile] = useState<UserProfile>(guestProfile);
@@ -58,6 +60,8 @@ export default function ChatNPInterface() {
     fetchHistory,
     selectChat,
     startNewChat,
+    deleteChat,
+    clearHistory,
     sendMessage,
   } = useChat();
 
@@ -68,7 +72,7 @@ export default function ChatNPInterface() {
     const payload = await response.json().catch(() => null);
 
     if (!response.ok || !payload?.success || !payload?.data?.profile) {
-      throw new Error(payload?.error?.message || 'Profile लोड गर्न सकिएन।');
+      throw new Error(payload?.error?.message || 'Unable to load your profile.');
     }
 
     const profile = payload.data.profile as AccountProfile;
@@ -123,13 +127,54 @@ export default function ChatNPInterface() {
     const payload = await response.json().catch(() => null);
 
     if (!response.ok || !payload?.success || !payload?.data?.profile) {
-      throw new Error(payload?.error?.message || 'नाम save गर्न सकिएन।');
+      throw new Error(payload?.error?.message || 'Unable to save your name.');
     }
 
     const profile = payload.data.profile as AccountProfile;
     setUserProfile(toUserProfile(profile));
     setNeedsProfileName(false);
   }, []);
+
+  const handleDeleteChat = useCallback(async (chatId: string) => {
+    const chat = sessions.find((session) => session.id === chatId);
+    const chatLabel = chat?.title || 'this chat';
+
+    if (!window.confirm(`Delete “${chatLabel}”? This cannot be undone.`)) return;
+
+    setIsManagingHistory(true);
+    try {
+      await deleteChat(chatId);
+    } catch (error) {
+      window.alert(error instanceof Error ? error.message : 'Unable to delete this chat. Please try again.');
+    } finally {
+      setIsManagingHistory(false);
+    }
+  }, [deleteChat, sessions]);
+
+  const handleClearHistory = useCallback(async () => {
+    if (!window.confirm('Delete all chat history? This cannot be undone.')) return;
+
+    setIsManagingHistory(true);
+    try {
+      await clearHistory();
+    } catch (error) {
+      window.alert(error instanceof Error ? error.message : 'Unable to clear chat history. Please try again.');
+    } finally {
+      setIsManagingHistory(false);
+    }
+  }, [clearHistory]);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await signOut({ redirect: false, redirectTo: '/chat' });
+    } finally {
+      setIsAuthenticated(false);
+      setNeedsProfileName(false);
+      setUserProfile(guestProfile);
+      startNewChat();
+      window.location.assign('/chat');
+    }
+  }, [startNewChat]);
 
   const handleSend = useCallback(async (content: string, fileData?: { name: string; content: string }) => {
     const nextGuestMessageCount = guestMessageCount + 1;
@@ -179,9 +224,14 @@ export default function ChatNPInterface() {
       activeChatId={activeChatId}
       onSelectChat={(id) => { selectChat(id); setIsSidebarOpen(false); }}
       onNewChat={() => { startNewChat(); setIsSidebarOpen(false); }}
+      onDeleteChat={(chatId) => { void handleDeleteChat(chatId); }}
+      onClearHistory={() => { void handleClearHistory(); }}
+      isManagingHistory={isManagingHistory}
+      isAuthenticated={isAuthenticated}
+      onLogout={() => { void handleLogout(); }}
       user={userProfile}
     />
-  ), [sessions, activeChatId, selectChat, startNewChat, userProfile]);
+  ), [sessions, activeChatId, selectChat, startNewChat, handleDeleteChat, handleClearHistory, isManagingHistory, isAuthenticated, handleLogout, userProfile]);
 
   return (
     <div className="flex h-[100dvh] w-full overflow-hidden bg-slate-50 font-sans text-slate-900 selection:bg-blue-500/30 dark:bg-slate-900 dark:text-slate-100">

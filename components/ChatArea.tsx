@@ -67,10 +67,10 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
         return (
           <>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">
-              नमस्ते! म ChatNP
+              Welcome to ChatNP
             </h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-lg text-sm md:text-base leading-relaxed">
-              म तपाईलाई नेपाली भाषा, संस्कृति, लेखन, र अन्य विभिन्न विषयहरूमा सहयोग गर्न तयार छु। तपाईं फाइल पनि अपलोड गरेर विश्लेषण गराउन सक्नुहुन्छ।
+              Your Nepal-first AI companion for language, culture, writing, and everyday questions. You can also upload a file for analysis.
             </p>
           </>
         );
@@ -92,7 +92,7 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
               ChatGPT
             </h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-lg text-sm md:text-base leading-relaxed">
-              I'm ChatGPT, an AI language model created by OpenAI. How can I help you today?
+              I&apos;m ChatGPT, an AI language model created by OpenAI. How can I help you today?
             </p>
           </>
         );
@@ -100,10 +100,10 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
         return (
           <>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">
-              Hello, I'm Claude
+              Hello, I&apos;m Claude
             </h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-lg text-sm md:text-base leading-relaxed">
-              I'm an AI assistant created by Anthropic. I'm here to help with writing, analysis, coding, and more.
+              I&apos;m an AI assistant created by Anthropic. I&apos;m here to help with writing, analysis, coding, and more.
             </p>
           </>
         );

@@ -16,7 +16,7 @@ export function Hero() {
           transition={{ duration: 1.5, delay: 0.8 }}
           className="absolute top-[12%] left-[6%] select-none font-heading text-[110px] font-bold leading-none text-blue-500/[0.05]"
         >
-          नेपाल
+              NEPAL
         </motion.span>
         <motion.span
           initial={{ opacity: 0 }}
