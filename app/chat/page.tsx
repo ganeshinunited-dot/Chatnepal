@@ -12,6 +12,7 @@ import LoginModal from '@/components/LoginModal';
 import { UserProfile, AIModel } from '@/types';
 import { useChat } from '@/hooks/use-chat';
 import DayNightBackground from '@/components/DayNightBackground';
+import ChatNPInstallPrompt from '@/components/ChatNPInstallPrompt';
 
 type AccountProfile = {
   id: string;
@@ -306,6 +307,7 @@ export default function ChatNPInterface() {
         initialName=""
         onComplete={saveProfileName}
       />
+      <ChatNPInstallPrompt />
       </div>
     </DayNightBackground>
   );
