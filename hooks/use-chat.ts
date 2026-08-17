@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Message, ChatSession } from '@/types';
 import { ChatService } from '@/lib/services/chat-service';
 
-const DEFAULT_WELCOME_MESSAGE = 'नमस्ते! म ChatNP, कर्कटेकद्वारा निर्मित NP1 MONI हूँ। आज म तपाईंलाई कसरी सहयोग गर्न सक्छु?';
+const DEFAULT_WELCOME_MESSAGE = 'नमस्ते अए! म तपाईंलाई के मद्दत गर्न सक्छु? ✨';
 
 export function useChat() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
