@@ -1,15 +1,18 @@
 'use client';
 
+/* eslint-disable react-hooks/purity */
+
 import { motion } from 'motion/react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Sun, Moon, Plane } from 'lucide-react';
 
 interface DayNightBackgroundProps {
   children: ReactNode;
+  isNight: boolean;
+  onToggleNight: () => void;
 }
 
-export default function DayNightBackground({ children }: DayNightBackgroundProps) {
-  const [isNight, setIsNight] = useState(false);
+export default function DayNightBackground({ children, isNight }: DayNightBackgroundProps) {
 
   // Generate a realistic night sky with stars
   const stars = useMemo(() => {
@@ -36,17 +39,7 @@ export default function DayNightBackground({ children }: DayNightBackgroundProps
   return (
     <div className={`relative flex h-[100dvh] w-full overflow-hidden transition-colors duration-[4000ms] ${isNight ? 'bg-gradient-to-b from-[#020111] via-[#0a0a2a] to-[#13132b]' : 'bg-sky-300'}`}>
 
-      {/* Theme Toggle Button */}
-      <button
-        onClick={() => setIsNight(!isNight)}
-        className={`absolute right-20 top-4 z-40 rounded-full border p-2 shadow-lg backdrop-blur-md transition-all duration-[4000ms] sm:right-24 sm:top-6 ${
-          isNight
-            ? 'bg-black/20 hover:bg-black/40 border-white/10 text-white'
-            : 'bg-white/20 hover:bg-white/40 border-black/10 text-slate-800'
-        }`}
-      >
-        {isNight ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-      </button>
+      {/* Theme Toggle Button removed from here; now elegantly integrated in ChatArea header */}
 
       {/* Night Elements Container (Fades in and out over 4s) */}
       <div className={`absolute inset-0 z-0 pointer-events-none transition-opacity duration-[4000ms] ${isNight ? 'opacity-100' : 'opacity-0'}`}>

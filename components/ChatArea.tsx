@@ -1,4 +1,4 @@
-import { Menu, ChevronDown, Check, Lock, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Menu, ChevronDown, Check, Lock } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Message, AIModel } from '../types';
 import MessageBubble from './MessageBubble';
@@ -14,11 +14,33 @@ interface ChatAreaProps {
   isThinking: boolean;
   selectedModel: AIModel;
   onModelChange: (model: AIModel) => void;
+  isNight: boolean;
+  onToggleNight: () => void;
+  authChecked: boolean;
+  isAuthenticated: boolean;
+  onOpenLogin: () => void;
 }
 
 const MODELS: AIModel[] = ['ChatNP', 'Gemini', 'ChatGPT', 'Claude'];
 
-export default function ChatArea({ messages, onSend, onOpenSidebar, onToggleSidebar, isSidebarCollapsed, isThinking, selectedModel, onModelChange }: ChatAreaProps) {
+import ThemeToggle from './ThemeToggle';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+
+export default function ChatArea({
+  messages,
+  onSend,
+  onOpenSidebar,
+  onToggleSidebar,
+  isSidebarCollapsed,
+  isThinking,
+  selectedModel,
+  onModelChange,
+  isNight,
+  onToggleNight,
+  authChecked,
+  isAuthenticated,
+  onOpenLogin,
+}: ChatAreaProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -115,7 +137,7 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, onToggleSide
   return (
     <div className="relative flex h-full flex-col bg-transparent transition-colors">
       {/* Top Header */}
-      <div className="pointer-events-none absolute left-0 top-0 z-20 flex w-full items-center justify-between p-4 md:p-5">
+      <div className="pointer-events-none absolute left-0 top-0 z-25 flex w-full items-center justify-between p-4 md:p-5">
         <div className="pointer-events-auto flex items-center gap-2">
           <button
             type="button"
@@ -137,13 +159,27 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, onToggleSide
             <span>{isSidebarCollapsed ? 'Open panel' : 'Collapse'}</span>
           </button>
         </div>
+
+        {/* Right Header Actions: Theme Toggle & Login */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          <ThemeToggle isNight={isNight} onToggle={onToggleNight} />
+          {authChecked && !isAuthenticated && (
+            <button
+              onClick={onOpenLogin}
+              className="cursor-pointer rounded-2xl border border-white/40 bg-blue-600/90 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-blue-700 active:scale-95"
+              aria-label="Login"
+            >
+              Login
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Top Model Selector Badge */}
-      <div className="absolute left-1/2 top-4 z-20 -translate-x-1/2" ref={dropdownRef}>
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20" ref={dropdownRef}>
         <button 
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex items-center gap-1.5 rounded-full border border-white/40 bg-white/45 px-3 py-1.5 shadow-sm backdrop-blur-xl transition-colors hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-white/10 dark:bg-slate-950/35 dark:hover:bg-white/15"
+          className="px-3 py-1.5 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 rounded-full shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <ModelLogo model={selectedModel} className="w-4 h-4 text-slate-700 dark:text-slate-200" />
           <span className="text-xs font-bold text-slate-700 dark:text-slate-200 tracking-tight">{selectedModel}</span>
@@ -189,11 +225,11 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, onToggleSide
       </div>
 
       {/* Main Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pb-8 pt-16 md:px-10 md:pt-20 lg:px-16">
-        <div className="mx-auto flex max-w-4xl flex-col gap-6">
+      <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pt-16 pb-8 md:px-8">
+        <div className="max-w-4xl mx-auto flex flex-col gap-6">
           {messages.length === 0 ? (
-            <div className="mt-28 flex h-full flex-col items-center justify-center px-4 text-center md:mt-20">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center overflow-hidden rounded-[22px] border border-white/50 bg-white/50 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/45">
+            <div className="h-full flex flex-col items-center justify-center text-center mt-32 px-4">
+              <div className="w-16 h-16 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center justify-center mb-6 shadow-sm overflow-hidden">
                 <ModelLogo model={selectedModel} className="w-10 h-10 text-slate-700 dark:text-slate-200" />
               </div>
               {renderWelcomeContent()}
@@ -213,8 +249,8 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, onToggleSide
       </div>
 
       {/* Input Area */}
-      <div className="bg-transparent p-4 pt-2 transition-colors md:px-8 md:pb-7 md:pt-3">
-        <div className="mx-auto w-full max-w-4xl">
+      <div className="bg-transparent p-4 transition-colors md:pb-6">
+        <div className="w-full max-w-3xl mx-auto">
           <ChatInput onSend={onSend} disabled={isThinking} />
         </div>
         <div className="text-center mt-3">
