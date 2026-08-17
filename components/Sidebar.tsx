@@ -5,7 +5,9 @@ import { Plus, Search, Settings, PanelLeftClose, Trash2, LogOut, LoaderCircle } 
 
 interface SidebarProps {
   isOpen: boolean;
+  isCollapsed?: boolean;
   onClose: () => void;
+  onToggleCollapse?: () => void;
   onOpenSettings: () => void;
   onOpenProfile: () => void;
   sessions: ChatSession[];
@@ -22,7 +24,9 @@ interface SidebarProps {
 
 export default function Sidebar({
   isOpen,
+  isCollapsed = false,
   onClose,
+  onToggleCollapse,
   onOpenSettings,
   onOpenProfile,
   sessions,
@@ -44,20 +48,42 @@ export default function Sidebar({
   );
 
   return (
-    <div className="flex h-full flex-col border-r border-slate-200 bg-white transition-colors dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex items-center justify-center border-b border-slate-100 p-5 dark:border-slate-800">
+    <div className="flex h-full flex-col overflow-hidden rounded-[26px] border border-white/35 bg-white/35 shadow-[0_20px_60px_rgba(15,23,42,0.12)] backdrop-blur-2xl transition-colors dark:border-white/10 dark:bg-slate-950/35 dark:shadow-black/20">
+      <div className="flex items-center justify-between border-b border-white/30 px-4 py-4 dark:border-white/10">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <ModelLogo model="ChatNP" className="h-5 w-5" />
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">ChatNP</span>
         </div>
+        <div className="flex items-center gap-1">
+          {onToggleCollapse && !isCollapsed && (
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="hidden rounded-xl p-2 text-slate-500 transition hover:bg-white/60 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:inline-flex dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+              title="Collapse sidebar"
+              aria-label="Collapse sidebar"
+            >
+              <PanelLeftClose className="h-4 w-4" />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl p-2 text-slate-500 transition hover:bg-white/60 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:hidden dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+            title="Close sidebar"
+            aria-label="Close sidebar"
+          >
+            <PanelLeftClose className="h-4 w-4 md:hidden" />
+          </button>
+        </div>
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden p-4">
         <button
           onClick={onNewChat}
-          className="mb-4 flex w-full flex-shrink-0 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+          className="mb-4 flex w-full flex-shrink-0 items-center justify-center gap-2 rounded-2xl border border-white/35 bg-white/35 px-4 py-3 text-sm font-medium text-slate-600 shadow-sm transition-colors hover:bg-white/60 dark:border-white/10 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/15"
         >
           <Plus className="h-4 w-4" />
           <span>New Chat</span>
@@ -72,7 +98,7 @@ export default function Sidebar({
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search history..."
-            className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-9 pr-4 text-sm text-slate-900 transition-all placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-blue-500/40"
+            className="w-full rounded-2xl border border-white/35 bg-white/35 py-2.5 pl-9 pr-4 text-sm text-slate-900 shadow-sm transition-all placeholder:text-slate-400 focus:border-blue-500 focus:bg-white/55 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-white/10 dark:bg-white/10 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:bg-white/15 dark:focus:ring-blue-500/40"
           />
         </div>
 
@@ -134,7 +160,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      <div className="mt-auto border-t border-slate-100 p-4 dark:border-slate-800">
+      <div className="mt-auto border-t border-white/30 p-4 dark:border-white/10">
         <div className="grid grid-cols-1 gap-2">
           <div
             onClick={isAuthenticated ? onOpenProfile : undefined}

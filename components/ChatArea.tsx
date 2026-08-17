@@ -1,4 +1,4 @@
-import { Menu, ChevronDown, Check, Lock } from 'lucide-react';
+import { Menu, ChevronDown, Check, Lock, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Message, AIModel } from '../types';
 import MessageBubble from './MessageBubble';
@@ -9,6 +9,8 @@ interface ChatAreaProps {
   messages: Message[];
   onSend: (content: string, fileData?: { name: string; content: string }) => void;
   onOpenSidebar: () => void;
+  onToggleSidebar: () => void;
+  isSidebarCollapsed: boolean;
   isThinking: boolean;
   selectedModel: AIModel;
   onModelChange: (model: AIModel) => void;
@@ -16,7 +18,7 @@ interface ChatAreaProps {
 
 const MODELS: AIModel[] = ['ChatNP', 'Gemini', 'ChatGPT', 'Claude'];
 
-export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, selectedModel, onModelChange }: ChatAreaProps) {
+export default function ChatArea({ messages, onSend, onOpenSidebar, onToggleSidebar, isSidebarCollapsed, isThinking, selectedModel, onModelChange }: ChatAreaProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -111,23 +113,37 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
   };
 
   return (
-    <div className="relative flex h-full flex-col bg-slate-50/75 transition-colors dark:bg-slate-900/80">
+    <div className="relative flex h-full flex-col bg-transparent transition-colors">
       {/* Top Header */}
-      <div className="absolute top-0 left-0 w-full p-4 flex items-center justify-between z-20 pointer-events-none">
-        <button 
-          onClick={onOpenSidebar}
-          className="md:hidden p-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 rounded-full shadow-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors pointer-events-auto"
-          title="Open Sidebar"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+      <div className="pointer-events-none absolute left-0 top-0 z-20 flex w-full items-center justify-between p-4 md:p-5">
+        <div className="pointer-events-auto flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onOpenSidebar}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/40 bg-white/45 text-slate-600 shadow-sm backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:hidden dark:border-white/10 dark:bg-slate-950/35 dark:text-slate-200 dark:hover:bg-white/15"
+            title="Open sidebar"
+            aria-label="Open sidebar"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            className="hidden h-10 items-center gap-2 rounded-2xl border border-white/40 bg-white/45 px-3 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:inline-flex dark:border-white/10 dark:bg-slate-950/35 dark:text-slate-200 dark:hover:bg-white/15"
+            title={isSidebarCollapsed ? 'Open sidebar' : 'Collapse sidebar'}
+            aria-label={isSidebarCollapsed ? 'Open sidebar' : 'Collapse sidebar'}
+          >
+            {isSidebarCollapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+            <span>{isSidebarCollapsed ? 'Open panel' : 'Collapse'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Top Model Selector Badge */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20" ref={dropdownRef}>
+      <div className="absolute left-1/2 top-4 z-20 -translate-x-1/2" ref={dropdownRef}>
         <button 
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="px-3 py-1.5 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 rounded-full shadow-sm flex items-center gap-1.5 transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="flex items-center gap-1.5 rounded-full border border-white/40 bg-white/45 px-3 py-1.5 shadow-sm backdrop-blur-xl transition-colors hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-white/10 dark:bg-slate-950/35 dark:hover:bg-white/15"
         >
           <ModelLogo model={selectedModel} className="w-4 h-4 text-slate-700 dark:text-slate-200" />
           <span className="text-xs font-bold text-slate-700 dark:text-slate-200 tracking-tight">{selectedModel}</span>
@@ -173,11 +189,11 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
       </div>
 
       {/* Main Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pt-16 pb-8 md:px-8">
-        <div className="max-w-4xl mx-auto flex flex-col gap-6">
+      <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pb-8 pt-16 md:px-10 md:pt-20 lg:px-16">
+        <div className="mx-auto flex max-w-4xl flex-col gap-6">
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center mt-32 px-4">
-              <div className="w-16 h-16 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center justify-center mb-6 shadow-sm overflow-hidden">
+            <div className="mt-28 flex h-full flex-col items-center justify-center px-4 text-center md:mt-20">
+              <div className="mb-6 flex h-16 w-16 items-center justify-center overflow-hidden rounded-[22px] border border-white/50 bg-white/50 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/45">
                 <ModelLogo model={selectedModel} className="w-10 h-10 text-slate-700 dark:text-slate-200" />
               </div>
               {renderWelcomeContent()}
@@ -197,8 +213,8 @@ export default function ChatArea({ messages, onSend, onOpenSidebar, isThinking, 
       </div>
 
       {/* Input Area */}
-      <div className="bg-transparent p-4 transition-colors md:pb-6">
-        <div className="w-full max-w-3xl mx-auto">
+      <div className="bg-transparent p-4 pt-2 transition-colors md:px-8 md:pb-7 md:pt-3">
+        <div className="mx-auto w-full max-w-4xl">
           <ChatInput onSend={onSend} disabled={isThinking} />
         </div>
         <div className="text-center mt-3">

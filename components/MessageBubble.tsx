@@ -26,7 +26,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
       className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} py-3`}
     >
       {isUser ? (
-        <div className="flex flex-col items-end w-full max-w-2xl px-4 py-2 bg-slate-100 dark:bg-slate-800/80 rounded-2xl rounded-tr-sm text-sm leading-relaxed text-slate-800 dark:text-slate-100 shadow-sm">
+        <div className="flex w-full max-w-2xl flex-col items-end rounded-2xl rounded-tr-sm border border-white/45 bg-white/48 px-4 py-2 text-sm leading-relaxed text-slate-800 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/45 dark:text-slate-100 dark:shadow-black/15">
           <div className="whitespace-pre-wrap">{message.content}</div>
         </div>
       ) : (
@@ -39,7 +39,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                </span>
              </div>
           ) : (
-            <div className="text-sm leading-relaxed text-slate-800 dark:text-slate-200 w-full py-1 px-1">
+            <div className="w-full px-1 py-1 text-sm leading-relaxed text-slate-800 dark:text-slate-100">
               <p className="whitespace-pre-wrap">{message.content}</p>
               
               <div className="flex items-center gap-2 mt-3 pt-1">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { PanelLeftOpen } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import type { Message } from '@/types';
 import Sidebar from '@/components/Sidebar';
@@ -41,6 +42,7 @@ function toUserProfile(profile: AccountProfile): UserProfile {
 export default function ChatNPInterface() {
   // --- UI & Preferences State ---
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -223,7 +225,9 @@ export default function ChatNPInterface() {
   const sidebarContent = useMemo(() => (
     <Sidebar
       isOpen={true}
+      isCollapsed={false}
       onClose={() => setIsSidebarOpen(false)}
+      onToggleCollapse={() => setIsSidebarCollapsed(true)}
       onOpenSettings={() => setIsSettingsOpen(true)}
       onOpenProfile={() => setIsProfileOpen(true)}
       sessions={sessions}
@@ -241,10 +245,26 @@ export default function ChatNPInterface() {
 
   return (
     <DayNightBackground>
-      <div className="relative z-10 flex h-[100dvh] w-full overflow-hidden bg-transparent font-sans text-slate-900 selection:bg-blue-500/30 dark:bg-transparent dark:text-slate-100">
+      <div className="relative z-10 box-border flex h-full w-full gap-3 overflow-hidden bg-transparent p-2 font-sans text-slate-900 selection:bg-blue-500/30 sm:p-3 md:gap-4 md:p-4 lg:p-5 dark:bg-transparent dark:text-slate-100">
       {/* Desktop Sidebar */}
-      <div className="hidden h-full w-72 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 md:block">
-        {sidebarContent}
+      <div className={`hidden h-full flex-shrink-0 transition-[width] duration-300 ease-out md:block ${isSidebarCollapsed ? 'w-[68px]' : 'w-72 lg:w-80'}`}>
+        {isSidebarCollapsed ? (
+          <aside className="flex h-full flex-col items-center rounded-[26px] border border-white/35 bg-white/35 py-4 shadow-[0_20px_60px_rgba(15,23,42,0.12)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/35 dark:shadow-black/20">
+            <button
+              type="button"
+              onClick={() => setIsSidebarCollapsed(false)}
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/50 bg-white/45 text-slate-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-white/10 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20"
+              title="Open sidebar"
+              aria-label="Open sidebar"
+            >
+              <PanelLeftOpen className="h-5 w-5" />
+            </button>
+            <div className="mt-5 flex h-10 w-10 items-center justify-center rounded-2xl border border-white/50 bg-white/45 shadow-sm dark:border-white/10 dark:bg-white/10">
+              <span className="text-sm font-black tracking-tight text-blue-600 dark:text-blue-300">C</span>
+            </div>
+            <span className="mt-auto -rotate-90 whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.28em] text-slate-500/80 dark:text-slate-300/70">ChatNP</span>
+          </aside>
+        ) : sidebarContent}
       </div>
 
       {/* Mobile Sidebar Overlay */}
@@ -258,13 +278,13 @@ export default function ChatNPInterface() {
       )}
 
       {/* Main Chat Interface */}
-      <main className="relative flex h-full min-w-0 flex-1 flex-col">
+      <main className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden rounded-[28px] border border-white/40 bg-white/28 shadow-[0_24px_80px_rgba(15,23,42,0.14)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/30 dark:shadow-black/25">
         {/* Login is shown only to confirmed guests and disappears immediately after a successful sign-in. */}
         {authChecked && !isAuthenticated && (
           <div className="absolute right-4 top-4 z-30">
             <button
               onClick={() => setIsLoginOpen(true)}
-              className="cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-700 active:scale-95"
+              className="cursor-pointer rounded-full border border-white/20 bg-blue-600/90 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-blue-700 active:scale-95"
               aria-label="Login"
             >
               Login
@@ -276,6 +296,8 @@ export default function ChatNPInterface() {
           messages={messages}
           onSend={handleSend}
           onOpenSidebar={() => setIsSidebarOpen(true)}
+          onToggleSidebar={() => setIsSidebarCollapsed((collapsed) => !collapsed)}
+          isSidebarCollapsed={isSidebarCollapsed}
           isThinking={isThinking}
           selectedModel={selectedModel}
           onModelChange={setSelectedModel}

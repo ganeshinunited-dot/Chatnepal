@@ -110,7 +110,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
         )}
       </AnimatePresence>
 
-      <div className="w-full bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-slate-800 rounded-[28px] p-3 flex flex-col transition-colors shadow-sm">
+      <div className="w-full rounded-[26px] border border-white/45 bg-white/48 p-3 shadow-[0_18px_50px_rgba(15,23,42,0.14)] backdrop-blur-2xl transition-colors dark:border-white/10 dark:bg-slate-950/45 dark:shadow-black/25">
         
         {/* Attached File Preview Badge */}
         {attachedFile && (
@@ -160,7 +160,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             <div className="relative flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="w-8 h-8 rounded-full bg-white dark:bg-white flex items-center justify-center text-slate-900 shadow-sm hover:scale-105 active:scale-95 transition-all border border-slate-200 dark:border-transparent cursor-pointer"
+                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/70 bg-white/75 text-slate-900 shadow-sm transition-all hover:scale-105 hover:bg-white active:scale-95 dark:border-white/20 dark:bg-white/90"
                 title="Attach file"
               >
                 <Plus className={`w-5 h-5 transition-transform duration-200 ${isMenuOpen ? 'rotate-45' : ''}`} />
@@ -178,7 +178,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
           <button
             onClick={handleSend}
             disabled={(!input.trim() && !attachedFile) || disabled}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+            className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-all ${
               (input.trim() || attachedFile) && !disabled
                 ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:scale-105 active:scale-95 shadow-sm'
                 : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed'
