@@ -1,18 +1,19 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'motion/react';
 import { signOut } from 'next-auth/react';
 import type { Message } from '@/types';
 import Sidebar from '@/components/Sidebar';
 import ChatArea from '@/components/ChatArea';
-import SettingsModal from '@/components/SettingsModal';
-import ProfileModal from '@/components/ProfileModal';
-import ProfileNameModal from '@/components/ProfileNameModal';
-import LoginModal from '@/components/LoginModal';
 import { UserProfile, AIModel } from '@/types';
 import { useChat } from '@/hooks/use-chat';
-import ChatNPInstallPrompt from '@/components/ChatNPInstallPrompt';
+const SettingsModal = dynamic(() => import('@/components/SettingsModal'), { ssr: false });
+const ProfileModal = dynamic(() => import('@/components/ProfileModal'), { ssr: false });
+const ProfileNameModal = dynamic(() => import('@/components/ProfileNameModal'), { ssr: false });
+const LoginModal = dynamic(() => import('@/components/LoginModal'), { ssr: false });
+const ChatNPInstallPrompt = dynamic(() => import('@/components/ChatNPInstallPrompt'), { ssr: false });
 
 type AccountProfile = {
   id: string;
@@ -52,6 +53,7 @@ export default function ChatNPInterface() {
   const [isManagingHistory, setIsManagingHistory] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [isNight, setIsNight] = useState(false);
+  const [isInstallPromptReady, setIsInstallPromptReady] = useState(false);
   const [selectedModel, setSelectedModel] = useState<AIModel>('ChatNP');
   const [userProfile, setUserProfile] = useState<UserProfile>(guestProfile);
 
@@ -240,9 +242,13 @@ export default function ChatNPInterface() {
 
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'dark';
     const frame = window.requestAnimationFrame(() => setTheme(savedTheme));
+    const installPromptTimer = window.setTimeout(() => setIsInstallPromptReady(true), 1200);
     void fetchHistory();
 
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(installPromptTimer);
+    };
   }, [fetchHistory]);
 
   // --- Side Effects ---
@@ -330,32 +336,36 @@ export default function ChatNPInterface() {
         />
       </main>
 
-      {/* Modals */}
-      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} theme={theme} setTheme={setTheme} />
+      {/* Non-critical UI is mounted on demand to reduce mobile startup work. */}
+      {isSettingsOpen && <SettingsModal isOpen onClose={() => setIsSettingsOpen(false)} theme={theme} setTheme={setTheme} />}
       {isAuthenticated && isProfileOpen && (
         <ProfileModal
-          isOpen={isProfileOpen}
+          isOpen
           onClose={() => setIsProfileOpen(false)}
           user={userProfile}
           onSave={saveAccountProfile}
         />
       )}
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => {
-          setIsLoginOpen(false);
-          setIsLimitPopup(false);
-        }}
-        isLimitReached={isLimitPopup}
-        onAuthenticated={handleAuthenticated}
-      />
-      <ProfileNameModal
-        isOpen={isAuthenticated && needsProfileName}
-        email={userProfile.email}
-        initialName=""
-        onComplete={saveProfileName}
-      />
-      <ChatNPInstallPrompt />
+      {isLoginOpen && (
+        <LoginModal
+          isOpen
+          onClose={() => {
+            setIsLoginOpen(false);
+            setIsLimitPopup(false);
+          }}
+          isLimitReached={isLimitPopup}
+          onAuthenticated={handleAuthenticated}
+        />
+      )}
+      {isAuthenticated && needsProfileName && (
+        <ProfileNameModal
+          isOpen
+          email={userProfile.email}
+          initialName=""
+          onComplete={saveProfileName}
+        />
+      )}
+      {isInstallPromptReady && <ChatNPInstallPrompt />}
       </div>
     </div>
   );
