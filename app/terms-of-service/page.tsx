@@ -12,10 +12,13 @@ export default function TermsOfService() {
   return (
     <main className="min-h-screen relative bg-[#050505] text-white selection:bg-blue-900/50">
       <Navbar />
-      <div className="pt-32 pb-24 max-w-4xl mx-auto px-6">
-        <h1 className="font-heading text-4xl md:text-5xl font-medium mb-8">Terms of Service</h1>
+      <div className="pt-32 pb-24 max-w-4xl mx-auto px-6 font-sans">
+        <div className="inline-block px-3 py-1 mb-4 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-wide uppercase">
+          KarkTech Legal & Agreement
+        </div>
+        <h1 className="milky-heading text-4xl md:text-5xl text-white mb-6">Terms of Service</h1>
         
-        <div className="prose prose-invert prose-blue max-w-none space-y-6 text-zinc-400">
+        <div className="prose prose-invert prose-blue max-w-none space-y-6 text-zinc-300 milky-text leading-relaxed">
           <p>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           
           <h2 className="text-white font-medium text-2xl mt-12 mb-4">1. Acceptance of Terms</h2>
