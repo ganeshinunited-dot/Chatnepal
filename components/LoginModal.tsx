@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { trackAnalyticsEvent } from '@/lib/firebase';
 import { ArrowLeft, LoaderCircle, Mail, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -74,6 +75,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
   };
 
   const handleGoogleLogin = () => {
+    trackAnalyticsEvent('user_login_attempt', { method: 'google' });
     window.location.assign('/api/auth/signin/google?callbackUrl=%2Fchat');
   };
 
@@ -182,6 +184,7 @@ export default function LoginModal({ isOpen, onClose, onAuthenticated, isLimitRe
         throw new Error('Incorrect email or password.');
       }
 
+      trackAnalyticsEvent('user_login_success', { method: 'email-password' });
       onAuthenticated?.();
       handleClose();
     } catch (signInError) {

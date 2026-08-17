@@ -14,7 +14,7 @@ const firebaseConfig = {
 // Initialize Firebase (prevent duplicate initialization)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
-let analytics = null;
+let analytics: any = null;
 if (typeof window !== 'undefined') {
   isSupported().then((supported) => {
     if (supported) {
@@ -24,3 +24,16 @@ if (typeof window !== 'undefined') {
 }
 
 export { app, analytics };
+
+export function trackAnalyticsEvent(eventName: string, eventParams?: Record<string, any>) {
+  if (typeof window === 'undefined') return;
+  try {
+    import('firebase/analytics').then(({ logEvent }) => {
+      if (analytics) {
+        logEvent(analytics, eventName, eventParams);
+      }
+    }).catch(() => {});
+  } catch (e) {
+    // ignore
+  }
+}

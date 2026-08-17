@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Message, ChatSession } from '@/types';
 import { ChatService } from '@/lib/services/chat-service';
+import { trackAnalyticsEvent } from '@/lib/firebase';
 
 const DEFAULT_WELCOME_MESSAGE = 'नमस्ते अए! म तपाईंलाई के मद्दत गर्न सक्छु? ✨';
 
@@ -56,6 +57,11 @@ export function useChat() {
 
   const sendMessage = async (content: string, fileData?: { name: string; content: string }) => {
     if ((!content.trim() && !fileData) || isThinking) return;
+
+    trackAnalyticsEvent('chat_message_sent', { has_file: Boolean(fileData), model: 'ChatNP' });
+    if (fileData) {
+      trackAnalyticsEvent('file_uploaded', { file_name: fileData.name });
+    }
 
     let displayMessage = content;
     let fullMessageForAPI = content;
