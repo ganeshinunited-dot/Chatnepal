@@ -21,10 +21,10 @@ export function Footer() {
           {/* Quick Links */}
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap items-center gap-x-8 gap-y-2 text-sm text-zinc-500">
-              <li><Link href="#about" className="hover:text-white transition-colors">About</Link></li>
-              <li><Link href="#chatnp" className="hover:text-white transition-colors">ChatNP</Link></li>
-              <li><Link href="#roadmap" className="hover:text-white transition-colors">Roadmap</Link></li>
-              <li><Link href="#contact" className="hover:text-white transition-colors">Contact</Link></li>
+              <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+              <li><Link href="/#chatnp" className="hover:text-white transition-colors">ChatNP</Link></li>
+              <li><Link href="/#roadmap" className="hover:text-white transition-colors">Roadmap</Link></li>
+              <li><Link href="/#contact" className="hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </nav>
         </div>

@@ -5,11 +5,11 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 const navItems = [
-  { href: '#about', label: 'About' },
-  { href: '#chatnp', label: 'ChatNP' },
-  { href: '#investors', label: 'Investors' },
-  { href: '#roadmap', label: 'Roadmap' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/about', label: 'About' },
+  { href: '/#chatnp', label: 'ChatNP' },
+  { href: '/#investors', label: 'Investors' },
+  { href: '/#roadmap', label: 'Roadmap' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export function Navbar() {

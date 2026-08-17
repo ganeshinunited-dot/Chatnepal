@@ -1,6 +1,5 @@
 import { Hero } from '@/components/Hero';
 import { ProblemSolution } from '@/components/ProblemSolution';
-import { About } from '@/components/About';
 import { ChatNPProduct } from '@/components/ChatNPProduct';
 import { Founder } from '@/components/Founder';
 import { TrustCredibility } from '@/components/TrustCredibility';
@@ -32,7 +31,6 @@ export default function Home() {
       <div className="pt-24 pb-16 flex flex-col gap-32 sm:gap-40">
         <Hero />
         <ProblemSolution />
-        <About />
         <ChatNPProduct />
         <Founder />
         <TrustCredibility />
