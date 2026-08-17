@@ -12,7 +12,6 @@ import ProfileNameModal from '@/components/ProfileNameModal';
 import LoginModal from '@/components/LoginModal';
 import { UserProfile, AIModel } from '@/types';
 import { useChat } from '@/hooks/use-chat';
-import DayNightBackground from '@/components/DayNightBackground';
 import ChatNPInstallPrompt from '@/components/ChatNPInstallPrompt';
 
 type AccountProfile = {
@@ -274,8 +273,8 @@ export default function ChatNPInterface() {
   ), [sessions, activeChatId, selectChat, startNewChat, handleDeleteChat, handleClearHistory, isManagingHistory, isAuthenticated, handleLogout, userProfile]);
 
   return (
-    <DayNightBackground isNight={isNight} onToggleNight={() => setIsNight(!isNight)}>
-      <div className="relative z-10 box-border flex h-full w-full gap-3 overflow-hidden bg-transparent p-2 font-sans text-slate-900 selection:bg-blue-500/30 sm:p-3 md:gap-4 md:p-4 lg:p-5 dark:bg-transparent dark:text-slate-100">
+    <div className={`relative h-screen w-screen overflow-hidden transition-colors duration-300 ${isNight ? 'bg-[#090D16] text-slate-100' : 'bg-gradient-to-br from-slate-50 via-sky-50/50 to-blue-50/30 text-slate-900'}`}>
+      <div className="relative z-10 box-border flex h-full w-full gap-3 overflow-hidden bg-transparent p-2 font-sans selection:bg-blue-500/30 sm:p-3 md:gap-4 md:p-4 lg:p-5">
       {/* Desktop Sidebar */}
       <div className="hidden h-full w-72 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 md:block">
         {sidebarContent}
@@ -358,6 +357,6 @@ export default function ChatNPInterface() {
       />
       <ChatNPInstallPrompt />
       </div>
-    </DayNightBackground>
+    </div>
   );
 }
