@@ -1,68 +1,57 @@
-"use client";
-import { motion } from "motion/react";
-import { CheckCircle2, Code2, FileText, Zap } from "lucide-react";
+import React from "react";
 
-export function TrustCredibility() {
-  const credibilityItems = [
+export const TrustCredibility: React.FC = () => {
+  const pillars = [
     {
-      icon: <Code2 className="w-6 h-6" />,
       title: "Live ChatNP Prototype",
       description: "A working AI assistant available for testing right now, powered by the NP1 MONI model.",
-      color: "text-blue-400"
     },
     {
-      icon: <Zap className="w-6 h-6" />,
       title: "Secured Infrastructure",
       description: "Backed by scalable, secure server-side integrations powered by industry-standard APIs.",
-      color: "text-blue-400"
     },
     {
-      icon: <FileText className="w-6 h-6" />,
       title: "Comprehensive Materials",
       description: "Detailed investor documentation and roadmap ready for due diligence and partnership discussions.",
-      color: "text-emerald-400"
     },
     {
-      icon: <CheckCircle2 className="w-6 h-6" />,
       title: "Clear Roadmap",
       description: "A realistic path from prototype to product to ecosystem, with transparent milestones.",
-      color: "text-red-400"
-    }
+    },
   ];
 
   return (
-    <section className="mx-auto w-full max-w-7xl scroll-mt-32 px-4 sm:px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-12"
-      >
-        <h2 className="text-3xl md:text-4xl font-heading font-semibold text-white mb-4">What Exists Today</h2>
-        <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-          We're not just a concept. Here's what you can access and verify right now.
-        </p>
-      </motion.div>
+    <section className="py-20 md:py-28">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--bg-surface)] border border-[var(--border-card)] text-[var(--text-secondary)] mb-4">
+            Proof of Execution
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            What Exists Today
+          </h2>
+          <p className="mt-4 text-base text-[var(--text-secondary)]">
+            We&apos;re not just a concept. Here&apos;s what you can access and verify right now.
+          </p>
+        </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {credibilityItems.map((item, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: idx * 0.1 }}
-            className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm hover:border-white/10 transition-colors"
-          >
-            <div className={`${item.color} mb-4`}>
-              {item.icon}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {pillars.map((p, idx) => (
+            <div key={idx} className="p-6 rounded-2xl card-contour flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-mono text-[var(--accent-gold)]">0{idx + 1}</span>
+                <h3 className="text-lg font-bold text-[var(--text-primary)] mt-2">{p.title}</h3>
+                <p className="mt-2 text-xs text-[var(--text-secondary)] leading-relaxed">{p.description}</p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[var(--border-card)] text-[10px] uppercase font-mono text-[var(--text-tertiary)]">
+                Active & Verified
+              </div>
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed">{item.description}</p>
-          </motion.div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
-}
+};
+
+export default TrustCredibility;
