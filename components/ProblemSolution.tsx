@@ -1,78 +1,83 @@
-"use client";
-import { motion } from "motion/react";
-import { Globe, Target } from "lucide-react";
+import React from "react";
 
-export function ProblemSolution() {
+export const ProblemSolution: React.FC = () => {
   return (
-    <section className="mx-auto w-full max-w-7xl scroll-mt-32 px-4 sm:px-6">
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Problem */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-2xl border border-red-500/10 bg-red-500/5 p-8 md:p-10 backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Globe className="w-6 h-6 text-red-400" />
-            <h3 className="text-xl font-semibold text-white">The Problem</h3>
-          </div>
-          <p className="text-zinc-300 leading-relaxed mb-4">
-            Nepal has <span className="text-white font-medium">16.6M internet users</span> and <span className="text-white font-medium">85.1% smartphone ownership</span>—yet global AI platforms are not built for Nepal. They are trained predominantly on English-centric data, leaving morphologically complex languages like Nepali with significant capability gaps.
-          </p>
-          <div className="rounded-xl border border-red-500/15 bg-black/20 px-4 py-3 mb-6">
-            <p className="text-sm text-zinc-300 leading-relaxed">
-              <span className="text-red-400 font-semibold">The Token Tax:</span> English-optimized tokenizers destroy Nepali semantic context and require significantly more compute power to process the language.
-            </p>
-          </div>
-          <ul className="space-y-3">
-            <li className="flex gap-3">
-              <span className="text-red-400 font-bold">•</span>
-              <span className="text-zinc-400">Limited Nepali language understanding</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-red-400 font-bold">•</span>
-              <span className="text-zinc-400">No cultural or local context awareness</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-red-400 font-bold">•</span>
-              <span className="text-zinc-400">Designed for global markets, not Nepal's needs</span>
-            </li>
-          </ul>
-        </motion.div>
+    <section className="py-20 md:py-28 bg-[var(--bg-surface)] border-y border-[var(--border-card)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+          {/* The Problem */}
+          <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-base)] border border-[var(--border-card)] flex flex-col justify-between">
+            <div>
+              <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-red-500/10 text-red-600 dark:text-red-400 mb-6">
+                The Problem
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+                Global AI platforms are not built for Nepal.
+              </h2>
+              <p className="mt-4 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+                Nepal has <strong className="text-[var(--text-primary)]">16.6M internet users</strong> and <strong className="text-[var(--text-primary)]">85.1% smartphone ownership</strong>—yet global AI platforms are not built for Nepal. They are trained predominantly on English-centric data, leaving morphologically complex languages like Nepali with significant capability gaps.
+              </p>
 
-        {/* Solution */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-8 md:p-10 backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Target className="w-6 h-6 text-emerald-400" />
-            <h3 className="text-xl font-semibold text-white">Our Solution</h3>
+              <div className="mt-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5 text-xs text-[var(--text-secondary)] leading-relaxed">
+                <strong className="text-[var(--text-primary)] block mb-1">The Token Tax:</strong>
+                English-optimized tokenizers destroy Nepali semantic context and require significantly more compute power to process the language.
+              </div>
+            </div>
+
+            <ul className="mt-8 space-y-3 pt-6 border-t border-[var(--border-card)] text-sm text-[var(--text-secondary)]">
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                Limited Nepali language understanding
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                No cultural or local context awareness
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                Designed for global markets, not Nepal&apos;s needs
+              </li>
+            </ul>
           </div>
-          <p className="text-zinc-300 leading-relaxed mb-4">
-            ChatNP is a Nepal-first AI platform built with <span className="text-white font-medium">Contextual Intelligence</span>—purpose-built, not a wrapper. Deep Nepali NLP handles grammar, honorifics, and morphology natively, while proprietary RAG pipelines inject localized knowledge.
-          </p>
-          <ul className="space-y-3">
-            <li className="flex gap-3">
-              <span className="text-emerald-400 font-bold">✓</span>
-              <span className="text-zinc-400">Deep Nepali NLP — grammar, honorifics &amp; morphology</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-emerald-400 font-bold">✓</span>
-              <span className="text-zinc-400">Culturally aware and locally relevant</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-emerald-400 font-bold">✓</span>
-              <span className="text-zinc-400">Designed for Nepal's unique opportunities</span>
-            </li>
-          </ul>
-        </motion.div>
+
+          {/* Our Solution */}
+          <div className="p-8 sm:p-10 rounded-3xl bg-[var(--bg-base)] border border-[var(--border-card)] flex flex-col justify-between">
+            <div>
+              <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--accent-gold-soft)] text-[var(--accent-gold)] mb-6">
+                Our Solution
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+                Contextual Intelligence — Purpose-built, not a wrapper.
+              </h2>
+              <p className="mt-4 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+                ChatNP is a Nepal-first AI platform built with Contextual Intelligence—purpose-built, not a wrapper. Deep Nepali NLP handles grammar, honorifics, and morphology natively, while proprietary RAG pipelines inject localized knowledge.
+              </p>
+
+              <div className="mt-6 p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--accent-gold-soft)] text-xs text-[var(--text-secondary)] leading-relaxed">
+                <strong className="text-[var(--text-primary)] block mb-1">Deep Localization:</strong>
+                Deep Nepali NLP grammar, honorifics & morphology coupled with culturally aware and locally relevant intelligence.
+              </div>
+            </div>
+
+            <ul className="mt-8 space-y-3 pt-6 border-t border-[var(--border-card)] text-sm text-[var(--text-secondary)]">
+              <li className="flex items-center gap-2 text-[var(--text-primary)] font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" />
+                ✓ Deep Nepali NLP — grammar, honorifics & morphology
+              </li>
+              <li className="flex items-center gap-2 text-[var(--text-primary)] font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" />
+                ✓ Culturally aware and locally relevant
+              </li>
+              <li className="flex items-center gap-2 text-[var(--text-primary)] font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" />
+                ✓ Designed for Nepal&apos;s unique opportunities
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
-}
+};
+
+export default ProblemSolution;
