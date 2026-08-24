@@ -1,78 +1,128 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Logo from "./Logo";
 
-const navItems = [
-  { href: '/about', label: 'About' },
-  { href: '/#chatnp', label: 'ChatNP' },
-  { href: '/#investors', label: 'Investors' },
-  { href: '/#roadmap', label: 'Roadmap' },
-  { href: '/#contact', label: 'Contact' },
-];
+export const Navbar: React.FC = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [lang, setLang] = useState<"EN" | "NP">("EN");
 
-export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const closeMenu = () => setIsOpen(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { labelEn: "About", labelNp: "हाम्रो बारेमा", href: "/#about" },
+    { labelEn: "ChatNP", labelNp: "च्याटएनपी", href: "/#chatnp" },
+    { labelEn: "Roadmap", labelNp: "योजना", href: "/#roadmap" },
+    { labelEn: "Investors", labelNp: "लगानीकर्ता", href: "/#investors" },
+    { labelEn: "Contact", labelNp: "सम्पर्क", href: "/#contact" },
+  ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#050505]/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" onClick={closeMenu} className="flex items-center gap-2 font-heading text-xl font-semibold tracking-tight text-white sm:text-2xl">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-tr from-brand-blue to-brand-red">
-            <span className="text-xs font-bold text-white">K</span>
-          </div>
-          KarkTech
-        </Link>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "glass-nav border-b border-[var(--border-card)] py-3 shadow-xs"
+          : "bg-transparent py-5"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <Logo size="md" />
 
-        <div className="hidden items-center gap-8 text-sm font-medium text-zinc-400 md:flex">
-          {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="transition-colors hover:text-white">
-              {item.label}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-150"
+            >
+              {lang === "EN" ? link.labelEn : link.labelNp}
             </Link>
           ))}
+        </nav>
+
+        <div className="hidden md:flex items-center gap-4">
+          <button
+            onClick={() => setLang(lang === "EN" ? "NP" : "EN")}
+            className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-full border border-[var(--border-card)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all"
+            aria-label="Switch Language"
+          >
+            <span className={lang === "NP" ? "text-[var(--accent-gold)] font-bold" : "opacity-60"}>
+              नेपा
+            </span>
+            <span className="opacity-30">/</span>
+            <span className={lang === "EN" ? "text-[var(--accent-gold)] font-bold" : "opacity-60"}>
+              EN
+            </span>
+          </button>
+
+          <Link
+            href="/chat"
+            className="inline-flex items-center justify-center px-4 py-2 text-xs font-semibold tracking-wide uppercase rounded-lg bg-[var(--text-primary)] text-[var(--bg-base)] hover:opacity-90 transition-all duration-200 shadow-xs"
+          >
+            {lang === "EN" ? "Launch ChatNP" : "च्याट सुरु गर्नुहोस्"}
+          </Link>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4">
-          <Link href="/chat" className="hidden h-9 items-center justify-center rounded-full bg-white px-4 text-sm font-semibold text-black transition-colors hover:bg-zinc-200 sm:flex">
-            Try ChatNP
-          </Link>
+        <div className="flex md:hidden items-center gap-3">
           <button
-            type="button"
-            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={isOpen}
-            onClick={() => setIsOpen((open) => !open)}
-            className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue md:hidden"
+            onClick={() => setLang(lang === "EN" ? "NP" : "EN")}
+            className="px-2.5 py-1 text-xs font-semibold rounded-md border border-[var(--border-card)] bg-[var(--bg-surface)] text-[var(--text-secondary)]"
           >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {lang === "EN" ? "नेपाली" : "English"}
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors"
+            aria-label="Toggle Navigation Menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
       </div>
 
-      {isOpen && (
-        <div className="border-t border-white/5 bg-[#090909] px-4 py-4 shadow-2xl md:hidden">
-          <div className="flex flex-col gap-1">
-            {navItems.map((item) => (
+      {mobileMenuOpen && (
+        <div className="md:hidden glass-nav border-b border-[var(--border-card)] px-6 py-6 space-y-4 animate-in fade-in slide-in-from-top-4 duration-200">
+          <div className="flex flex-col space-y-3">
+            {navLinks.map((link) => (
               <Link
-                key={item.href}
-                href={item.href}
-                onClick={closeMenu}
-                className="rounded-lg px-3 py-3 text-base font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white"
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] py-1"
               >
-                {item.label}
+                {lang === "EN" ? link.labelEn : link.labelNp}
               </Link>
             ))}
+          </div>
+
+          <div className="pt-4 border-t border-[var(--border-card)]">
             <Link
               href="/chat"
-              onClick={closeMenu}
-              className="mt-2 flex h-11 items-center justify-center rounded-xl bg-brand-blue px-4 text-sm font-bold text-white transition-colors hover:bg-brand-blue-bright"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full text-center px-4 py-3 text-sm font-semibold rounded-lg bg-[var(--text-primary)] text-[var(--bg-base)]"
             >
-              Try ChatNP
+              {lang === "EN" ? "Launch ChatNP" : "च्याट सुरु गर्नुहोस्"}
             </Link>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
-}
+};
+
+export default Navbar;
