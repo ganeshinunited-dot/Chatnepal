@@ -1,51 +1,86 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-chatnp-primary: oklch(0.55 0.18 262);
-  --color-chatnp-primary-hover: oklch(0.50 0.20 262);
-  --color-chatnp-red: oklch(0.55 0.22 25);
-  --font-sans: "Plus Jakarta Sans", "Inter", "Mukta", ui-sans-serif, system-ui, sans-serif;
-  --font-nepali: "Mukta", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+@layer base {
+  :root {
+    --bg-base: #FAF9F5;
+    --bg-surface: #F3F2EB;
+    --bg-card: rgba(243, 242, 235, 0.88);
+    --border-subtle: rgba(201, 152, 60, 0.22);
+    --border-card: rgba(23, 22, 20, 0.08);
+    --text-primary: #171614;
+    --text-secondary: #5C5A54;
+    --text-tertiary: #8C897E;
+    --accent-gold: #C9983C;
+    --accent-gold-soft: rgba(201, 152, 60, 0.12);
+  }
+
+  .dark {
+    --bg-base: #0B0B0A;
+    --bg-surface: #141413;
+    --bg-card: rgba(20, 20, 19, 0.88);
+    --border-subtle: rgba(229, 178, 85, 0.22);
+    --border-card: rgba(255, 255, 255, 0.08);
+    --text-primary: #FAF9F6;
+    --text-secondary: #A8A59B;
+    --text-tertiary: #6E6B62;
+    --accent-gold: #E5B255;
+    --accent-gold-soft: rgba(229, 178, 85, 0.14);
+  }
+
+  * {
+    border-color: var(--border-card);
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Noto Sans Devanagari", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
 }
 
-html, body {
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Milky crystal clear font utility */
-.milky-text {
-  font-weight: 500;
-  letter-spacing: -0.01em;
+::selection {
+  background-color: rgba(201, 152, 60, 0.28);
+  color: inherit;
 }
 
-.milky-heading {
-  font-weight: 700;
-  letter-spacing: -0.02em;
+.glass-nav {
+  background: rgba(250, 249, 245, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
 }
 
-/* Deep pure milky card styling */
-.milky-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+.dark .glass-nav {
+  background: rgba(11, 11, 10, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
 }
 
-.dark .milky-card {
-  background: rgba(13, 15, 23, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+.card-contour {
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.font-nepali {
-  font-family: var(--font-nepali);
+.card-contour:hover {
+  border-color: var(--border-subtle);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
-/* Custom smooth scrollbar */
+.dark .card-contour:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -54,9 +89,6 @@ html, body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(150, 150, 150, 0.2);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(150, 150, 150, 0.4);
+  background: var(--text-tertiary);
+  border-radius: 9999px;
 }
