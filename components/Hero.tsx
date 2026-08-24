@@ -1,97 +1,112 @@
 "use client";
-/* eslint-disable react/no-unescaped-entities */
-import Link from 'next/link';
-import { DownloadLink } from './DownloadLink';
-import { ArrowRight, Download, Sparkles } from 'lucide-react';
-import { motion } from "motion/react";
 
-export function Hero() {
+import React from "react";
+import Link from "next/link";
+
+export const Hero: React.FC = () => {
+  const samplePrompts = [
+    {
+      label: "कृषि सल्लाह",
+      prompt: "धान बालीमा पात पहेंलो हुने समस्याको जैविक रोकथाम कसरी गर्ने?",
+    },
+    {
+      label: "कानुनी मस्यौदा",
+      prompt: "नेपालको श्रम ऐन अनुसार करार सम्झौताको ढाँचा तयार पारिदेऊ।",
+    },
+    {
+      label: "शिक्षा र व्याकरण",
+      prompt: "माध्यमिक तहका विद्यार्थीका लागि 'जलवायु परिवर्तन' मा निबन्ध लेख।",
+    },
+  ];
+
   return (
-    <section className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-4 pt-12 text-center sm:px-6 md:pt-24">
-      {/* Desktop-only advanced visual: floating Nepali script glow behind headline */}
-      <div className="pointer-events-none absolute inset-0 hidden lg:block overflow-hidden">
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 0.8 }}
-          className="absolute top-[12%] left-[6%] select-none font-heading text-[110px] font-bold leading-none text-blue-500/[0.05]"
-        >
-              NEPAL
-        </motion.span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 1.1 }}
-          className="absolute bottom-[8%] right-[8%] select-none font-heading text-[90px] font-bold leading-none text-red-500/[0.05]"
-        >
-          AI
-        </motion.span>
+    <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[360px] bg-[var(--accent-gold-soft)] blur-[130px] rounded-full pointer-events-none -z-10" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[var(--border-card)] bg-[var(--bg-surface)] mb-8 shadow-xs">
+          <span className="w-2 h-2 rounded-full bg-[var(--accent-gold)] animate-pulse" />
+          <span className="text-xs font-semibold tracking-wider uppercase text-[var(--text-secondary)]">
+            NEPALAI • Working Prototype Active
+          </span>
+        </div>
+
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[var(--text-primary)] max-w-4xl mx-auto leading-[1.12]">
+          ChatNP: Nepal&apos;s Contextual <br className="hidden sm:inline" />
+          <span className="text-[var(--text-secondary)] font-normal">
+            AI Platform
+          </span>
+        </h1>
+
+        <p className="mt-6 text-lg sm:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto font-normal leading-relaxed">
+          ChatNP is the Nepal-first AI platform — purpose-built contextual intelligence for Nepal&apos;s language, culture, and local context. Empowering Nepal through Artificial Intelligence.
+        </p>
+
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/chat"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-base)] font-semibold text-sm hover:opacity-90 transition-all duration-200 shadow-sm flex items-center justify-center gap-2"
+          >
+            <span>Try ChatNP</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
+
+          <a
+            href="/ChatNpdeck.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl border border-[var(--border-card)] bg-[var(--bg-surface)] text-[var(--text-primary)] font-medium text-sm hover:bg-[var(--bg-card)] transition-colors duration-200 flex items-center justify-center gap-2"
+          >
+            <span>View Investor Deck</span>
+            <svg className="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+
+        {/* 3 Core Stats */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="p-5 rounded-2xl card-contour">
+            <div className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">16.6M+</div>
+            <div className="mt-1 text-xs text-[var(--text-secondary)] font-medium">Internet Users in Nepal</div>
+          </div>
+          <div className="p-5 rounded-2xl card-contour">
+            <div className="text-3xl font-bold text-[var(--accent-gold)] tracking-tight">NP1</div>
+            <div className="mt-1 text-xs text-[var(--text-secondary)] font-medium">Native AI Model</div>
+          </div>
+          <div className="p-5 rounded-2xl card-contour">
+            <div className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">24/7</div>
+            <div className="mt-1 text-xs text-[var(--text-secondary)] font-medium">AI Assistant Access</div>
+          </div>
+        </div>
+
+        {/* Real Interactive Prompt Pills */}
+        <div className="mt-14 pt-8 border-t border-[var(--border-card)] max-w-3xl mx-auto">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)] mb-4">
+            Try a real context-aware Nepali query
+          </p>
+          <div className="flex flex-wrap justify-center gap-2.5">
+            {samplePrompts.map((item, idx) => (
+              <Link
+                key={idx}
+                href={`/chat?prompt=${encodeURIComponent(item.prompt)}`}
+                className="group inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-[var(--border-card)] bg-[var(--bg-card)] hover:border-[var(--accent-gold)] hover:bg-[var(--bg-surface)] transition-all duration-200 text-xs text-left"
+              >
+                <span className="font-semibold text-[var(--accent-gold)]">
+                  {item.label}:
+                </span>
+                <span className="text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] truncate max-w-[240px] sm:max-w-[320px]">
+                  {item.prompt}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-blue/10 border border-brand-blue/25 text-xs font-semibold text-blue-300 mb-8 backdrop-blur-sm uppercase tracking-wide"
-      >
-        <span className="w-2 h-2 rounded-full bg-brand-blue-bright animate-pulse" />
-        <span>Working Prototype</span>
-      </motion.div>
-
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="max-w-4xl font-heading text-4xl font-medium leading-[1.08] tracking-tight text-white text-balance sm:text-5xl md:text-6xl lg:text-7xl"
-      >
-        ChatNP: Nepal's <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-blue-500 bg-clip-text text-transparent">Contextual AI</span> Platform
-      </motion.h1>
-
-      <motion.p 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="mt-6 max-w-2xl text-base text-zinc-400 text-balance sm:mt-8 sm:text-lg md:text-lg"
-      >
-        ChatNP is the Nepal-first AI platform — purpose-built contextual intelligence for Nepal's language, culture, and local context. Empowering Nepal through Artificial Intelligence.
-      </motion.p>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="mt-8 flex w-full flex-col items-center gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:gap-4"
-      >
-        <Link 
-          href="/chat" 
-          className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-brand-blue px-6 font-bold text-white shadow-lg shadow-blue-900/30 transition-all hover:bg-brand-blue-bright hover:shadow-blue-800/40 hover:-translate-y-0.5 sm:w-auto sm:px-8"
-        >
-          Try ChatNP
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-        </Link>
-        <DownloadLink className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-6 font-bold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-zinc-800 hover:-translate-y-0.5 sm:w-auto sm:px-8"><Download className="w-4 h-4 text-zinc-400" />View Investor Deck</DownloadLink>
-      </motion.div>
-
-      {/* Desktop-only stats strip under CTA */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="mt-16 hidden lg:flex items-center justify-center gap-16 border-t border-white/5 pt-8 w-full max-w-3xl"
-      >
-        <div className="text-center">
-          <p className="font-heading text-3xl font-bold text-white">16.6M+</p>
-          <p className="text-xs uppercase tracking-wider text-zinc-500 mt-1">Internet Users in Nepal</p>
-        </div>
-        <div className="text-center">
-          <p className="font-heading text-3xl font-bold text-white">NP1</p>
-          <p className="text-xs uppercase tracking-wider text-zinc-500 mt-1">Native AI Model</p>
-        </div>
-        <div className="text-center">
-          <p className="font-heading text-3xl font-bold text-white">24/7</p>
-          <p className="text-xs uppercase tracking-wider text-zinc-500 mt-1">AI Assistant Access</p>
-        </div>
-      </motion.div>
     </section>
   );
-}
+};
+
+export default Hero;
