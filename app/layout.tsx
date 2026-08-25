@@ -7,7 +7,7 @@ import { CookieBanner } from '../components/CookieBanner';
 const mukta = Mukta({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin', 'devanagari'],
-  variable: '--font-body',
+  variable: '--font-mukta',
   display: 'swap',
   fallback: ['system-ui', 'Arial', 'sans-serif'],
   preload: true,
@@ -17,7 +17,7 @@ const mukta = Mukta({
 const jakarta = Plus_Jakarta_Sans({
   weight: ['600', '700', '800'],
   subsets: ['latin'],
-  variable: '--font-heading',
+  variable: '--font-jakarta',
   display: 'swap',
   fallback: ['system-ui', 'Arial', 'sans-serif'],
   preload: true,
