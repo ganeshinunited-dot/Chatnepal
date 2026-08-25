@@ -1,73 +1,66 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { X, Cookie } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
-export function CookieBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+export const CookieBanner: React.FC = () => {
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsVisible(!localStorage.getItem('cookiesAccepted'));
+    const consent = typeof window !== "undefined" ? localStorage.getItem("karktech_cookie_consent") : null;
+    if (!consent) {
+      const timer = setTimeout(() => setVisible(true), 1200);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookiesAccepted', 'true');
-    setIsVisible(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("karktech_cookie_consent", "accepted");
+    }
+    setVisible(false);
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookiesAccepted', 'false');
-    setIsVisible(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("karktech_cookie_consent", "declined");
+    }
+    setVisible(false);
   };
 
+  if (!visible) return null;
+
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6 pointer-events-none"
-        >
-          <div className="max-w-4xl mx-auto pointer-events-auto">
-            <div className="bg-zinc-900 border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col md:flex-row gap-6 items-center justify-between">
-              <div className="flex gap-4 items-start md:items-center">
-                <div className="bg-brand-blue/20 p-3 rounded-full hidden md:block">
-                  <Cookie className="w-6 h-6 text-blue-400" />
-                </div>
-                <div>
-                  <h3 className="text-white font-medium mb-1">We use cookies</h3>
-                  <p className="text-sm text-zinc-400">
-                    We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking &quot;Accept All&quot;, you consent to our use of cookies.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-3 w-full md:w-auto shrink-0">
-                <button
-                  onClick={handleDecline}
-                  className="flex-1 md:flex-none px-6 py-2.5 rounded-xl border border-white/10 text-white font-medium hover:bg-white/5 transition-colors text-sm"
-                >
-                  Decline
-                </button>
-                <button
-                  onClick={handleAccept}
-                  className="flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-brand-blue text-white font-medium hover:bg-brand-blue-bright transition-colors shadow-lg shadow-blue-900/30 text-sm"
-                >
-                  Accept All
-                </button>
-              </div>
-              <button
-                onClick={() => setIsVisible(false)}
-                className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-300 md:hidden"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-5 duration-300">
+      <div className="p-5 rounded-2xl bg-[var(--bg-base)] border border-[var(--border-card)] shadow-2xl backdrop-blur-xl">
+        <div className="flex items-start gap-3">
+          <span className="text-xl">🍪</span>
+          <div className="flex-1 text-xs text-[var(--text-secondary)] leading-relaxed">
+            <strong className="text-[var(--text-primary)] block mb-1">हामी कुकीज प्रयोग गर्छौं</strong>
+            हामी तपाईंको अनुभव सुधार गर्न र साइट ट्राफिक विश्लेषण गर्न कुकीहरू प्रयोग गर्छौं। थप जानकारीका लागि{" "}
+            <Link href="/cookie-policy" className="text-[var(--accent-gold)] underline hover:opacity-80">
+              Cookie Policy
+            </Link>{" "}
+            हेर्नुहोस्।
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
+        <div className="mt-4 flex items-center justify-end gap-2.5">
+          <button
+            onClick={handleDecline}
+            className="px-3 py-1.5 text-xs font-medium rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-surface)] transition-colors"
+          >
+            Decline
+          </button>
+          <button
+            onClick={handleAccept}
+            className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-[var(--text-primary)] text-[var(--bg-base)] hover:opacity-90 transition-opacity shadow-xs"
+          >
+            Accept All
+          </button>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default CookieBanner;
