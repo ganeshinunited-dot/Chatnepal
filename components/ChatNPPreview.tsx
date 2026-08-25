@@ -1,108 +1,104 @@
 "use client";
-/* eslint-disable react/no-unescaped-entities */
-import Link from 'next/link';
-import { ArrowRight, MessageSquare, Code, Languages, FileText, Sparkles } from 'lucide-react';
-import { motion } from "motion/react";
 
-export function ChatNPPreview() {
-  const features = [
-    { icon: <MessageSquare className="w-5 h-5" />, title: 'AI Chat', desc: 'Conversational interface optimized for Nepali and English.' },
-    { icon: <Languages className="w-5 h-5" />, title: 'Nepali Language AI', desc: 'Specialized NLP handling Nepali grammar, honorifics, and morphology.' },
-    { icon: <Code className="w-5 h-5" />, title: 'Coding Assistant', desc: 'AI-powered code generation and debugging.' },
-    { icon: <FileText className="w-5 h-5" />, title: 'Document Analysis', desc: 'Summarize and extract insights from uploaded files.' },
-  ];
+import React, { useState } from "react";
+import Link from "next/link";
+
+export const ChatNPPreview: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<"agri" | "legal" | "edu">("agri");
+
+  const scenarios = {
+    agri: {
+      title: "कृषि परामर्श (Agriculture Intelligence)",
+      query: "मेरो गोलभेंडाको पातमा कालो दाग देखिएको छ, के गर्ने होला?",
+      response:
+        "यो गोलभेंडामा लाग्ने 'अगेती डढुवा' (Early Blight) को लक्षण हुन सक्छ। तत्काल रोकथामका लागि:\n\n१. संक्रमित पातहरू टिपेर नष्ट गर्नुहोस्।\n२. बिरुवाको फेदमा मात्र पानी हाल्नुहोस् (पातमा पानी नपर्ने गरी)।\n३. जैविक नियन्त्रणका लागि ट्राइकोडर्मा (Trichoderma) वा कपर अक्सिक्लोराइड २ ग्राम प्रति लिटर पानीमा मिसाएर छर्कनुहोस्।",
+      model: "NP1 MONI • Agri Pipeline",
+    },
+    legal: {
+      title: "कानुनी तथा प्रशासनिक (Legal & Compliance)",
+      query: "प्राइभेट लिमिटेड कम्पनी दर्ता गर्न आवश्यक न्यूनतम कागजात के-के हुन्?",
+      response:
+        "नेपालमा कम्पनी रजिष्ट्रारको कार्यालय (OCR) मा प्राइभेट लिमिटेड कम्पनी दर्ता गर्दा चाहिने मुख्य कागजातहरू:\n\n१. प्रबन्धपत्र (MOA) र नियमावली (AOA) को मस्यौदा।\n२. संस्थापक सेयरधनीहरूको नागरिकताको प्रतिलिपि।\n३. कार्यालय रहने स्थानको घरबहाल सम्झौता वा लालपुर्जा प्रतिलिपि।",
+      model: "NP1 MONI • Legal RAG",
+    },
+    edu: {
+      title: "शिक्षा र शिक्षण (Education & Nepali NLP)",
+      query: "नेपाली व्याकरणमा 'कर्मवाच्य' र 'भाववाच्य' को फरक उदाहरणसहित बुझाइदेऊ।",
+      response:
+        "कर्मवाच्यमा कर्म (Object) को प्रधानता हुन्छ भने भाववाच्यमा क्रियाको भाव मुख्य हुन्छ।\n\n• कर्मवाच्य: 'रामद्वारा भात खाइयो।' (यहाँ 'भात' कर्म हो)\n• भाववाच्य: 'मबाट हिँडियो।' वा 'बसियो।' (यहाँ कर्म हुँदैन, केवल क्रियाको भाव हुन्छ)",
+      model: "NP1 MONI • Grammar Engine",
+    },
+  };
+
+  const current = scenarios[activeTab];
 
   return (
-    <section id="chatnp" className="mx-auto w-full max-w-7xl scroll-mt-32 px-4 sm:px-6">
-      <div className="mb-12 text-center sm:mb-16">
-        <h2 className="mb-6 font-heading text-3xl text-white sm:text-4xl md:text-5xl">Meet ChatNP</h2>
-        <p className="mx-auto max-w-3xl text-base text-zinc-400 sm:text-xl">
-          A generative AI platform designed for Nepal. It serves as a unified interface for conversational chat, specialized education assistants, and localized knowledge.
-        </p>
-      </div>
+    <section id="chatnp-preview" className="py-16 md:py-24 bg-[var(--bg-surface)] border-y border-[var(--border-card)]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--bg-base)] border border-[var(--border-card)] text-[var(--text-secondary)] mb-4">
+            Active MVP Terminal
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+            Ready to Experience ChatNP?
+          </h2>
+          <p className="mt-3 text-sm text-[var(--text-secondary)]">
+            ChatNP is a working prototype available for testing today — powered by a single unified NP1 MONI model, built for native Nepali AI.
+          </p>
 
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="space-y-8"
-        >
-          <div className="grid sm:grid-cols-2 gap-4">
-            {features.map((f, i) => (
-              <div key={i} className="rounded-2xl border border-white/5 bg-zinc-900/30 p-5 backdrop-blur-sm sm:p-6">
-                <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 mb-4">
-                  {f.icon}
-                </div>
-                <h4 className="text-white font-medium mb-2">{f.title}</h4>
-                <p className="text-sm text-zinc-500">{f.desc}</p>
-              </div>
+          <div className="mt-6 inline-flex p-1 rounded-xl bg-[var(--bg-base)] border border-[var(--border-card)]">
+            {(["agri", "legal", "edu"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 text-xs font-semibold rounded-lg transition-all ${
+                  activeTab === tab
+                    ? "bg-[var(--text-primary)] text-[var(--bg-base)] shadow-xs"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                }`}
+              >
+                {tab === "agri" ? "कृषि" : tab === "legal" ? "कानुन" : "शिक्षा"}
+              </button>
             ))}
           </div>
+        </div>
 
-          <Link 
-            href="/chat" 
-            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand-blue px-6 font-bold text-white shadow-lg shadow-brand-blue/20 transition-colors hover:bg-blue-600 sm:w-auto sm:px-8"
-          >
-            Launch Prototype
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
+        {/* Terminal Card */}
+        <div className="rounded-2xl border border-[var(--border-card)] bg-[var(--bg-base)] shadow-lg overflow-hidden">
+          <div className="px-5 py-3 border-b border-[var(--border-card)] bg-[var(--bg-surface)] flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-400/80" />
+              <div className="w-3 h-3 rounded-full bg-amber-400/80" />
+              <div className="w-3 h-3 rounded-full bg-emerald-400/80" />
+              <span className="ml-2 text-xs font-mono text-[var(--text-tertiary)]">
+                ChatNP Terminal — {current.model}
+              </span>
+            </div>
+            <Link
+              href="/chat"
+              className="text-xs font-semibold text-[var(--accent-gold)] hover:underline"
+            >
+              Launch ChatNP Studio →
+            </Link>
+          </div>
 
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative"
-        >
-          {/* Decorative Mockup */}
-          <div className="relative rounded-3xl border border-white/10 bg-zinc-900/50 backdrop-blur-xl overflow-hidden shadow-2xl">
-            <div className="h-12 border-b border-white/5 flex items-center px-4 justify-between bg-zinc-900/30">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center text-[10px] font-bold text-white">NP</div>
-                <span className="text-sm font-semibold text-white">ChatNP <span className="text-xs text-zinc-500 font-normal">Web Prototype</span></span>
-              </div>
-              <div className="flex gap-1">
-                <div className="w-2 h-2 rounded-full bg-zinc-700" />
-                <div className="w-2 h-2 rounded-full bg-zinc-700" />
+          <div className="p-6 sm:p-8 space-y-6">
+            <div className="flex justify-end">
+              <div className="max-w-[85%] sm:max-w-[70%] px-4 py-3 rounded-2xl rounded-tr-sm bg-[var(--text-primary)] text-[var(--bg-base)] text-sm font-medium leading-relaxed">
+                {current.query}
               </div>
             </div>
-            <div className="flex h-[360px] flex-col gap-6 p-4 sm:h-[400px] sm:p-6">
-              <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-                  <span className="text-xs text-zinc-300 font-medium">U</span>
-                </div>
-                <div className="min-w-0 rounded-2xl rounded-tl-none bg-zinc-800/80 p-3 text-sm text-zinc-300 sm:p-4">
-                  What is the capital of Nepal? Can you explain in Nepali?
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-900/40">
-                  <span className="text-[10px] font-bold text-white">NP</span>
-                </div>
-                <div className="min-w-0 rounded-2xl rounded-tl-none border border-white/5 bg-white/5 p-3 text-sm text-zinc-300 sm:p-4">
-                  <p>Nepal's capital is Kathmandu.</p>
-                  <p className="mt-2 text-zinc-400">नेपालको राजधानी काठमाडौं हो।</p>
-                </div>
-              </div>
-            </div>
-            {/* Input placeholder */}
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
-              <div className="h-12 rounded-xl bg-zinc-800 border border-white/10 flex items-center px-4 relative">
-                <span className="text-zinc-500 text-sm">Message ChatNP...</span>
-                <div className="absolute right-2 top-1.5 p-1.5 bg-blue-600 rounded-lg">
-                  <Sparkles className="w-4 h-4 text-white" />
-                </div>
+
+            <div className="flex justify-start">
+              <div className="max-w-[95%] sm:max-w-[85%] px-5 py-4 rounded-2xl rounded-tl-sm bg-[var(--bg-surface)] border border-[var(--border-card)] text-sm text-[var(--text-primary)] leading-relaxed whitespace-pre-line">
+                {current.response}
               </div>
             </div>
           </div>
-          
-          {/* Glow effect */}
-          <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/10 to-red-500/10 blur-2xl -z-10 rounded-[3rem]" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
-}
+};
+
+export default ChatNPPreview;
