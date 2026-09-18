@@ -28,7 +28,7 @@ export default function Home() {
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
         <a href="#top" className="wordmark">Karolina Hess</a>
         <nav className="top-nav" aria-label="Primary navigation">
-          <a href="#top">Home</a><a href="#works">Works</a><a href="#about">About</a>
+          <a href="#top">Home</a><a href="/works">Works</a><a href="/about">About</a>
         </nav>
         <button className="contact-pill" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Contact <span>↗</span></button>
       </header>
@@ -43,7 +43,7 @@ export default function Home() {
         </div>
         <img className="hero-portrait" src={assets.portrait} alt="Karolina Hess portrait" />
         <div className="hero-dots" aria-hidden="true"><i /><i /><i /></div>
-        <div className="bottom-dock"><a className="active" href="#top">Home</a><a href="#works">Works</a><a href="#about">About</a></div>
+        <div className="bottom-dock"><a className="active" href="#top">Home</a><a href="/works">Works</a><a href="/about">About</a></div>
         <a className="scroll-cue" href="#about" aria-label="Scroll down">↓</a>
       </section>
 
